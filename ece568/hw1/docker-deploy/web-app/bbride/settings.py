@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['web','vcm-24561.vm.duke.edu']
 # Application definition
 
 INSTALLED_APPS = [
+    'rides.apps.RidesConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
     'django.contrib.admin',
