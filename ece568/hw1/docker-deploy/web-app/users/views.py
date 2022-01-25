@@ -1,7 +1,5 @@
-from django.shortcuts import render
-
 # Create your views here.
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .forms import UserRegistrationForm
@@ -13,8 +11,8 @@ def register(request):
         if form.is_valid():
             form.save()
             username=form.cleaned_data.get('username')
-            messages.success(request,f'Welcome {username}! Congratulations to join bbRide!')
-            return redirect('user-home')
+            messages.success(request,f'Welcome {username}! Your account has been created! Congratulations to join bbRide!')
+            return redirect('login')
 
     else:
         form = UserRegistrationForm()
