@@ -21,6 +21,7 @@ from users import views as user_views
 
 urlpatterns = [
     path('rides/', include('rides.urls')),
+    path('driver/', user_views.driverform, name='driver'),
     path('register/', user_views.register, name='register'),
     path('admin/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
