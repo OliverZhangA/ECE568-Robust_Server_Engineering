@@ -10,8 +10,8 @@ from django.db.models.fields import CharField, IntegerField, TextField
 
 # Create your models here.
 class DriverProfile(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    user = models.OneToOneField(User,on_delete=models.CASCADE, related_name='driverprofile')
+    image = models.ImageField(default='default.gif', upload_to='profile_pics')
     vehicle_type = CharField(max_length=50,blank=False)
     vehicle_capacity = IntegerField(default=1)
     plate_num = CharField(max_length=7,blank=False)

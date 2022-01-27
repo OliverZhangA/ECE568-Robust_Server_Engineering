@@ -10,6 +10,7 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
+#create model forms
 class UsersForm(forms.ModelForm):
     email = forms.EmailField()
 

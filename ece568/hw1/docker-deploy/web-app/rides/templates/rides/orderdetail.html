@@ -1,0 +1,66 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
+
+<body>
+{% if orderinfo %}
+  <h1>Current Info</h1>
+        <li>Ride Number : {{orderinfo.pk}}</li>
+        <li>Owner : {{orderinfo.username}}</li>
+        <li>Vehicle Type:{{orderinfo.vehicle_type}}</li>
+        <li>Remaining seats : {{orderinfo.shared_seats}}</li>
+        <li>Destination : {{orderinfo.dest_addr}}</li>
+        <li>Arrival Time : {{orderinfo.arrival_date}}</li>
+        <li>Ride Status : {{orderinfo.status}}</li>
+        {% if orderinfo.is_shared %}
+        <li>Sharable? : YES</li>
+        {% else %}
+        <li>Sharable? : NO</li>
+        {% endif %}
+        <li>Special Request:{{orderinfo.special_info}}</li>
+
+        <br/>
+
+        <h1> Edit Info </h1>
+        <form action="/edit_orderinfo/" method="POST">
+        {% csrf_token %}
+{#            {{ form|crispy }}#}
+            <li>Destination:<input type="text" name="destination" required="required"></li>
+            <li>Arrival Time:<input type="datetime-local" name="arrival_time" required="required"></li>
+            <li>Party Size:<input type="number" name="party_size" min="1" max="6" required="required"></li>
+            <li>vehicle:<select type="text" name="vehicle">
+                    <option  value = "Sedan">Sedan</option>
+                    <option  value = "SUV">SUV</option>
+                </select></li>
+            <li>Sharable or Not:<select type="text" name="sharable">
+                            <option value = 'True'>Yes</option>
+                            <option value = 'False'>No</option>
+                        </select></li>
+            <li>Special Request:<input type="text" name="special_request"></li>
+
+
+            <input type="hidden" name="edit_id" value={{orderinfo.pk}}>
+            <button class="btn btn-outline-info" type="submit"> Save Changes </button>
+        </form>
+
+{% else %}
+    <p>No such orderinfo.</p >
+{% endif %}
+</body>
+{% endblock %}
+{% block sidebar %}
+<div class="col-md-4">
+    <div class="content-section">
+    <h3>Rider Sidebar</h3>
+    <p class='text-muted'>
+        <ul class="list-group">
+        <li class="list-group-item list-group-item-light"><a href=" 'profile' %}">Personal info</a ></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'create_ride' %}">Create a ride request</a ></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'search_ride' %}">Search for a ride share</a ></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'view_open' %}">View open rides</a ></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'view_confirmed' %}">View confirmed rides</a ></li>
+        </ul>
+    </p >
+    </div>
+</div>
+{% endblock %}

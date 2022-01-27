@@ -1,15 +1,81 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from contextvars import Context
+from django.shortcuts import redirect, render
+from .models import OrderInfo
+from users.models import DriverProfile
+from .forms import OrderInfoForm
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.views.generic import ListView, DetailView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-# Create your views here. 
+
 def home(request):
-    return HttpResponse('<h1>Ride Home</h1>')
+    return render(request, 'rides/home.html')
 
-def owner(request):
-    return HttpResponse('<h1>Ride Owner Home</h1>')
+def userhome(request):
+    return render(request, 'rides/userhome.html')
 
 def sharer(request):
-    return HttpResponse('<h1>Ride Sharer Home</h1>')
+    return render(request, 'rides/sharer.html')
 
 def driver(request):
-    return HttpResponse('<h1>Ride Driver Home</h1>')
+    ride_driver = DriverProfile.objects.filter(user=request.user.id)
+    if ride_driver.plate_num == '':
+        return render(request, 'rides/driver_register.html')
+    else:
+        return render(request, 'rides/driver.html')
+
+@login_required       
+def request_ride(request):
+    if request.method == 'POST':
+        form=OrderInfoForm(request.POST,request.user.username)
+        if form.is_valid():
+            instance = form.instance
+            instance.username = request.user.username
+            instance.userid = request.user.id
+            instance.user = request.user
+            instance.rideowner.user = request.user
+            instance.save()
+            #setusername=form.cleaned_data['username']
+            form.save()
+            username=request.user.username
+            # new_orderinfo = request.orderinfo
+            # new_orderinfo.username=request.user.username
+            # new_orderinfo.save()
+            messages.success(request,f'Welcome {username}! Your account has been created! Congratulations to join bbRide!')
+            return redirect('login')
+    else:
+        form = OrderInfoForm()
+    return render(request, 'users/register.html', {'form': form})
+
+def orderlist(request):
+    orders = OrderInfo.objects.filter(OrderInfo.status!='complete')
+    context = {
+        'orders' : orders,
+    }
+    return render(request,'rides/oderlist.html',context)
+
+class OrderList(ListView):
+    model = OrderInfo
+    template_name = 'rides/orderlist.html'
+    context_object_name = 'orders'
+    ordering = ['-arrival_date']
+    def get_queryset(self):
+        return OrderInfo.objects.filter(userid=self.request.user.id).exclude(status='complete').order_by('arrival_date')
+
+class OrderDetail(DetailView):
+    model = OrderInfo
+    template_name = 'rides/orderdetail.html'
+    # template_name = 'rides/orderdetail.html'
+    # context_object_name = 'order'
+
+class OrderCreate(LoginRequiredMixin, CreateView):
+    model = OrderInfo
+    template_name = 'rides/order_form.html'
+    fields = ['dest_addr', 'arrival_date', 'passenger_num', 'vehicle_type', 'is_shared', 'special_info']
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+    
