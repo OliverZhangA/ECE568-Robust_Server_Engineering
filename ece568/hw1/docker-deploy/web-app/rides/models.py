@@ -1,13 +1,14 @@
-#from asyncio.windows_events import NULL
+from contextlib import nullcontext
+from email.policy import default
 from django.db import models
 from django.db.models.fields import BooleanField, CharField, IntegerField
 from django.http import request
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 class OrderInfo(models.Model):
-    owner=models.ForeignKey(User, on_delete=models.CASCADE)
-    #user=User
+    #owner=models.ForeignKey(User, on_delete=models.CASCADE)
     username=models.CharField(max_length=50,default='',blank=True)
     userid=models.CharField(max_length=50,default='',blank=True)
     user_email=models.CharField(max_length=50, default="1148201178@qq.com")
@@ -26,8 +27,11 @@ class OrderInfo(models.Model):
     
 
     def __str__(self):
-        return self.username
-        #return self.rideowner.username
+        return self.dest_addr
+        #return self.rideowner.user.username
+    
+    def get_absolute_url(self):
+        return reverse('orderdetail', kwargs={'pk': self.pk})
 
 
 
@@ -42,6 +46,6 @@ class RideSharer(models.Model):
 class RideOwner(models.Model):
     orderinfo=models.OneToOneField(OrderInfo, on_delete=models.CASCADE)
     username=models.CharField(max_length=50,default='')
-    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    user=models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     owner_email=models.CharField(max_length=50, default="1148201178@qq.com")
     #ride_order=models.OneToOneField(OrderInfo, on_delete=models.CASCADE)

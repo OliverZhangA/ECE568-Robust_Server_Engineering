@@ -6,7 +6,7 @@ from .forms import OrderInfoForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
@@ -34,11 +34,12 @@ def request_ride(request):
             instance = form.instance
             instance.username = request.user.username
             instance.userid = request.user.id
-            instance.user = request.user
-            instance.rideowner.user = request.user
+            #instance.user = request.user
             instance.save()
             #setusername=form.cleaned_data['username']
             form.save()
+            instance.rideowner.user = request.user
+            instance.save()
             username=request.user.username
             # new_orderinfo = request.orderinfo
             # new_orderinfo.username=request.user.username
@@ -47,7 +48,7 @@ def request_ride(request):
             return redirect('login')
     else:
         form = OrderInfoForm()
-    return render(request, 'users/register.html', {'form': form})
+    return render(request, 'rides/order_form.html', {'form': form})
 
 def orderlist(request):
     orders = OrderInfo.objects.filter(OrderInfo.status!='complete')
@@ -62,6 +63,7 @@ class OrderList(ListView):
     context_object_name = 'orders'
     ordering = ['-arrival_date']
     def get_queryset(self):
+        #return OrderInfo.objects.filter(owner=self.request.user).exclude(status='complete').order_by('arrival_date')
         return OrderInfo.objects.filter(userid=self.request.user.id).exclude(status='complete').order_by('arrival_date')
 
 class OrderDetail(DetailView):
@@ -71,6 +73,15 @@ class OrderDetail(DetailView):
     # context_object_name = 'order'
 
 class OrderCreate(LoginRequiredMixin, CreateView):
+    model = OrderInfo
+    template_name = 'rides/order_form.html'
+    fields = ['dest_addr', 'arrival_date', 'passenger_num', 'vehicle_type', 'is_shared', 'special_info']
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+class OrderUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = OrderInfo
     template_name = 'rides/order_form.html'
     fields = ['dest_addr', 'arrival_date', 'passenger_num', 'vehicle_type', 'is_shared', 'special_info']
