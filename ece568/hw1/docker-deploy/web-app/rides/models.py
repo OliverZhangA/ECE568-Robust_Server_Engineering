@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 class OrderInfo(models.Model):
-    #owner=models.ForeignKey(User, on_delete=models.CASCADE)
+    owner=models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     username=models.CharField(max_length=50,default='',blank=True)
     userid=models.CharField(max_length=50,default='',blank=True)
     user_email=models.CharField(max_length=50, default="1148201178@qq.com")
@@ -31,7 +31,7 @@ class OrderInfo(models.Model):
         #return self.rideowner.user.username
     
     def get_absolute_url(self):
-        return reverse('orderdetail', kwargs={'pk': self.pk})
+        return reverse('orderlist', kwargs={'pk': self.pk})
 
 
 

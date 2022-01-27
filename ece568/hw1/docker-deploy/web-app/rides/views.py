@@ -1,6 +1,6 @@
 from contextvars import Context
 from django.shortcuts import redirect, render
-from .models import OrderInfo
+from .models import OrderInfo, RideOwner
 from users.models import DriverProfile
 from .forms import OrderInfoForm
 from django.contrib import messages
@@ -50,12 +50,36 @@ def request_ride(request):
         form = OrderInfoForm()
     return render(request, 'rides/order_form.html', {'form': form})
 
-def orderlist(request):
-    orders = OrderInfo.objects.filter(OrderInfo.status!='complete')
-    context = {
-        'orders' : orders,
-    }
-    return render(request,'rides/oderlist.html',context)
+@login_required       
+def request_edit(request):
+    if request.method == 'POST':
+        form=OrderInfoForm(request.POST,request.user.username)
+        if form.is_valid():
+            instance = form.instance
+            instance.username = request.user.username
+            instance.userid = request.user.id
+            #instance.user = request.user
+            instance.save()
+            #setusername=form.cleaned_data['username']
+            form.save()
+            instance.rideowner.user = request.user
+            instance.save()
+            username=request.user.username
+            # new_orderinfo = request.orderinfo
+            # new_orderinfo.username=request.user.username
+            # new_orderinfo.save()
+            messages.success(request,f'Welcome {username}! Your account has been created! Congratulations to join bbRide!')
+            return redirect('login')
+    else:
+        form = OrderInfoForm()
+    return render(request, 'rides/order_form.html', {'form': form})
+
+# def orderlist(request):
+#     orders = OrderInfo.objects.filter(OrderInfo.status!='complete')
+#     context = {
+#         'orders' : orders,
+#     }
+#     return render(request,'rides/oderlist.html',context)
 
 class OrderList(ListView):
     model = OrderInfo
@@ -63,8 +87,9 @@ class OrderList(ListView):
     context_object_name = 'orders'
     ordering = ['-arrival_date']
     def get_queryset(self):
-        #return OrderInfo.objects.filter(owner=self.request.user).exclude(status='complete').order_by('arrival_date')
-        return OrderInfo.objects.filter(userid=self.request.user.id).exclude(status='complete').order_by('arrival_date')
+        #return OrderInfo.objects.filter(rideowner__user=self.request.user).exclude(status='complete').order_by('arrival_date')
+        return OrderInfo.objects.filter(owner=self.request.user).exclude(status='complete').order_by('arrival_date')
+        #return OrderInfo.objects.filter(userid=self.request.user.id).exclude(status='complete').order_by('arrival_date')
 
 class OrderDetail(DetailView):
     model = OrderInfo
@@ -79,6 +104,7 @@ class OrderCreate(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
+        form.save()
         return super().form_valid(form)
 
 class OrderUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -88,5 +114,5 @@ class OrderUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
+        form.save()
         return super().form_valid(form)
-    
