@@ -13,7 +13,7 @@ class DriverProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE, related_name='driverprofile')
     image = models.ImageField(default='default.gif', upload_to='profile_pics')
     vehicle_type = CharField(max_length=50,blank=False)
-    vehicle_capacity = IntegerField(default=1)
+    vehicle_capacity = IntegerField(default=1,blank=False)
     plate_num = CharField(max_length=7,blank=False)
     license_num = CharField(max_length=12,blank=False)
     special_info = TextField(max_length=200,blank=TRUE)

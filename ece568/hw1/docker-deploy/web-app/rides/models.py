@@ -9,6 +9,7 @@ from django.urls import reverse
 
 class OrderInfo(models.Model):
     owner=models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    owner_party_size=models.PositiveSmallIntegerField(default=0)
     username=models.CharField(max_length=50,default='',blank=True)
     userid=models.CharField(max_length=50,default='',blank=True)
     user_email=models.CharField(max_length=50, default="1148201178@qq.com")
@@ -31,7 +32,7 @@ class OrderInfo(models.Model):
         #return self.rideowner.user.username
     
     def get_absolute_url(self):
-        return reverse('orderlist', kwargs={'pk': self.pk})
+        return reverse('orderlist') #, kwargs={'pk': self.pk}
 
 
 
@@ -39,8 +40,14 @@ class RideSharer(models.Model):
     #每个sharer属于一个order                                                
     sharer=models.ForeignKey(User, on_delete=models.CASCADE)
     sharer_email=models.CharField(max_length=50, default="1148201178@qq.com")
-    ride_order=models.ForeignKey(OrderInfo, on_delete=models.CASCADE)
+    ride_order=models.ForeignKey(OrderInfo, on_delete=models.CASCADE, null=True)
+    arrival_early=models.DateTimeField(default=timezone.now)
+    arrival_late=models.DateTimeField(default=timezone.now)
+    dest_addr=models.TextField(default='')
+    passenger_num=models.PositiveSmallIntegerField(default=1)
 
+    def get_absolute_url(self):
+        return reverse('joinlist') #, kwargs={'pk': self.pk}
  
 
 class RideOwner(models.Model):

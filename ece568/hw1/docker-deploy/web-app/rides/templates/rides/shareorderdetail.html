@@ -1,0 +1,46 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
+
+<body>
+{% if orderinfo %}
+  <h1>Current Info</h1>
+        <li>Ride Number : {{orderinfo.pk}}</li>
+        <li>Owner : {{orderinfo.owner.username}}</li>
+        <li>Vehicle Type:{{orderinfo.vehicle_type}}</li>
+        <li>Remaining seats : {{orderinfo.shared_seats}}</li>
+        <li>Destination : {{orderinfo.dest_addr}}</li>
+        <li>Arrival Time : {{orderinfo.arrival_date}}</li>
+        <li>Ride Status : {{orderinfo.status}}</li>
+        {% if orderinfo.is_shared %}
+        <li>Sharable? : YES</li>
+        {% else %}
+        <li>Sharable? : NO</li>
+        {% endif %}
+        <li>Special Request:{{orderinfo.special_info}}</li>
+
+        <br/>
+            <button class="btn btn-outline-info" onclick="location.href='confirm'" type="button"> join </button>
+            <button class="btn btn-outline-info" onclick="javascript:history.go(-1);" type="button"> return </button>
+
+{% else %}
+    <p>No such orderinfo.</p >
+{% endif %}
+</body>
+{% endblock %}
+{% block sidebar %}
+<div class="col-md-4">
+    <div class="content-section">
+    <h3>Rider Sidebar</h3>
+    <p class='text-muted'>
+        <ul class="list-group">
+        <li class="list-group-item list-group-item-light"><a href=" 'profile' %}">Personal info</a ></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'create_ride' %}">Create a ride request</a ></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'search_ride' %}">Search for a ride share</a ></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'view_open' %}">View open rides</a ></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'view_confirmed' %}">View confirmed rides</a ></li>
+        </ul>
+    </p >
+    </div>
+</div>
+{% endblock %}
