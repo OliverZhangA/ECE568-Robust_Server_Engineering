@@ -18,10 +18,9 @@
         <li>Sharable? : NO</li>
         {% endif %}
         <li>Special Request:{{orderinfo.special_info}}</li>
-        <h2>sharer information</h2>
-        {% for sharer %}
+
         <br/>
-            <button class="btn btn-outline-info" onclick="location.href='complete'" type="button"> complete </button>
+            <!-- <button class="btn btn-outline-info" onclick="location.href='confirm'" type="button"> join </button> -->
             <button class="btn btn-outline-info" onclick="javascript:history.go(-1);" type="button"> return </button>
 
 {% else %}

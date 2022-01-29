@@ -12,6 +12,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from users.views import driverform
 from django.db.models import Q
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 def home(request):
@@ -56,6 +58,7 @@ class OrderCreate(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
+        form.instance.shared_seats =  
         #form.save()
         return super().form_valid(form)
 
@@ -84,9 +87,11 @@ class ShareOrderCreate(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.sharer = self.request.user
+        #form.instance.ride_order = 
         #form.save()
         return super().form_valid(form)
 
+## for join operation
 class ShareList(ListView):
     model = OrderInfo
     template_name = 'rides/shareorderlist.html'
@@ -95,13 +100,44 @@ class ShareList(ListView):
     def get_queryset(self):
         sharer = self.request.user.ridesharer_set.last()
         #target = RideSharer.objects.get(sharer=self.request.user)
-        return OrderInfo.objects.filter(is_shared=True, dest_addr=sharer.dest_addr, arrival_date__lte=sharer.arrival_late, arrival_date__gte=sharer.arrival_early)#, shared_seats__gte=sharer.passenger_num)
+        order_result = OrderInfo.objects.filter(is_shared=True, dest_addr=sharer.dest_addr, arrival_date__lte=sharer.arrival_late, arrival_date__gte=sharer.arrival_early)#, shared_seats__gte=sharer.passenger_num)
+        # if not order_result:
+        #     return HttpResponse('Sorry! No order matched for you to join!')
+        return order_result
 
 class ShareOrderDetail(DetailView):
     model = OrderInfo
     template_name = 'rides/shareorderdetail.html'
     # template_name = 'rides/orderdetail.html'
     # context_object_name = 'order'
+
+## for edit orders
+class ShareOrderList(ListView):
+    model = RideSharer
+    template_name = 'rides/sharerlist.html'
+    context_object_name = 'sharers'
+    ordering = ['-arrival_date']
+    def get_queryset(self):
+        return RideSharer.objects.filter(sharer=self.request.user)
+
+class ShareHistoryDetail(DetailView):
+    model = OrderInfo
+    template_name = 'rides/sharehistory.html'
+
+
+# class ShareOrderList(ListView):
+#     model = OrderInfo
+#     template_name = 'rides/orderlist.html'
+#     context_object_name = 'orders'
+#     ordering = ['-arrival_date']
+#     def get_queryset(self):
+#         #sharer = self.request.user.ridesharer_set.last()
+        
+#         return OrderInfo.objects.filter(ridesharer_set__contains=self.request.user).exclude(status='complete').order_by('arrival_date')
+
+#         #return OrderInfo.objects.filter(sharer_name=self.request.user.username).exclude(status='complete').order_by('arrival_date')
+
+
 
 class DriverOrderList(ListView):
     model = OrderInfo
@@ -111,6 +147,7 @@ class DriverOrderList(ListView):
     def get_queryset(self):
         driver = self.request.user.driverprofile
         return OrderInfo.objects.filter(plate_num=driver.plate_num, status='confirmed')
+
 
 class DriverOrderDetail(DetailView):
     model = OrderInfo
@@ -122,7 +159,11 @@ def joinconfirm(request, order_id):
     order_toadd.shared_seats = order_toadd.shared_seats - sharer_toadd.passenger_num
     #order_toadd.save()
     sharer_toadd.ride_order = order_toadd
-    
+    ##fill the share_name field of the orderinfo object
+    order_toadd.sharer_name = sharer_toadd.sharer.username
+    order_toadd.save()
+    sharer_toadd.save()
+    #form.instance.ride_order.sharer_name = self.request.user.username
     #sharer_toadd.save()
     return HttpResponse('confirm success')
 
@@ -149,7 +190,20 @@ def DriverConfirm(request, order_id):
     order.plate_num = driver.plate_num
     order.vehicle_type = driver.vehicle_type
     order.save()
-    return HttpResponse('confirm success')
+    #send the email to sharer and owner
+    subject = 'Your order had been confirmed by a driver!'
+    message = 'Thank you for choosing us'
+    email_from = settings.EMAIL_HOST_USER
+    #send email to the sharer
+    recipient_list1 = [order.owner.email]
+    send_mail(subject,message,email_from,recipient_list1)
+    #send email to the owner
+    sharers = order.ridesharer_set.all()
+    for sharer in sharers:
+        recipient_list2 = [sharer.sharer.email]
+        send_mail(subject,message,email_from,recipient_list2)
+    
+    return HttpResponse('confirm success and notification email sent')
 
 def DriverComplete(request, order_id):
     driver = request.user.driverprofile

@@ -13,6 +13,8 @@ from .views import (
     DriverConfirmDetail,
     DriverOrderList,
     DriverOrderDetail,
+    ShareOrderList,
+    ShareHistoryDetail
 )
 
 urlpatterns = [
@@ -26,10 +28,16 @@ urlpatterns = [
     path('rideuser/ridehistory', OrderList.as_view(), name='orderlist'),
     path('rideuser/ridehistory/<int:pk>/', OrderDetail.as_view(), name='orderdetail'),
     path('rideuser/ridehistory/<int:pk>/update', OrderUpdate.as_view(), name='ride-update'),
+    ## sharer pages
     path('rideuser/joinride/', ShareOrderCreate.as_view(), name='ride-join'),
     path('rideuser/joinresults', ShareList.as_view(), name='joinlist'),
     path('rideuser/joinresults/<int:pk>/', ShareOrderDetail.as_view(), name='shareorderdetail'),
     path('rideuser/joinresults/<int:order_id>/confirm', views.joinconfirm, name='joinconfirm'),
+    
+    path('rideuser/joinorders/', ShareOrderList.as_view(), name='joinorders'),
+    path('rideuser/joinorders/<int:pk>/', ShareHistoryDetail.as_view(), name='joinhistory'),
+
+
     #path('rideuser/joinresults/<int:pk>/return_to', ShareOrderDetail.as_view(), name='shareorderdetail'),
     path('sharer/', views.sharer, name='ride-sharer'),
     path('driver/', views.driver, name='ride-driver'),

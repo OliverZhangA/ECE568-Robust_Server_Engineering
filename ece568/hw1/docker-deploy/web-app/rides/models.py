@@ -7,9 +7,17 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+VEHICLE_TYPE_CHOICES = [
+        ('Sedan', 'Sedan'),
+        ('Coupe', 'Gold'),
+        ('SUV', 'SUV'),
+        ('Minivan', 'Minivan'),
+        ('Van', 'Van')
+    ]
+
 class OrderInfo(models.Model):
     owner=models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    owner_party_size=models.PositiveSmallIntegerField(default=0)
+    #owner_party_size=models.PositiveSmallIntegerField(default=0)
     username=models.CharField(max_length=50,default='',blank=True)
     userid=models.CharField(max_length=50,default='',blank=True)
     user_email=models.CharField(max_length=50, default="1148201178@qq.com")
@@ -18,11 +26,11 @@ class OrderInfo(models.Model):
     dest_addr=models.TextField(default='')
     arrival_date=models.DateTimeField(default=timezone.now)
     passenger_num=models.PositiveSmallIntegerField(default=1)
-    vehicle_type=models.CharField(max_length=30,blank=True)
+    vehicle_type=models.CharField(max_length=30,choices=VEHICLE_TYPE_CHOICES,blank=True)
     special_info=models.TextField(blank=True)
     is_shared=models.BooleanField(default=False)
     shared_seats=models.PositiveSmallIntegerField(default=0)
-    #sharer_name=models.CharField(max_length=50, default=NULL)
+    sharer_name=models.CharField(max_length=50,null=True)
     sharer_num=models.PositiveSmallIntegerField(default=0)
     status=models.CharField(max_length=10, default='open')
     

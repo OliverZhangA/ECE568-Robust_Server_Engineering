@@ -20,10 +20,12 @@
         <p>Special Request:{{orderinfo.special_info}}</p>
 
         <br/>
-    
+
+        {% if orderinfo.status == 'open' %}
         <button class="btn btn-outline-info" onclick="location.href='update'" type="button">
             Edit Information
         </button>
+        {% endif %}
         <button class="btn btn-outline-info" onclick="javascript:history.go(-1);" type="button">Return</button>
 
 
