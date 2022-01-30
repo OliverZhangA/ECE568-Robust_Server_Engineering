@@ -58,7 +58,8 @@ class OrderCreate(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
-        form.instance.shared_seats =  
+        form.instance.total_num = form.cleaned_data.get('passenger_num') + form.instance.sharer_num
+        #form.instance.shared_seats = -form.passenger_num
         #form.save()
         return super().form_valid(form)
 
@@ -68,10 +69,15 @@ class OrderUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = 'rides/order_update.html'
     fields = ['dest_addr', 'arrival_date', 'passenger_num', 'vehicle_type', 'is_shared', 'special_info']
 
+    #if(form.instance.total_num > )
     def form_valid(self, form):
+        if(form.instance.plate_num != '' and form.cleaned_data.get('passenger_num') + form.instance.sharer_num > form.instance.vehicle_capacity):
+            return HttpResponse('no permission to edit, exceeding maximum passenger number!')
         if(form.instance.status == 'confirmed'):
             return HttpResponse('no permission')        
         form.instance.owner = self.request.user
+        form.instance.total_num = form.instance.sharer_num + form.instance.passenger_num
+        form.instance.save()
         return super().form_valid(form)
 
     def test_func(self):
@@ -100,7 +106,7 @@ class ShareList(ListView):
     def get_queryset(self):
         sharer = self.request.user.ridesharer_set.last()
         #target = RideSharer.objects.get(sharer=self.request.user)
-        order_result = OrderInfo.objects.filter(is_shared=True, dest_addr=sharer.dest_addr, arrival_date__lte=sharer.arrival_late, arrival_date__gte=sharer.arrival_early)#, shared_seats__gte=sharer.passenger_num)
+        order_result = OrderInfo.objects.filter(is_shared=True, dest_addr=sharer.dest_addr, arrival_date__lte=sharer.arrival_late, arrival_date__gte=sharer.arrival_early,status='open').exclude(owner=sharer.sharer)
         # if not order_result:
         #     return HttpResponse('Sorry! No order matched for you to join!')
         return order_result
@@ -138,7 +144,6 @@ class ShareHistoryDetail(DetailView):
 #         #return OrderInfo.objects.filter(sharer_name=self.request.user.username).exclude(status='complete').order_by('arrival_date')
 
 
-
 class DriverOrderList(ListView):
     model = OrderInfo
     template_name = 'rides/driverorderlist.html'
@@ -156,7 +161,8 @@ class DriverOrderDetail(DetailView):
 def joinconfirm(request, order_id):
     sharer_toadd = request.user.ridesharer_set.last()
     order_toadd = OrderInfo.objects.filter(pk=order_id).first()
-    order_toadd.shared_seats = order_toadd.shared_seats - sharer_toadd.passenger_num
+    order_toadd.sharer_num = order_toadd.sharer_num + sharer_toadd.passenger_num
+    order_toadd.total_num = order_toadd.sharer_num + order_toadd.passenger_num
     #order_toadd.save()
     sharer_toadd.ride_order = order_toadd
     ##fill the share_name field of the orderinfo object
@@ -175,7 +181,17 @@ class DriverList(ListView):
     ordering = ['-arrival_date']
     def get_queryset(self):
         driver = self.request.user.driverprofile
-        return OrderInfo.objects.filter(Q(vehicle_type=driver.vehicle_type)|Q(vehicle_type=''), Q(special_info=driver.special_info)|Q(special_info=''), status='open', passenger_num__lte=driver.vehicle_capacity)
+        #sharers = OrderInfo.ridesharer_set.filter(sharer=self.request.user)
+        #curuser_sharers = self.request.user.ridesharer_set
+        #.exclude(sharer__in=curuser_sharers)
+        orders = OrderInfo.objects.filter(Q(vehicle_type=driver.vehicle_type)|Q(vehicle_type=''), Q(special_info=driver.special_info)|Q(special_info=''), status='open', total_num__lte=driver.vehicle_capacity).exclude(owner=driver.user)
+        for order in orders:
+            sharers = order.ridesharer_set.all()
+            for sharer in sharers:
+                if sharer.sharer == driver.user:
+                    orders = orders.exclude(id = order.id)
+                    break
+        return orders
 
 class DriverConfirmDetail(DetailView):
     model = OrderInfo
@@ -184,11 +200,12 @@ class DriverConfirmDetail(DetailView):
 def DriverConfirm(request, order_id):
     driver = request.user.driverprofile
     order = OrderInfo.objects.filter(pk=order_id).first()
-    order.shared_seats = driver.vehicle_capacity - order.passenger_num
+    #order.shared_seats = driver.vehicle_capacity - order.passenger_num
     order.status = 'confirmed'
-    order.driver_name = driver.user.username
+    order.driver_name = driver.name
     order.plate_num = driver.plate_num
     order.vehicle_type = driver.vehicle_type
+    order.vehicle_capacity = driver.vehicle_capacity
     order.save()
     #send the email to sharer and owner
     subject = 'Your order had been confirmed by a driver!'

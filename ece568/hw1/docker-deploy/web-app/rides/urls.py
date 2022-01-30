@@ -33,7 +33,7 @@ urlpatterns = [
     path('rideuser/joinresults', ShareList.as_view(), name='joinlist'),
     path('rideuser/joinresults/<int:pk>/', ShareOrderDetail.as_view(), name='shareorderdetail'),
     path('rideuser/joinresults/<int:order_id>/confirm', views.joinconfirm, name='joinconfirm'),
-    
+    ## edit sharer info
     path('rideuser/joinorders/', ShareOrderList.as_view(), name='joinorders'),
     path('rideuser/joinorders/<int:pk>/', ShareHistoryDetail.as_view(), name='joinhistory'),
 

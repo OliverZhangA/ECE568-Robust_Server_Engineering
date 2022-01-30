@@ -4,22 +4,26 @@
 
 <body>
 {% if orderinfo %}
-  <h1>Current Info</h1>
-        <li>Ride Number : {{orderinfo.pk}}</li>
-        <li>Owner : {{orderinfo.owner.username}}</li>
-        <li>Vehicle Type:{{orderinfo.vehicle_type}}</li>
-        <li>Remaining seats : {{orderinfo.shared_seats}}</li>
-        <li>Destination : {{orderinfo.dest_addr}}</li>
-        <li>Arrival Time : {{orderinfo.arrival_date}}</li>
-        <li>Ride Status : {{orderinfo.status}}</li>
+    <h1>Order Detail</h1>
+        <p>Order Number : {{orderinfo.pk}}</p>
+        <p>Owner : {{orderinfo.owner.username}}</p>
+        <p>Owner Number : {{orderinfo.passenger_num}}</p>
+        <p>Destination : {{orderinfo.dest_addr}}</p>
+        <p>Arrival Time : {{orderinfo.arrival_date}}</p>
+        <p>Vehicle Type: {{orderinfo.vehicle_type}}</p>
         {% if orderinfo.is_shared %}
-        <li>Sharable? : YES</li>
+        <p>Sharable? : YES</p>
         {% else %}
-        <li>Sharable? : NO</li>
+        <p>Sharable? : NO</p>
         {% endif %}
-        <li>Special Request:{{orderinfo.special_info}}</li>
-        <h2>sharer information</h2>
-        {% for sharer %}
+        {% for sharer in orderinfo.ridesharer_set.all %}
+            <p>Sharer {{forloop.counter}} : {{sharer.sharer.username}}</p>
+            <p>Sharer Number: {{sharer.passenger_num}}</p>
+        {% endfor %}
+        <p>Status : {{orderinfo.status}}</p>
+        <p>Special Request:{{orderinfo.special_info}}</p>
+        <p>Driver Name: {{orderinfo.driver_name}} </p>
+        <p>Plate Number: {{orderinfo.plate_num}} </p>
         <br/>
             <button class="btn btn-outline-info" onclick="location.href='complete'" type="button"> complete </button>
             <button class="btn btn-outline-info" onclick="javascript:history.go(-1);" type="button"> return </button>
@@ -30,18 +34,4 @@
 </body>
 {% endblock %}
 {% block sidebar %}
-<div class="col-md-4">
-    <div class="content-section">
-    <h3>Rider Sidebar</h3>
-    <p class='text-muted'>
-        <ul class="list-group">
-        <li class="list-group-item list-group-item-light"><a href=" 'profile' %}">Personal info</a ></li>
-        <li class="list-group-item list-group-item-light"><a href="{% url 'create_ride' %}">Create a ride request</a ></li>
-        <li class="list-group-item list-group-item-light"><a href="{% url 'search_ride' %}">Search for a ride share</a ></li>
-        <li class="list-group-item list-group-item-light"><a href="{% url 'view_open' %}">View open rides</a ></li>
-        <li class="list-group-item list-group-item-light"><a href="{% url 'view_confirmed' %}">View confirmed rides</a ></li>
-        </ul>
-    </p >
-    </div>
-</div>
 {% endblock %}

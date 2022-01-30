@@ -21,4 +21,4 @@ class UsersForm(forms.ModelForm):
 class DriversForm(forms.ModelForm):
     class Meta:
         model = DriverProfile
-        fields = ['license_num', 'vehicle_type', 'vehicle_capacity', 'plate_num', 'special_info']
+        fields = ['name', 'ID_num', 'DOB', 'license_num', 'vehicle_type', 'vehicle_capacity', 'plate_num', 'special_info']
