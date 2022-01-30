@@ -9,6 +9,14 @@ from django.contrib.auth.models import User
 from django.db.models.fields import CharField, IntegerField, TextField
 from django.utils import timezone
 
+VEHICLE_TYPE_CHOICES = [
+        ('Sedan', 'Sedan'),
+        ('Coupe', 'Gold'),
+        ('SUV', 'SUV'),
+        ('Minivan', 'Minivan'),
+        ('Van', 'Van')
+    ]
+
 # Create your models here.
 class DriverProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE, related_name='driverprofile')
@@ -16,7 +24,7 @@ class DriverProfile(models.Model):
     ID_num = CharField(max_length=20,blank=False,null=True)
     DOB = models.DateTimeField(default=timezone.now)
     image = models.ImageField(default='default.gif', upload_to='profile_pics')
-    vehicle_type = CharField(max_length=50,blank=False)
+    vehicle_type = CharField(max_length=50,choices=VEHICLE_TYPE_CHOICES,blank=False)
     vehicle_capacity = IntegerField(default=0,blank=False)
     plate_num = CharField(max_length=7,blank=False)
     license_num = CharField(max_length=12,blank=False)

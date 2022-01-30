@@ -31,9 +31,12 @@ def driver(request):
         return redirect(driverform)
         #return render(request, 'rides/driver_register.html')
     else:
-        return redirect('takeorders')
+        return redirect('driver-home')
         #return render(request, 'rides/driver.html')
         #return redirect()
+
+def driverhome(request):
+    return render(request, 'rides/driverhome.html')
 
 class OrderList(ListView):
     model = OrderInfo

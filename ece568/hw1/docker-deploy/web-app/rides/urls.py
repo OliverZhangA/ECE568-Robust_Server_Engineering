@@ -37,15 +37,17 @@ urlpatterns = [
     path('rideuser/joinorders/', ShareOrderList.as_view(), name='joinorders'),
     path('rideuser/joinorders/<int:pk>/', ShareHistoryDetail.as_view(), name='joinhistory'),
 
-
     #path('rideuser/joinresults/<int:pk>/return_to', ShareOrderDetail.as_view(), name='shareorderdetail'),
     path('sharer/', views.sharer, name='ride-sharer'),
+
+    ## driver pages
     path('driver/', views.driver, name='ride-driver'),
-    #path('driver/', views.driver, name='ride-driver'),
+    path('driver/driverhome', views.driverhome, name='driver-home'),
     path('driver/driverorderlist', DriverOrderList.as_view(), name='driverorderlist'),
     path('driver/driverorderlist/<int:pk>/', DriverOrderDetail.as_view(), name='driverorderdetail'),
     path('driver/driverorderlist/<int:order_id>/complete', views.DriverComplete, name='drivercomplete'),
-    path('driver_search_results', DriverList.as_view(), name='takeorders'),
+
+    path('driver/driver_search_results', DriverList.as_view(), name='takeorders'),
     path('driver_search_results/<int:pk>/', DriverConfirmDetail.as_view(), name='driverdetail'),
     path('driver_search_results/<int:order_id>/confirm', views.DriverConfirm, name='driverconfirm'),
 ]
