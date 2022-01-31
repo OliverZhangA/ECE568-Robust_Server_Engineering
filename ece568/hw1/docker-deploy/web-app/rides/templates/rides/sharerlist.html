@@ -1,6 +1,8 @@
 {% extends "users/base.html" %}
 {% block content %}
+<h1>Rides Joining History</h1>
   {% for sharer in sharers %}
+    {% if sharer.ride_order %}
       <article class="media content-section">
         <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
         <div class="media-body">
@@ -12,5 +14,6 @@
           <h2><a class="article-title" href="{% url 'joinhistory' sharer.ride_order.id %}">{{ sharer.ride_order.dest_addr }}</a ></h2>
         </div>
       </article>
+    {% endif %}
   {% endfor %}
 {% endblock content %}

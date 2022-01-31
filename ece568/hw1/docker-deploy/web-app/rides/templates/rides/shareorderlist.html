@@ -1,5 +1,7 @@
 {% extends "users/base.html" %}
 {% block content %}
+<h1>Rides Join Searching Results</h1>
+
 {% if not orders %}
   <p>Sorry! No order matched for you to join!</p>
   <button class="btn btn-outline-info" onclick="javascript:history.go(-1);" type="button">Return</button>

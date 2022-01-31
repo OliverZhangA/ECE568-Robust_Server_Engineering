@@ -3,10 +3,12 @@
 {% block content%}
 
 <body>
-{% if orderinfo.status == open %}
-  <h1>Order Details</h1>
+{% if orderinfo.status == 'open' %}
+    <h1> Owner Orders History </h1>
+        <h3>Order Details</h3>
         <p>Order Number : {{orderinfo.pk}}</p>
         <p>Owner : {{orderinfo.owner.username}}</p>
+        <p>Owner Number : {{orderinfo.passenger_num}}</p>
         <p>Destination : {{orderinfo.dest_addr}}</p>
         <p>Arrival Time : {{orderinfo.arrival_date}}</p>
         <p>Vehicle Type: {{orderinfo.vehicle_type}}</p>
@@ -15,7 +17,11 @@
         {% else %}
         <p>Sharable? : NO</p>
         {% endif %}
-        <p>Passenger Number : {{orderinfo.total_num}}</p>
+        {% for sharer in orderinfo.ridesharer_set.all %}
+            <li>Sharer {{forloop.counter}} : {{sharer.sharer.username}}</li>
+            <li>Sharer Number: {{sharer.passenger_num}}</li>
+        {% endfor %}
+        <p>Total Passenger Number : {{orderinfo.total_num}}</p>
         <p>Status : {{orderinfo.status}}</p>
         <p>Special Request:{{orderinfo.special_info}}</p>
 
@@ -25,14 +31,17 @@
         <button class="btn btn-outline-info" onclick="location.href='update'" type="button">
             Edit Information
         </button>
+        <a class="btn btn-outline-danger" href="{% url 'ride-delete' object.id %}">Cancel</a>
         {% endif %}
         <button class="btn btn-outline-info" onclick="javascript:history.go(-1);" type="button">Return</button>
 
 
 {% else %}
-    <h1>Order Details</h1>
+    <h1> Owner Orders History </h1>
+        <h3>Order Details</h3>
         <p>Order Number : {{orderinfo.pk}}</p>
         <p>Owner : {{orderinfo.owner.username}}</p>
+        <p>Owner Number : {{orderinfo.passenger_num}}</p>
         <p>Destination : {{orderinfo.dest_addr}}</p>
         <p>Arrival Time : {{orderinfo.arrival_date}}</p>
         <p>Vehicle Type: {{orderinfo.vehicle_type}}</p>
@@ -41,7 +50,11 @@
         {% else %}
         <p>Sharable? : NO</p>
         {% endif %}
-        <p>Passenger Number : {{orderinfo.total_num}}</p>
+        {% for sharer in orderinfo.ridesharer_set.all %}
+            <li>Sharer {{forloop.counter}} : {{sharer.sharer.username}}</li>
+            <li>Sharer Number: {{sharer.passenger_num}}</li>
+        {% endfor %}
+        <p>Total Passenger Number : {{orderinfo.total_num}}</p>
         <p>Status : {{orderinfo.status}}</p>
         <p>Special Request:{{orderinfo.special_info}}</p>
         <p>Driver Name: {{orderinfo.driver_name}} </p>

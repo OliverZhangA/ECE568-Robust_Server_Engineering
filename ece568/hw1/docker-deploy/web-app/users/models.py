@@ -14,7 +14,6 @@ VEHICLE_TYPE_CHOICES = [
         ('Coupe', 'Gold'),
         ('SUV', 'SUV'),
         ('Minivan', 'Minivan'),
-        ('Van', 'Van')
     ]
 
 # Create your models here.

@@ -4,7 +4,8 @@
 
 <body>
 {% if orderinfo %}
-    <h1>Order Detail</h1>
+<h1>Driver Confirmed History</h1>
+    <h3>Order Detail</h3>
         <p>Order Number : {{orderinfo.pk}}</p>
         <p>Owner : {{orderinfo.owner.username}}</p>
         <p>Owner Number : {{orderinfo.passenger_num}}</p>
@@ -17,10 +18,11 @@
         <p>Sharable? : NO</p>
         {% endif %}
         {% for sharer in orderinfo.ridesharer_set.all %}
-            <p>Sharer {{forloop.counter}} : {{sharer.sharer.username}}</p>
-            <p>Sharer Number: {{sharer.passenger_num}}</p>
+            <li>Sharer {{forloop.counter}} : {{sharer.sharer.username}}</li>
+            <li>Sharer Number: {{sharer.passenger_num}}</li>
         {% endfor %}
         <p>Status : {{orderinfo.status}}</p>
+        <p>Total Passenger Number : {{orderinfo.total_num}}</p>
         <p>Special Request:{{orderinfo.special_info}}</p>
         <p>Driver Name: {{orderinfo.driver_name}} </p>
         <p>Plate Number: {{orderinfo.plate_num}} </p>

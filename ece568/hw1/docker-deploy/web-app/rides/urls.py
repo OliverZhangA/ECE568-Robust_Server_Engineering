@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 #from .views import OrderDetail, OrderList
 from .views import (
+    SharerDelete,
+    OrderDelete,
     OrderDetail, 
     OrderList, 
     OrderCreate,
@@ -14,7 +16,7 @@ from .views import (
     DriverOrderList,
     DriverOrderDetail,
     ShareOrderList,
-    ShareHistoryDetail
+    ShareHistoryDetail,
 )
 
 urlpatterns = [
@@ -28,7 +30,9 @@ urlpatterns = [
     path('rideuser/ridehistory', OrderList.as_view(), name='orderlist'),
     path('rideuser/ridehistory/<int:pk>/', OrderDetail.as_view(), name='orderdetail'),
     path('rideuser/ridehistory/<int:pk>/update', OrderUpdate.as_view(), name='ride-update'),
-    ## sharer pages
+    ##delete
+    path('rideuser/ridehistory/<int:pk>/delete', OrderDelete.as_view(), name='ride-delete'),
+    ## sharer pages, request
     path('rideuser/joinride/', ShareOrderCreate.as_view(), name='ride-join'),
     path('rideuser/joinresults', ShareList.as_view(), name='joinlist'),
     path('rideuser/joinresults/<int:pk>/', ShareOrderDetail.as_view(), name='shareorderdetail'),
@@ -36,6 +40,8 @@ urlpatterns = [
     ## edit sharer info
     path('rideuser/joinorders/', ShareOrderList.as_view(), name='joinorders'),
     path('rideuser/joinorders/<int:pk>/', ShareHistoryDetail.as_view(), name='joinhistory'),
+    ##delete ride sharer
+    path('rideuser/joinorders/<int:pk>/delete', SharerDelete.as_view(), name='deletesharer'),
 
     #path('rideuser/joinresults/<int:pk>/return_to', ShareOrderDetail.as_view(), name='shareorderdetail'),
     path('sharer/', views.sharer, name='ride-sharer'),

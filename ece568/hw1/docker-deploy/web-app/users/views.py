@@ -23,6 +23,9 @@ def register(request):
 
 @login_required
 def driverform(request):
+    # if not request.user.is_authenticated():
+    #     messages.success(request,'Please log in first!')
+    #     return redirect('login')
     if request.method == 'POST':
         #get the form saved in the current log in user
         curuser = User.objects.get(pk=request.user.id)
@@ -47,4 +50,8 @@ def driverform(request):
         'form_user': form_user,
         'form_driver': form_driver
     }
+    if request.user.driverprofile.plate_num:
+        messages.success(request,'You are already a driver, you can edit all your info right here!')
+    else:
+        messages.success(request,'You are not a driver yet, you can register as a driver here!')
     return render(request,'users/driverprofile.html',context)

@@ -1,4 +1,5 @@
 from contextvars import Context
+from sre_constants import SUCCESS
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -8,12 +9,12 @@ from .forms import OrderInfoForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from users.views import driverform
 from django.db.models import Q
 from django.core.mail import send_mail
-from django.conf import settings
+from django.conf import Settings, settings
 
 
 def home(request):
@@ -33,7 +34,6 @@ def driver(request):
     else:
         return redirect('driver-home')
         #return render(request, 'rides/driver.html')
-        #return redirect()
 
 def driverhome(request):
     return render(request, 'rides/driverhome.html')
@@ -42,7 +42,7 @@ class OrderList(ListView):
     model = OrderInfo
     template_name = 'rides/orderlist.html'
     context_object_name = 'orders'
-    ordering = ['-arrival_date']
+    ordering = ['arrival_date']
     def get_queryset(self):
         #return OrderInfo.objects.filter(rideowner__user=self.request.user).exclude(status='complete').order_by('arrival_date')
         return OrderInfo.objects.filter(owner=self.request.user).exclude(status='complete').order_by('arrival_date')
@@ -53,6 +53,17 @@ class OrderDetail(DetailView):
     template_name = 'rides/orderdetail.html'
     # template_name = 'rides/orderdetail.html'
     # context_object_name = 'order'
+
+class OrderDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = OrderInfo
+    template_name = 'rides/order_confirm_delete.html'
+    success_url = '/rides/rideuser/ridehistory'
+
+    def test_func(self):
+        order = self.get_object()
+        if self.request.user == order.owner:
+            return True
+        return False
 
 class OrderCreate(LoginRequiredMixin, CreateView):
     model = OrderInfo
@@ -74,8 +85,10 @@ class OrderUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     #if(form.instance.total_num > )
     def form_valid(self, form):
-        if(form.instance.plate_num != '' and form.cleaned_data.get('passenger_num') + form.instance.sharer_num > form.instance.vehicle_capacity):
-            return HttpResponse('no permission to edit, exceeding maximum passenger number!')
+        if(form.instance.ridesharer_set != [] and form.cleaned_data.get('is_shared') == False):
+            return HttpResponse('no permission to edit, can not kick out existing sharers, please be kind!')
+        if(form.instance.ridesharer_set != [] and form.cleaned_data.get('passenger_num') + form.instance.sharer_num > 6):
+            return HttpResponse('no permission to edit, exceeding maximum vehicle capacity!')
         if(form.instance.status == 'confirmed'):
             return HttpResponse('no permission')        
         form.instance.owner = self.request.user
@@ -105,14 +118,22 @@ class ShareList(ListView):
     model = OrderInfo
     template_name = 'rides/shareorderlist.html'
     context_object_name = 'orders'
-    ordering = ['-arrival_date']
+    ordering = ['arrival_date']
     def get_queryset(self):
         sharer = self.request.user.ridesharer_set.last()
         #target = RideSharer.objects.get(sharer=self.request.user)
-        order_result = OrderInfo.objects.filter(is_shared=True, dest_addr=sharer.dest_addr, arrival_date__lte=sharer.arrival_late, arrival_date__gte=sharer.arrival_early,status='open').exclude(owner=sharer.sharer)
+        orders = OrderInfo.objects.filter(is_shared=True, dest_addr=sharer.dest_addr, arrival_date__lte=sharer.arrival_late, arrival_date__gte=sharer.arrival_early, status='open', ).exclude(owner=sharer.sharer)
+        for order in orders:
+            sharers = order.ridesharer_set.all()
+            for ridesharer in sharers:
+                if ridesharer.sharer == sharer.sharer:
+                    orders = orders.exclude(id = order.id)
+                    break
+        return orders
+        #order_result = OrderInfo.objects.filter(is_shared=True, dest_addr=sharer.dest_addr, arrival_date__lte=sharer.arrival_late, arrival_date__gte=sharer.arrival_early, status='open', ).exclude(owner=sharer.sharer)
         # if not order_result:
         #     return HttpResponse('Sorry! No order matched for you to join!')
-        return order_result
+        #return order_result
 
 class ShareOrderDetail(DetailView):
     model = OrderInfo
@@ -120,12 +141,31 @@ class ShareOrderDetail(DetailView):
     # template_name = 'rides/orderdetail.html'
     # context_object_name = 'order'
 
+class SharerDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = RideSharer
+    template_name = 'rides/sharer_confirm_delete.html'
+    success_url = '/rides/rideuser/joinorders'
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        sharer = self.get_object()
+        sharer.ride_order.sharer_num = sharer.ride_order.sharer_num - sharer.passenger_num
+        sharer.ride_order.total_num = sharer.ride_order.total_num - sharer.ride_order.sharer_num
+        sharer.ride_order.save()
+        return super(SharerDelete, self).delete(request, *args, **kwargs)
+    def test_func(self):
+        sharer = self.get_object()
+        if self.request.user == sharer.sharer:
+            return True
+        return False
+
+
 ## for edit orders
 class ShareOrderList(ListView):
     model = RideSharer
     template_name = 'rides/sharerlist.html'
     context_object_name = 'sharers'
-    ordering = ['-arrival_date']
+    ordering = ['arrival_date']
     def get_queryset(self):
         return RideSharer.objects.filter(sharer=self.request.user)
 
@@ -151,7 +191,7 @@ class DriverOrderList(ListView):
     model = OrderInfo
     template_name = 'rides/driverorderlist.html'
     context_object_name = 'orders'
-    ordering = ['-arrival_date']
+    ordering = ['arrival_date']
     def get_queryset(self):
         driver = self.request.user.driverprofile
         return OrderInfo.objects.filter(plate_num=driver.plate_num, status='confirmed')
@@ -164,6 +204,10 @@ class DriverOrderDetail(DetailView):
 def joinconfirm(request, order_id):
     sharer_toadd = request.user.ridesharer_set.last()
     order_toadd = OrderInfo.objects.filter(pk=order_id).first()
+    # suppose the largest load of cars in our platform is 6
+    if sharer_toadd.passenger_num + order_toadd.total_num > 6:
+        messages.success(request,'Sorry! You cannot join this ride, it will be overloaded')
+        return redirect('joinlist')
     order_toadd.sharer_num = order_toadd.sharer_num + sharer_toadd.passenger_num
     order_toadd.total_num = order_toadd.sharer_num + order_toadd.passenger_num
     #order_toadd.save()
@@ -172,16 +216,20 @@ def joinconfirm(request, order_id):
     order_toadd.sharer_name = sharer_toadd.sharer.username
     order_toadd.save()
     sharer_toadd.save()
+
+    
     #form.instance.ride_order.sharer_name = self.request.user.username
     #sharer_toadd.save()
-    return HttpResponse('confirm success')
+    messages.success(request,'You have joined a order successfully!')
+    return redirect('joinorders')
+    #return HttpResponse('confirm success')
 
 
 class DriverList(ListView):
     model = OrderInfo
     template_name = 'rides/driver.html'
     context_object_name = 'orders'
-    ordering = ['-arrival_date']
+    ordering = ['arrival_date']
     def get_queryset(self):
         driver = self.request.user.driverprofile
         #sharers = OrderInfo.ridesharer_set.filter(sharer=self.request.user)
@@ -222,13 +270,17 @@ def DriverConfirm(request, order_id):
     for sharer in sharers:
         recipient_list2 = [sharer.sharer.email]
         send_mail(subject,message,email_from,recipient_list2)
-    
-    return HttpResponse('confirm success and notification email sent')
+
+    messages.success(request,'confirm success, and notification email sent')
+    return redirect('driverorderlist')
+    #return HttpResponse('confirm success and notification email sent')
 
 def DriverComplete(request, order_id):
     driver = request.user.driverprofile
     order = OrderInfo.objects.filter(pk=order_id).first()
     order.status = 'complete'
     order.save()
-    return HttpResponse('complete success')
+    messages.success(request,'Congratulations! You have already complete this order!')
+    return redirect('driverorderlist')
+    #return HttpResponse('complete success')
 
