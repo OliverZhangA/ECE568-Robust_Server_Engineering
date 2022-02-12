@@ -1,0 +1,33 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
+
+<body>
+<h1>Rides Join Searching Results</h1>
+    <h3>Order Details</h3>
+    <p>Order Number : {{orderinfo.pk}}</p>
+    <p>Owner : {{orderinfo.owner.username}}</p>
+    <p>Owner Number : {{orderinfo.passenger_num}}</p>
+    <p>Destination : {{orderinfo.dest_addr}}</p>
+    <p>Arrival Time : {{orderinfo.arrival_date}}</p>
+    <p>Vehicle Type: {{orderinfo.vehicle_type}}</p>
+    {% if orderinfo.is_shared %}
+    <p>Sharable? : YES</p>
+    {% else %}
+    <p>Sharable? : NO</p>
+    {% endif %}
+    {% for sharer in orderinfo.ridesharer_set.all %}
+        <li>Sharer {{forloop.counter}} : {{sharer.sharer.username}}</li>
+        <li>Sharer Number: {{sharer.passenger_num}}</li>
+    {% endfor %}
+    <p>Total Passenger Number : {{orderinfo.total_num}}</p>
+    <p>Status : {{orderinfo.status}}</p>
+    <p>Special Request:{{orderinfo.special_info}}</p>
+        <br/>
+        
+            <button class="btn btn-outline-info" onclick="location.href='confirm'" type="button"> join </button>
+            <button class="btn btn-outline-info" onclick="javascript:history.go(-1);" type="button"> return </button>
+
+
+</body>
+{% endblock %}

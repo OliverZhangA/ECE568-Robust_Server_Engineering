@@ -1,0 +1,29 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1>Welcome to BBride!</h1>
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Safe Ride!</legend>
+                <a class="nav-item nav-link" href="{% url 'driverprofile' %}">Driver Profile <style> </style></a>
+                {{ form|crispy }} 
+            </fieldset>
+            
+            <div class="form-group">
+                <button class="btn btn-outline-info" onclick="location.href='driver_search_results'" type="button">
+                    Pick Up
+                </button>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-outline-info" onclick="location.href='driverorderlist'" type="button">
+                    History
+                </button>
+            </div>
+            
+            </div>
+        
+        </form>
+    </div>
+{% endblock content %}
