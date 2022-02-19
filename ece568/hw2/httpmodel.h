@@ -119,7 +119,7 @@ class Http_Response{
             valid_flag = false;
             return;
         }
-        status_code = startline.substr(cur_pos, startline.find(" ", cur_pos));
+        status_code = startline.substr(cur_pos, temp_pos-cur_pos);
         // cur_pos = startline.find(startline.begin() + cur_pos, startline.end(), " ") + 1;
         cur_pos = startline.find(" ", cur_pos) + 1;
         if(cur_pos == string::npos){
@@ -127,10 +127,6 @@ class Http_Response{
             return;
         }
         temp_pos = startline.find("\r\n");
-        // if(temp_pos == string::npos){
-        //     valid_flag = false;
-        //     return;
-        // }
         reason = startline.substr(cur_pos, startline.find("\r\n"));
     }
 
@@ -160,7 +156,8 @@ class Http_Response{
         buffer = res;
     }
 };
-
+bool isExpired(string date, string max_age);
+bool isExpired(string date);
 int isExpiration(Http_Response response){
     string max_age;
     if(response.headers.find("Cach-Control") != string::npos){
@@ -187,8 +184,8 @@ int isExpiration(Http_Response response){
             }
         }
     }
-    bool isExpired(string date, string max_age);
-    bool isExpired(string date);
+    // bool isExpired(string date, string max_age);
+    // bool isExpired(string date);
     if(response.headers.find("Expires") != string::npos){
         size_t pos_date = response.headers.find("Expires");
         size_t pos2 = response.headers.find_first_of("\r\n",pos_date);
@@ -490,13 +487,6 @@ public:
    
     void Toget(int client_fd,string client_ip){
         Http_Response response;
-        // cout<<"cache content:"<<endl;
-        // for(typename list<string>::iterator it = myCache.old_list.begin(); it != myCache.old_list.end(); ++it){
-        //     cout << *it << endl;
-        // }
-        // response = get_response();
-        // send(client_fd, response.buffer.data(), response.buffer.size(), 0);
-        // return;
         if(myCache.is_in_cache(startline)){
             //fresh?
             cout<<"incache"<<endl;
@@ -509,15 +499,16 @@ public:
             string request;
             request.append(startline);
             request.append("\r\n");
+            request.append("Host: ");
             request.append(hostname);
             request.append("\r\n");
             if(cached_resp.header.find("Last-Modified")!= cached_resp.header.end()){
-                request.append("If-Modified-since:");
+                request.append("If-Modified-since: ");
                 request.append(cached_resp.header["Last-Modified"]);
                 request.append("\r\n");
             }
             if(cached_resp.header.find("ETag") != cached_resp.header.end()){
-                request.append("If-None-Match:");
+                request.append("If-None-Match: ");
                 request.append(cached_resp.header["ETag"]);
                 request.append("\r\n");
             }
@@ -533,26 +524,31 @@ public:
             //if not expired
             if(cache_status == 2 || cache_status == 4) {
                 cout << "if not expired, going here" << endl;
+                log << id << ": in cache, valid"<< endl;
+                myCache.put_cache_response(startline,cached_resp);
+                int send_size = send(client_fd, cached_resp.buffer.data(), cached_resp.buffer.size(), 0);
+                return;
                 //check if has "must-revalidate"
-                if(cached_resp.headers.find("must-revalidate") != string::npos) {
-                    //do revalidation
-                    cout<<"in cache, requires validation"<<endl;
-                    log<<id<<": in cache, requires validation"<<endl;
-                    revalidate(request, client_fd, cached_resp);
-                } else {
-                    cout << "in cache, valid"<<endl;
-                    log << id << ": in cache, valid"<< endl;
-                    myCache.put_cache_response(startline,cached_resp);
-                    int send_size = send(client_fd, cached_resp.buffer.data(), cached_resp.buffer.size(), 0);
-                    return;
-                }
+                // if(cached_resp.headers.find("must-revalidate") != string::npos) {
+                //     //do revalidation
+                //     cout<<"in cache, requires validation(must-revalidate)"<<endl;
+                //     log<<id<<": in cache, requires validation"<<endl;
+                //     revalidate(request, client_fd, cached_resp);
+                // } else {
+                //     //cout << "in cache, valid"<<endl;
+                //     log << id << ": in cache, valid"<< endl;
+                //     myCache.put_cache_response(startline,cached_resp);
+                //     int send_size = send(client_fd, cached_resp.buffer.data(), cached_resp.buffer.size(), 0);
+                //     return;
+                // }
             // if 0, 1, 3, need to revalidate
             } else {
                 cout << "if 0, 1, 3, need to revalidate "<<endl;
                 if(cached_resp.headers.find("no-cache") != string::npos){
-                    cout << "in cache, requires validation"<<endl;
+                    cout << "in cache, requires validation(no-cache)"<<endl;
                     log<<id<<": in cache, requires validation"<<endl;
                 }else if(cache_status == 0 ){
+                    cout << "in cache, requires validation(cache_status == 0)"<<endl;
                     log<<id<<": in cache, requires validation"<<endl;
                 }else if(cache_status == 1){
                     string seconds = cached_resp.header["max-age"];
@@ -569,7 +565,6 @@ public:
                 revalidate(request, client_fd, cached_resp);
             }
         }else{
-            
             log << id <<": "<<"not in cache"<<endl;
             response = get_response();
             if(response.valid_flag == false){
@@ -578,20 +573,33 @@ public:
                 log << id << ": Bad Request"<<endl;
                 return; 
             }
+            //cout<<response.headers<<endl;
             log << id << ": Received " << "\"" << response.startline <<"\"" <<" from " << hostname << endl; 
             log << id << ": Responding " << "\"" << response.startline <<"\"" <<endl; 
             send(client_fd, response.buffer.data(), response.buffer.size(), 0);
+            int second_check = isExpiration(response);
             if(response.checkExistence("no-store")){
-                log << id << ": not cacheable becasue no-store in header" <<endl;            
-            }else if(response.checkExistence("private")){
+                log << id << ": not cacheable becasue no-store in header" <<endl;
+
+            }else if(response.checkExistence("max-age=0")){
+                cout<<"maxage = 0"<<endl;
+                log << id << ": not cacheable because max-age=0"<<endl;
+            }
+            else if(response.checkExistence("private")){
                 log << id << ": not cacheable becasue private in header" <<endl;
-            }else if(response.checkExistence("max-age")){ 
+            }else if(response.checkExistence("no-cache") || second_check == 3){
+                log << id << ": cached, but requires re-validation" <<endl;
+                myCache.put_cache_response(startline,response);
+            }
+            
+            
+
+            else if(response.checkExistence("max-age")){ 
                 if(response.checkExistence("Date")){
                     string date = response.header["Date"];
                     string seconds = response.header["max-age"];
                     string expires_time = addtime(date,seconds);
                     log << id << ": cached, expires at "<< expires_time << endl;
-                    
                 }
                 myCache.put_cache_response(startline,response);
             }else if(response.checkExistence("Expires")){
@@ -600,14 +608,14 @@ public:
                 log << id << ": cached, expires at "<< expired_time << endl;
 
                 myCache.put_cache_response(startline,response);
-            }else if(response.checkExistence("must-revalidate")){
+            }/*else if(response.checkExistence("must-revalidate")){
                 cout  << "cached, but requires re-validation" << endl;
                 log << id << ": cached, but requires re-validation"<<endl;
                 myCache.put_cache_response(startline,response);
             }else{
                 cout<<"2"<<endl;
                 myCache.put_cache_response(startline,response);
-            }
+            }*/
 
         }
     }
@@ -633,10 +641,10 @@ public:
 
         status = getaddrinfo(host_name, port, &host_info, &host_info_list);
         if (status != 0) {
-            cerr << "Error: cannot get address info for host" << endl;
-            cerr << "  (" << host_name << "," << port << ")" << endl;
+            //cerr << "Error: cannot get address info for host" << endl;
+            //cerr << "  (" << host_name << "," << port << ")" << endl;
             return;
-            exit(EXIT_FAILURE);
+            //exit(EXIT_FAILURE);
         }
         //create a socket
         server_fd = socket(host_info_list->ai_family, 
@@ -747,8 +755,8 @@ public:
         //cout<<"original server ip is "<<inet_ntoa(addr->sin_addr)<<endl;
 
         if (status != 0) {
-            cerr << "Error: cannot get address info for host" << endl;
-            cerr << "  (" << host_name << "," << portnum << ")" << endl;
+            //cerr << "Error: cannot get address info for host" << endl;
+            //cerr << "  (" << host_name << "," << portnum << ")" << endl;
             return Http_Response();
             //exit(EXIT_FAILURE);
         } //if
@@ -798,8 +806,8 @@ public:
         //cout<<"original server ip is "<<inet_ntoa(addr->sin_addr)<<endl;
         //cout<<"_____________________"<<endl;
         if (status != 0) {
-            cerr << "Error: cannot get address info for host" << endl;
-            cerr << "  (" << host_name << "," << portnum << ")" << endl;
+            //cerr << "Error: cannot get address info for host" << endl;
+            //cerr << "  (" << host_name << "," << portnum << ")" << endl;
             return Http_Response();
             //exit(EXIT_FAILURE);
         } //if
@@ -823,6 +831,8 @@ public:
             return Http_Response();
             //exit(EXIT_FAILURE);
         } //if
+
+        //cout<<"revalidation_request is "<<revalidation_request<<endl;
         send(server_fd, revalidation_request.c_str(), revalidation_request.length(), 0);
         //cout<<"send revalidatino request to original server finished"<<endl;
         vector<char> received_from_serve = receive_data(server_fd);
@@ -837,13 +847,15 @@ public:
         revalidation_response = get_revalidate_response(request,client_fd);
         if(revalidation_response.valid_flag == false){
                 return502(client_fd);
-                //Lock lk(&cache_mutex);
+                Lock lk(&cache_mutex);
                 log << id << ": Bad Request"<<endl;
                 return; 
             }
         log << id << ": Received " << "\"" << revalidation_response.startline <<"\"" <<" from " << hostname << endl;
         log << id << ": Responding " << "\"" << revalidation_response.startline <<"\"" <<endl;  
+        cout << revalidation_response.status_code << endl;
         if(revalidation_response.status_code == "304") {
+            cout << "entering 304" << endl;
             if(revalidation_response.header.find("Last-Modified") != revalidation_response.header.end()) {
                 cached_resp.header["Last-Modified"] = revalidation_response.header["Last-Modified"];
             }

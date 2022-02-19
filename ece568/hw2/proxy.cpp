@@ -83,7 +83,7 @@ int main(int argc, char* argv[]){
         struct sockaddr_in * addr = (struct sockaddr_in *)&socket_addr;
         string client_ip = inet_ntoa(addr->sin_addr);
         //ta args(client_connection_fd, client_ip);
-        thread newthread(request_handler, client_connection_fd);
+        thread newthread(request_handler, client_connection_fd, client_ip);
         newthread.detach();
         //request_handler(client_connection_fd);
 

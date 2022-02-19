@@ -16,8 +16,8 @@ using namespace std;
 //#define LOG "/var/log/erss/proxy.log" 
 #define LOG "proxy.log" 
 
-void request_handler(int socket_fd){
-    string client_ip = "";
+void request_handler(int socket_fd, string client_ip){
+    //string client_ip = "";
     try{
     ofstream log(LOG, ios::app);
     vector<char> received = receive_data(socket_fd);
@@ -31,6 +31,7 @@ void request_handler(int socket_fd){
     if(http_request.method == "GET"){
         Lock lk(&cache_mutex);
         http_request.Toget(socket_fd,client_ip);
+        //http_request.Topost(socket_fd);
     //if the request method is connect
     } else if(http_request.method == "CONNECT") {
         http_request.Toconnect(socket_fd);
@@ -98,6 +99,9 @@ vector<char> deal_chunck_transmission(int socket_fd,vector<char> buffer){
 size_t Is_Last_Chunk(vector<char> buffer) {
     buffer.push_back('\0');
     string temp = buffer.data();
+    //
+    // cout<<"this chunk is"<<temp<<endl;
+    //
     size_t end_pos = temp.find("0\r\n\r\n");
     if(end_pos == string::npos) {
         return 0;
@@ -121,7 +125,10 @@ vector<char> deal_chunck_transmission(int socket_fd,vector<char> buffer){
     }else{
         res = buffer;
     }
-
+    //
+    // buffer.push_back('\0');
+    // string out = buffer.data();
+    // cout<<"first chunk is"<< endl<<out<<endl;
     while(1) {
         //cout<<"dealing with chunk"<<endl;
         int temp_size = recv(socket_fd, temp.data(), 33331, 0);
@@ -142,7 +149,12 @@ vector<char> deal_chunck_transmission(int socket_fd,vector<char> buffer){
                 res.push_back(temp[i]);
             }
         }
-
+        //
+        // res.push_back('\0');
+        // string out = res.data();
+        // cout<<"chunk is"<< endl<<out<<endl;
+        // res.pop_back();
+        //
         if(temp_size == 0){
             res.push_back('\0');
             return res;
