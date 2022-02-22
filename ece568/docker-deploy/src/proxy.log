@@ -1,0 +1,29 @@
+61: not in cache
+61: Requesting "GET http://httpbin.org/forms/post HTTP/1.1" fromhttpbin.org
+61: Received "HTTP/1.1 200 OK" from httpbin.org
+61: Responding "HTTP/1.1 200 OK"
+61: "GET http://httpbin.org/forms/post HTTP/1.1" from 10.197.219.131@Tue Feb 22 17:34:35 2022
+62: not in cache
+62: Requesting "GET http://detectportal.firefox.com/canonical.html HTTP/1.1" fromdetectportal.firefox.com
+62: Received "HTTP/1.1 200 OK" from detectportal.firefox.com
+62: Responding "HTTP/1.1 200 OK"
+62: not cacheable because max-age=0
+62: "GET http://detectportal.firefox.com/canonical.html HTTP/1.1" from 10.197.21.198@Tue Feb 22 17:34:35 2022
+63: not in cache
+63: Requesting "GET http://detectportal.firefox.com/success.txt?ipv4 HTTP/1.1" fromdetectportal.firefox.com
+63: Received "HTTP/1.1 200 OK" from detectportal.firefox.com
+63: Responding "HTTP/1.1 200 OK"
+63: not cacheable because max-age=0
+63: "GET http://detectportal.firefox.com/success.txt?ipv4 HTTP/1.1" from 10.197.21.198@Tue Feb 22 17:34:35 2022
+64: not in cache
+64: Requesting "GET http://detectportal.firefox.com/canonical.html HTTP/1.1" fromdetectportal.firefox.com
+64: Received "HTTP/1.1 200 OK" from detectportal.firefox.com
+64: Responding "HTTP/1.1 200 OK"
+64: not cacheable because max-age=0
+64: "GET http://detectportal.firefox.com/canonical.html HTTP/1.1" from 10.197.219.131@Tue Feb 22 17:34:48 2022
+65: not in cache
+65: Requesting "GET http://detectportal.firefox.com/success.txt?ipv4 HTTP/1.1" fromdetectportal.firefox.com
+65: Received "HTTP/1.1 200 OK" from detectportal.firefox.com
+65: Responding "HTTP/1.1 200 OK"
+65: not cacheable because max-age=0
+65: "GET http://detectportal.firefox.com/success.txt?ipv4 HTTP/1.1" from 10.197.219.131@Tue Feb 22 17:34:48 2022
