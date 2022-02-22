@@ -490,7 +490,7 @@ public:
         Http_Response response;
         if(myCache.is_in_cache(startline)){
             //fresh?
-            cout<<"incache"<<endl;
+            //cout<<"incache"<<endl;
             Http_Response cached_resp = myCache.get_cache_response(startline);
             int cache_status = isExpiration(cached_resp);
             //1.compose revalidation request by startline,hostname,"If-Modified-Since","If-None-Match"(if response contains e-tag)
@@ -524,7 +524,7 @@ public:
             */
             //if not expired
             if(cache_status == 2 || cache_status == 4) {
-                cout << "if not expired, going here" << endl;
+               // cout << "if not expired, going here" << endl;
                 Lock loglk(&log_mutex);
                 log << id << ": in cache, valid"<< endl;
                 Lock lk(&cache_mutex);
@@ -546,25 +546,25 @@ public:
                 // }
             // if 0, 1, 3, need to revalidate
             } else {
-                cout << "if 0, 1, 3, need to revalidate "<<endl;
+                //cout << "if 0, 1, 3, need to revalidate "<<endl;
                 if(cached_resp.headers.find("no-cache") != string::npos){
-                    cout << "in cache, requires validation(no-cache)"<<endl;
+                    //cout << "in cache, requires validation(no-cache)"<<endl;
                     Lock lk(&log_mutex);
                     log<<id<<": in cache, requires validation"<<endl;
                 }else if(cache_status == 0 ){
-                    cout << "in cache, requires validation(cache_status == 0)"<<endl;
+                    //cout << "in cache, requires validation(cache_status == 0)"<<endl;
                     Lock lk(&log_mutex);
                     log<<id<<": in cache, requires validation"<<endl;
                 }else if(cache_status == 1){
                     string seconds = cached_resp.header["max-age"];
                     string date = cached_resp.header["Date"];
                     string expired_time = addtime(date,seconds);
-                    cout << "iin cache, but expired at"<<endl;
+                   // cout << "iin cache, but expired at"<<endl;
                     Lock lk(&log_mutex);
                     log<<id<<": in cache, but expired at "<< expired_time << endl;
                 }else if(cache_status == 3){
                     string expired_time = cached_resp.header["Expires"];
-                    cout << "iin cache, but expired at"<<endl;
+                   // cout << "iin cache, but expired at"<<endl;
                     Lock lk(&log_mutex);
                     log<<id<<": in cache, but expired at "<< expired_time << endl;
                 }
@@ -591,7 +591,7 @@ public:
 
             }else if(response.checkExistence("max-age=0")){
                 Lock lk(&log_mutex);
-                cout<<"maxage = 0"<<endl;
+                //<<"maxage = 0"<<endl;
                 log << id << ": not cacheable because max-age=0"<<endl;
             }
             else if(response.checkExistence("private")){
@@ -613,7 +613,7 @@ public:
                 myCache.put_cache_response(startline,response);
             }else if(response.checkExistence("Expires")){
                 string expired_time = response.header["Expires"];
-                cout << "cached, expires at" << endl;
+                //cout << "cached, expires at" << endl;
                 Lock lk(&log_mutex);
                 log << id << ": cached, expires at "<< expired_time << endl;
 
@@ -863,9 +863,9 @@ public:
         }
         log << id << ": Received " << "\"" << revalidation_response.startline <<"\"" <<" from " << hostname << endl;
         log << id << ": Responding " << "\"" << revalidation_response.startline <<"\"" <<endl;  
-        cout << revalidation_response.status_code << endl;
+        //cout << revalidation_response.status_code << endl;
         if(revalidation_response.status_code == "304") {
-            cout << "entering 304" << endl;
+            //cout << "entering 304" << endl;
             if(revalidation_response.header.find("Last-Modified") != revalidation_response.header.end()) {
                 cached_resp.header["Last-Modified"] = revalidation_response.header["Last-Modified"];
             }

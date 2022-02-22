@@ -14,6 +14,7 @@
 #include "functions.h"
 using namespace std;
 //#define LOG "/var/log/erss/proxy.log"
+std::ofstream log("/var/log/erss/proxy.log");
 //int Http_Request::num = 0;
 int main(int argc, char* argv[]){
     /*ofstream log;
