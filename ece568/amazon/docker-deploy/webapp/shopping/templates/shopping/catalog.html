@@ -1,0 +1,22 @@
+{% extends "users/base.html" %}
+{% block content %}
+<h1> shopping Catalog List </h1>
+  {% if catas %}
+    {% for cata in catas %}
+        <article class="media content-section">
+          <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="text-muted">{{ cata.cate_name }}</a >
+              <a class="text-muted">{{ cata.arrival_date|date:"F d, Y" }}</a>
+              <small class="text-muted">{{ cata.status }}</small>
+            </div>
+            <h2><a class="article-title" href="{% url 'catadetail' cata.cate_name %}">{{ cata.cate_name }}</a ></h2>
+          </div>
+        </article>
+    {% endfor %}
+  
+  {% else %}
+  <p> No open or confirmed orders </p>
+  {% endif%}
+{% endblock content %}

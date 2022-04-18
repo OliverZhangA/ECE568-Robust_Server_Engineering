@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'rides.apps.RidesConfig',
     'crispy_forms',
+    'shopping.apps.ShoppingConfig'
 ]
 
 MIDDLEWARE = [
@@ -87,12 +88,20 @@ DATABASES = {
     #     'HOST': '<database_hostname_or_ip>',
     #     'PORT': '<database_port>',
     # }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'postgres',
+    #     'USER': 'postgres',
+    #     'PASSWORD': 'postgres',
+    #     'HOST': 'db',
+    #     'PORT': '5432',
+    # }
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
+        'PASSWORD': 'passw0rd',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -136,7 +145,7 @@ STATIC_URL = 'static/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = 'ride-home'
+LOGIN_REDIRECT_URL = 'shopping-home'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
