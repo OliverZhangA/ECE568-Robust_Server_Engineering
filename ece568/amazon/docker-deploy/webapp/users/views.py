@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from .models import DriverProfile
 
 
+
 def register(request):
     if request.method == 'POST':
         form=UserRegistrationForm(request.POST)
@@ -55,3 +56,7 @@ def driverform(request):
     else:
         messages.success(request,'You are not a driver yet, you can register as a driver here!')
     return render(request,'users/driverprofile.html',context)
+
+@login_required
+def buy(request):
+    return render(request, "users/buy.html")
