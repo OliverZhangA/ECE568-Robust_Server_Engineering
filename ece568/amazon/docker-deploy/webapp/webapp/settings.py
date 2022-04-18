@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-j=2^%&&&z=3$1&vrh6$%pgf2@yihj32@kf$j*xf+q#uqp2eq(h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['vcm-24561.vm.duke.edu']
+ALLOWED_HOSTS = ['web','vcm-24561.vm.duke.edu','127.0.0.1']
 
 
 # Application definition
@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rides.apps.RidesConfig',
+    'users.apps.UsersConfig',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -131,7 +134,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = 'login'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_TRUSTED_ORIGINS = ['https://*.mydomain.com','https://*.127.0.0.1','http://vcm-24561.vm.duke.edu:8000']

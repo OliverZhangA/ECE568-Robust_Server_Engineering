@@ -50,5 +50,18 @@ class order(models.Model):
 class package_info(models.Model):
     owner = models.ForeignKey(User, on_delete=CASCADE, blank=False, null=False)
     from_wh = models.ForeignKey(warehouse, on_delete=models.SET_NULL)
-    dest_x = models.ForeignKey()
+    dest_x = models.IntegerField(blank=False, null=False)
+    dest_y = models.IntegerField(blank=False, null=False)
+    package_job_time = models.DateTimeField(default=now)
+    status = models.CharField(blank=False, null=False)
+    ups_account = models.CharField(max_length=100, blank=True, null=True)
+    def __str__(self):
+        return "<" + str(self.warehouse) + ", " + self.status + ">"
 
+    def show_order(self):
+        order_detail="order has been placed with following items:\n"
+        for order in self.orders.all():
+            order_detail+="+ %s*%s\n" % (str(order.product), str(order.product_amt))
+        return order_detail
+
+    
