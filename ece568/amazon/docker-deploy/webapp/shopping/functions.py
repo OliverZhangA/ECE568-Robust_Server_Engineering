@@ -12,6 +12,8 @@ def buyandpack(package_id):
     data = data.decode()
     res = data.split(":")
     if res[0] == "ack" and res[1] == str(package_id):
+        client.close()
         return True
     print('recv:', data)
+    client.close()
     return False
