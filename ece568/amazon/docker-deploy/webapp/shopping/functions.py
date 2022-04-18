@@ -3,7 +3,7 @@ import socket
 def buyandpack(package_id):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # use port 8888 to communicate with daemon
-    client.connect(('127.0.0.1', 77777))
+    client.connect(('127.0.0.1', 7777))
     # NOTE: append a \n at the end to become a line
     msg = str(package_id) + '\n'
     client.send(msg.encode('utf-8'))
