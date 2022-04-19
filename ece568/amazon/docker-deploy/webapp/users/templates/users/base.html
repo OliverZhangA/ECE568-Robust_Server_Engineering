@@ -38,6 +38,18 @@
             <a class="nav-item nav-link" href="{% url 'ride-driver' %}">Driver Home</a>
             <a class="nav-item nav-link" href="{% url 'driverprofile' %}">Profile</a>
             <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+            <head>
+              <meta charset="utf-8">
+              <link rel="stylesheet" type="text/css" href="{% static 'users/searchbox.css' %}">
+              <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+              <title> Awesome Search Box</title>
+            </head>
+            <div class="search-box">
+              <input class="search-txt" type="text" name="" placeholder="Type to search">
+              <a class="search-btn" href="#">
+
+              </a>
+            </div>
         {% endif %}
       </div>
     </nav>

@@ -53,9 +53,10 @@
                             <td class="col-2 align-self-center border-top-0">
                                 &dollar; {{ order.item.price|floatformat:2 }}</td>
                             <td class="col-2 align-self-center border-top-0">
-                                <button onclick="delete_order({{ order.id }})" class="btn btn-outline-secondary">
+                                <button type="submit" name="delete" value="{{order.id}}" class="btn btn-primary mt-3">&nbsp;delete</button>
+                                <!-- <button onclick="delete_order('{{ order.id }}')" class="btn btn-outline-secondary">
                                     Delete
-                                </button>
+                                </button> -->
                             </td>
                         </tr>
                     {% endfor %}
@@ -63,12 +64,12 @@
                 </table>
             </div>
             <div class="text-right">
-                <button onclick="check_out()" class="btn btn-primary"><i class="fa fa-dollar"></i> Checkout</button>
+                <button type="submit" name="checkout" value="checkout" class="btn btn-primary mt-3">&nbsp;checkout</button>
             </div>
         </form>
     {% else %}
         <h4 class="m-4">Nothing in your shopping cart,
-            <a href="{% url 'home' %}">buy something TODAY!</a>
+            <a href="{% url 'shopping-home' %}">buy something TODAY!</a>
         </h4>
     {% endif %}
 {% endblock content %}

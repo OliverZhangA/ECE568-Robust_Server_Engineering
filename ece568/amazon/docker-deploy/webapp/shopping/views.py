@@ -54,26 +54,10 @@ def commodityDetail(request, pk1):
             # for order in package.order_set.all():
             #     order.save()
             print("--"+str(package.id)+"--")
-            buyandpack(package.id)
-            return HttpResponse("buy successful")
-            #return redirect(reverse("checkout", kwargs={'package_id': package.id}))
+            #buyandpack(package.id)
+            #return HttpResponse("buy successful")
+            return redirect(reverse("checkoutpage", kwargs={'package_id': package.id}))
         else:
-            #try to adding the item to cart
-            #check if there is existing cart
-            # order_in_cart = None
-            # order_in_cart = order.objects.get(owner=request.user, commodity=commo, package_info__isnull=True)
-            # #already in the cart
-            # if(order_in_cart != None):
-            #     order_in_cart.commodity_amt += amount
-            #     order_in_cart.save()
-            # #not in the cart
-            # else:
-            #     neworder = order(owner=request.user, commodity=commo, commodity_amt=amount)
-            #     neworder.save()
-            #     context = {
-            #         "prompt" : "Adding to cart successfully"
-            #     }
-            #     return render(request, "sucToCart.html", context)
             try:
                 order_in_cart = order.objects.get(owner=request.user, commodity=commo, package_info__isnull=True)
                 order_in_cart.commodity_amt += amount
@@ -93,17 +77,57 @@ def commodityDetail(request, pk1):
 def shoppingCart(request):
     orders = order.objects.filter(owner=request.user).filter(package_info__isnull=True).order_by("order_time")
     if request.method == "POST":
-        op = request.POST["op"]
-        if op == "delete":
-            orderid = request.POST["order_id"]
-            orders.get(pk=orderid).delete()
-        #case that op is checkout
-        else:
+        #operation = request.POST["operation"]
+        if request.POST.get("delete"):
+            orderid = request.POST["delete"]
+            order.objects.get(pk=orderid).delete()
+            return redirect(reverse("shoppingCart"))
+        elif request.POST.get("checkout"):
             pck = package_info(owner=request.user)
+            pck.save()
             for ord in orders:
                 ord.package_info = pck
                 ord.save()
-            return redirect(reverse("checkout", kwargs={'package_id': pck.id}))
+            return redirect(reverse("checkoutpage", kwargs={'package_id': pck.id}))
+        #print(request.POST["delete"])
+        #operation = request.POST.get("operation")
+        # if operation == "delete":
+        #     print("&&&&&&&&&&going to delete&&&&&&&&&&&")
+        #     orderid = request.POST["order_id"]
+        #     order.objects.get(pk=orderid).delete()
+        # #case that operation is checkout
+        # elif operation == "checkout":
+        #     pck = package_info(owner=request.user)
+        #     for ord in orders:
+        #         ord.package_info = pck
+        #         ord.save()
+        #     return redirect(reverse("checkout", kwargs={'package_id': pck.id}))
     context = {"orders": orders}
     return render(request, "shopping/shopping_cart.html", context)
 
+def checkoutpage(request, package_id):
+    if request.method == "POST":
+        print("!!!!!!!!!!!!!!posting!!!!!!!!!!!!!!")
+        #form = checkout_form(request.POST)
+        if request.POST.get("cancel"):
+            pck = package_info.objects.get(id=package_id)
+            orders = order.objects.filter(owner=request.user).filter(package_info=pck).order_by("order_time")
+            for ord in orders:
+                ord.package_info = None
+                ord.save()
+            pck.delete()
+            #delete the package
+            print("!!!!!!!!!!!!!!canceling!!!!!!!!!!!!!!")
+            return redirect(reverse("shoppingCart"))
+            #return HttpResponse("cancel checkout!!")
+        elif request.POST.get("check_out"):
+            print("!!!!!!!!!!!!!!checkingout!!!!!!!!!!!!!!")
+            pck = package_info.objects.get(id=package_id)
+            pck.dest_x = request.POST.get("dest_x")
+            pck.dest_y = request.POST.get("dest_y")
+            pck.ups_account = request.POST.get("ups_account")
+            pck.save()
+            buyandpack(package_id)
+            #turn to the checkout successful page!
+            return HttpResponse("checkout successful!")
+    return render(request, "shopping/checkout_page.html")
