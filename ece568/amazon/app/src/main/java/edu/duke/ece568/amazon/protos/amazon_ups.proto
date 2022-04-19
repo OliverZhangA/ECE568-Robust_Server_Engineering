@@ -2,13 +2,13 @@ syntax = "proto2";
  
 //ups send world id to amazon to connect to the same world
 message U2AConnect{
-    required int64 seqnum = 1;
-    required int64 worldid = 2;
+    required int64 worldid = 1;
 }
  
 //Amazon connect request to world.
 message A2UConnected{
-    required int64 seqnum = 1;
+    required int64 worldid= 1;
+    required string result = 2;
 }
  
 //Amazon ask Ups to pick the package
@@ -38,19 +38,20 @@ message U2ATruckArrived{
     required int64 seqnum = 1;  
     required Warehouse warehouse = 2;
     required int32 truckid = 3;
+    repeated int64 shipid = 4;
 }
  
 //UPS send Amazon message of Truck is leaving warehouse start to deliver
 message U2ADelivering{
     required int64 seqnum = 1;
-    repeated PackageInfo package = 2;
+    repeated int64 shipid = 2;
     required int32 truckid = 3;
 }
  
-//UPS send Amazon message of success deliver of a certain package
+//UPS send Amazon message of success delivery of a certain package
 message U2ADelivered{
     required int64 seqnum = 1;
-    required int64 shipid = 2;
+    repeated int64 shipid = 2;
 }
  
 //General Package info, send from Amazon to UPS when request a truck
@@ -59,6 +60,13 @@ message PackageInfo{
     required int32 x = 2;
     required int32 y = 3;
     optional string user_name = 4;
+    repeated Product product = 5;
+}
+ 
+message Product{
+    required string name = 1;
+    required string description = 2;
+    required int32 count = 3;
 }
  
 //General Warehouse info, send from Amazon to UPS when request a truck
@@ -87,22 +95,30 @@ message U2AShipStatus{
     required string status = 3;
 }
  
+message U2AChangeAddress{
+    required int64 seqnum = 1;
+    required int64 shipid = 2;
+    required int32 x = 3;
+    required int32 y = 4;
+}
+ 
 message AmazonCommands{
-    repeated A2UConnected connected = 1;
-    repeated A2UAskTruck getTruck = 2;
-    repeated A2ULoading loading = 3;
-    repeated A2ULoaded loaded = 4;
-    repeated A2UQueryShip query = 5;
-    repeated Error error = 6;
-    repeated int64 acks = 7;
+    repeated A2UAskTruck getTruck = 1;  
+    repeated A2ULoading loading = 2;
+    repeated A2ULoaded loaded = 3;
+    repeated A2UQueryShip query = 4;
+    repeated Error error = 5;
+    repeated int64 acks = 6;
+    optional bool finish = 7;
 }
  
 message UPSCommands{
-    repeated U2AConnect connect = 1;
-    repeated U2ATruckArrived arrived = 2;
-    repeated U2ADelivering delivering = 3;
-    repeated U2ADelivered delivered = 4;
-    repeated U2AShipStatus status = 5;
+    repeated U2ATruckArrived arrived = 1;
+    repeated U2ADelivering delivering = 2;
+    repeated U2ADelivered delivered = 3;
+    repeated U2AShipStatus status = 4;
+    repeated U2AChangeAddress address = 5;
     repeated Error error = 6;
     repeated int64 acks = 7;
+    optional bool finish = 8;
 }
