@@ -2,37 +2,50 @@ package edu.duke.ece568.amazon;
 
 import static edu.duke.ece568.amazon.interactions.sendMesgTo;
 import static edu.duke.ece568.amazon.interactions.recvMesgFrom;
+import edu.duke.ece568.amazon.dbProcess.*;
 
 import edu.duke.ece568.amazon.protos.AmazonUps.*;
 import edu.duke.ece568.amazon.protos.AmazonUps.Error;
 import edu.duke.ece568.amazon.protos.WorldAmazon.*;
 
+import java.io.IOException;
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.*;
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.InputStreamReader;
 
 public class backfuncs {
     private static final String WORLD_HOST = "vcm-24561.vm.duke.edu";
     private static final String UPS_HOST = "vcm-24561.vm.duke.edu";
     private static final int WORLD_PORT = 12345;
     private static final int UPS_PORT = 54321;
+    private static final int FRONT_PORT = 7777;
 
     private static final int MAXTIME = 1000;
 
-    private List<AInitWarehouse> warehouses;
+    private List<AInitWarehouse> warehouses = new ArrayList<>();
     Socket toups;
     Socket toWorld;
     private final Map<Long, Package> package_list;
     private long seqnum;
-    private final ThreadPoolExecutor threadPool;
+    //private final ThreadPoolExecutor threadPool;
     private final Map<Long, Timer> rqst_list;
 
     //construct function
-    public backfuncs() throws IOException{
-        AInitWarehouse.Builder newWH = AInitWarehouse.newBuilder().setId(1).setX(5).setY(5);
-        warehouses.add(newWH.build());
-
+    public backfuncs() throws IOException, ClassNotFoundException, SQLException{
+        // AInitWarehouse.Builder newWH = AInitWarehouse.newBuilder().setId(1).setX(5).setY(5);
+        // warehouses.add(newWH.build());
+        dbProcess database = new dbProcess();
+        warehouses = database.initAmazonWarehouse();
+        package_list = new ConcurrentHashMap<>();
+        seqnum = 0;
+        rqst_list = new ConcurrentHashMap<>();
     }
 
     //DEALING WITH UPS responses!!
@@ -49,11 +62,17 @@ public class backfuncs {
                 if(connect.hasWorldid()){
                     //connect to world
                     //if connect successfully
-                    if(connect_world(connect.getWorldid())){
+                    long world_id = connect.getWorldid();
+                    A2UConnected.Builder connected = A2UConnected.newBuilder();
+                    if(connect_world(world_id)){
                         System.out.println("connected to world yeah");
-                        A2UConnected.Builder connected = A2UConnected.newBuilder();
-                        sendMesgTo(connected.setSeqnum(connect.getSeqnum()).build(), toups.getOutputStream());
+                        connected.setWorldid(world_id).setResult("connected!");
+                        sendMesgTo(connected.build(), toups.getOutputStream());
                         break;
+                    }
+                    else{
+                        String result_msg = String.format("error: Amazon fail to connect the World %d", world_id);
+                        connected.setResult(result_msg);
                     }
                 }
             }
@@ -72,6 +91,7 @@ public class backfuncs {
         return connected.getResult().equals("connected!");
     }
 
+    //thread for comm with ups
     public void init_upsthread() throws IOException{
         while(!Thread.currentThread().isInterrupted()) {
             if(toups!=null){
@@ -83,38 +103,70 @@ public class backfuncs {
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (SQLException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
                     }
                 });
+                upsthread.start();
             }
         }
     }
-    //handle request from Ups that "truck arrived"
-    void truckArrived(U2ATruckArrived.Builder upstruckarrived) throws IOException{
-        //to be modified: update the truck arrived protocol to have package_id!!
-        // for(long package_id : upstruckarrived.getPackageIdlist()){
-        //     if()
-        // }
-        long package_id = upstruckarrived.getPackageId();
-        if(package_list.containsKey(package_id)){
-            Package pkg = package_list.get(package_id);
-            System.out.println("UPS truck arrived");
-            pkg.setTruckid(upstruckarrived.getTruckid());
-            //check if amazon packed or not
-            if(pkg.getPackageStatus().equals("packed")){
-                //start loading
+
+    //thread for comm with the world
+    public void init_worldthread() throws IOException{
+        while(!Thread.currentThread().isInterrupted()) {
+            if(toWorld!=null){
+                AResponses.Builder aresponses = AResponses.newBuilder();
+                recvMesgFrom(aresponses, toWorld.getInputStream());
+                Thread worldthread = new Thread(() -> {
+                    try {
+                        handle_world(aresponses);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (SQLException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                });
+                worldthread.start();
             }
-        } else {
-            //can not find the package according to id
-            System.out.println("package does not exists!");
+        }
+    }
+
+    //handle request from Ups that "truck arrived"
+    void truckArrived(U2ATruckArrived.Builder upstruckarrived) throws IOException, ClassNotFoundException, SQLException{
+        //to be modified: update the truck arrived protocol to have package_id!!
+        for(long package_id : upstruckarrived.getShipidList()){
+            if(package_list.containsKey(package_id)){
+                Package pkg = package_list.get(package_id);
+                System.out.println("UPS truck arrived");
+                pkg.setTruckid(upstruckarrived.getTruckid());
+                //check if amazon packed or not
+                if(pkg.getPackageStatus().equals("packed")){
+                    //start loading
+                    worldPutOnTruck(pkg);
+                }
+            }
+            else {
+                //can not find the package according to id
+                System.out.println("package does not exists!");
+            }
         }
     }
 
     //handle request from Ups that "package delivering"
-    void packageDelivering(U2ADelivering.Builder upsPkgDelivering) throws IOException {
-        for(PackageInfo p : upsPkgDelivering.getPackageList()) {
-            long package_id = p.getShipid();
-            if(package_list.containsKey(package_id)){
-                package_list.get(package_id).setStatus("delivering");
+    void packageDelivering(U2ADelivering.Builder upsPkgDelivering) throws IOException, ClassNotFoundException, SQLException {
+        for(long id : upsPkgDelivering.getShipidList()){
+            if(package_list.containsKey(id)){
+                package_list.get(id).setStatus("delivering");
             } else {
                 //can not find the package according to id
                 System.out.println("package update to delivering does not exists!");
@@ -123,19 +175,22 @@ public class backfuncs {
     }
 
     //handle request from Ups that "package delivering"
-    void packageDelivered(U2ADelivered.Builder upsPkgDelivered) throws IOException {
-        long package_id = upsPkgDelivered.getShipid();
-        if(package_list.containsKey(package_id)){
-            package_list.get(package_id).setStatus("delivered");
-            package_list.remove(package_id);
-        } else {
-            //can not find the package according to id
-            System.out.println("package update to delivering does not exists!");
+    void packageDelivered(U2ADelivered.Builder upsPkgDelivered) throws IOException, ClassNotFoundException, SQLException {
+        //到底是单独还是重复
+        for(long id : upsPkgDelivered.getShipidList()){
+            if(package_list.containsKey(id)){
+                package_list.get(id).setStatus("delivered");
+                package_list.remove(id);
+            } else {
+                //can not find the package according to id
+                System.out.println("package update to delivering does not exists!");
+            }
         }
+        // long package_id = upsPkgDelivered.getShipid();
     }
 
     //handle communication with Ups
-    public void handle_ups(UPSCommands.Builder recvUps) throws IOException{
+    public void handle_ups(UPSCommands.Builder recvUps) throws IOException, ClassNotFoundException, SQLException{
         // UPSCommands.Builder recvUps = UPSCommands.newBuilder();
         // recvMesgFrom(recvUps, toups.getInputStream());
         ackToUps(recvUps);
@@ -151,6 +206,19 @@ public class backfuncs {
         // for(U2AShipStatus x : recvUps.getStatusList()){
         //     //response to query status
         // }
+        // for(U2AChangeAddress x : recvUps.getAddressList()){
+        //     //change the address
+               //如果我们前端需要显示地址就需要做操作
+        // }
+        for(edu.duke.ece568.amazon.protos.AmazonUps.Error x : recvUps.getErrorList()){
+            //response to query status
+            if(x.getInfo() != null){
+                System.err.println(x.getInfo());
+            }
+        }
+        if(recvUps.hasFinish()){
+            System.out.println("UPS close the connection, finish!");
+        }
     }
 
     //send acks back to Ups
@@ -167,6 +235,9 @@ public class backfuncs {
         for(U2AShipStatus x : recvUps.getStatusList()){
             recvUps.addAcks(x.getSeqnum());
         }
+        // for(U2AChangeAddress x : recvUps.getAddressList()){
+        //     recvUps.addAcks(x.getSeqnum());
+        // }
         for(Error x : recvUps.getErrorList()){
             recvUps.addAcks(x.getSeqnum());
         }
@@ -177,7 +248,7 @@ public class backfuncs {
 
     //DEALING WITH WORLD responses!!
     //to do:start handle_world
-    public void handle_world(AResponses.Builder recvWorld) throws IOException{
+    public void handle_world(AResponses.Builder recvWorld) throws IOException, ClassNotFoundException, SQLException{
         // UPSCommands.Builder recvUps = UPSCommands.newBuilder();
         // recvMesgFrom(recvUps, toups.getInputStream());
         ackToWorld(recvWorld);
@@ -204,8 +275,14 @@ public class backfuncs {
         //handle acks mechanism, for re-send
         for(long x : recvWorld.getAcksList()){
             if(rqst_list.containsKey(x)){
-                
+                rqst_list.get(x).cancel();
+                rqst_list.remove(x);
             }
+        }
+        //handle disconnect
+        if(recvWorld.hasFinished()){
+            //connection disconnected, need to close the connection
+            System.out.println("disconnect to world");
         }
     }
 
@@ -231,7 +308,7 @@ public class backfuncs {
     }
 
     /*=======the world purchase products for warehouse====== */
-    void worldPurchased(APurchaseMore x) throws IOException{
+    void worldPurchased(APurchaseMore x) throws IOException, ClassNotFoundException, SQLException{
         //需要synchronized吗？？？？？
         //find the package
         for(Package pkg : package_list.values()){
@@ -265,8 +342,9 @@ public class backfuncs {
             asktruck.setWarehouse(AInintToWarehouse(warehouses.get(pkg.getWarehouseid() - 1)));
             //类型转换: Apack to Packageinfo
             //还没有对user name赋值????
-            int x = warehouses.get(pkg.getWarehouseid() - 1).getX();
-            int y = warehouses.get(pkg.getWarehouseid() - 1).getY();
+            //destination
+            int x = pkg.getDest().getX();
+            int y = pkg.getDest().getY();
             asktruck.addPackage(APackToPackageinfo(pkg, x, y));
 
             //send A2UAskTruck rqst to ups
@@ -290,7 +368,7 @@ public class backfuncs {
     }
 
     //send request to pack the package
-    void rqstTopack(Package pkg) throws IOException{
+    void rqstTopack(Package pkg) throws IOException, ClassNotFoundException, SQLException{
         long package_id = pkg.getPackageId();
         if(package_list.containsKey(package_id)){
             pkg.setStatus("packing");
@@ -372,7 +450,7 @@ public class backfuncs {
 
 
     /*===========the world pack package for Amazon================*/
-    void worldPacked(APacked x){
+    void worldPacked(APacked x) throws ClassNotFoundException, SQLException{
         long package_id = x.getShipid();
         if(package_list.containsKey(package_id)){
             Package pkg = package_list.get(package_id);
@@ -389,7 +467,7 @@ public class backfuncs {
         }
     }
 
-    void worldPutOnTruck(Package pkg){
+    void worldPutOnTruck(Package pkg) throws ClassNotFoundException, SQLException{
         long package_id = pkg.getPackageId();
         if(package_list.containsKey(package_id)){
             pkg.setStatus("loading");
@@ -414,7 +492,7 @@ public class backfuncs {
     }
 
     //loaded->delivering
-    void worldLoaded(ALoaded x) throws IOException{
+    void worldLoaded(ALoaded x) throws IOException, ClassNotFoundException, SQLException{
         long package_id = x.getShipid();
         if(package_list.containsKey(package_id)){
             Package pkg = package_list.get(package_id);
@@ -440,5 +518,112 @@ public class backfuncs {
         }
     }
 
+    //for query from world
+    // void queryToworld(){
+
+    // }
+
+    //for disconnect from world
+    void disconnectFromworld(){
+        ACommands.Builder acommand = ACommands.newBuilder();
+        acommand.setDisconnect(true);
+        sendACommand(acommand.build(), 0);
+    }
+
+    /*=========== interact with front-end ==============*/
+    //thread for comm with front-end
+    public void init_frontEndthread() throws IOException, ClassNotFoundException{
+        while(!Thread.currentThread().isInterrupted()) {
+            ServerSocket frontend_socket_for_listen = new ServerSocket(FRONT_PORT);
+            //frontend_socket_for_listen.setSoTimeout(20000);
+            System.out.println("start listening the connection request from front-end");
+            while(!Thread.currentThread().isInterrupted()) {
+                Socket frontend_socket_for_connect = frontend_socket_for_listen.accept();
+                if(frontend_socket_for_connect != null){
+                    //handle the requests from front-end 没写完
+                    handle_frontend(frontend_socket_for_connect);
+                }
+            }
+        }
+    }
+
+    //handle requests from front-end
+    void handle_frontend(Socket frontend_socket) throws IOException, ClassNotFoundException{
+        InputStreamReader input_reader = new InputStreamReader(frontend_socket.getInputStream());
+        BufferedReader reader = new BufferedReader(input_reader);
+        PrintWriter writer = new PrintWriter(frontend_socket.getOutputStream());
+        String front_rqst = reader.readLine();
+        System.out.println("the received front-end request is: " + front_rqst);
+        //parse the package id
+        long package_id = Long.parseLong(front_rqst);
+        writer.write(String.format("received the package id: %d", package_id));
+        writer.flush();
+
+        frontend_socket.close();
+        //handle the buy request, request the world to buy something for specific warehouse 没写完 
+        try {
+            worldBuy(package_id);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    //world buy for warehouse
+    void worldBuy(long id) throws SQLException, ClassNotFoundException{
+        //没有用线程池处理 没写完
+        dbProcess DB = new dbProcess();
+        APurchaseMore.Builder apurchasemore = APurchaseMore.newBuilder();
+        try {
+            apurchasemore = DB.construcBuyrqst(id).toBuilder();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        long seq_number = getSeqNum();
+        apurchasemore.setSeqnum(seq_number);
+
+        ACommands.Builder acommands = ACommands.newBuilder();
+        acommands.addBuy(apurchasemore);
+        //send the ACommand to world
+        sendACommand(acommands.build(), seq_number);
+
+        //update some info of the package
+        APack.Builder apack = APack.newBuilder();
+        int whnum = apurchasemore.getWhnum();
+        apack.setWhnum(whnum);
+        apack.addAllThings(apurchasemore.getThingsList());
+        apack.setShipid(id);
+
+        //initialize the package list, since when backend receives the front-end's buy rqst
+        //we rqst to world to buy for us, meanwhile we create a package
+        Package pkg = new Package(whnum, id, apack.build());
+        package_list.put(id, pkg);
+    }
+    
+
+
+    /*=========== start all threads ===========*/
+    void startAllthreads() throws IOException{
+        //start the thread for comm with ups
+        //init_upsthread();
+
+        //start a thread for comm with world
+        init_worldthread();
+    }
+
+
+    /*========== main function ==========*/
+    public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException{
+        backfuncs backend = new backfuncs();
+        //connect with ups
+        //backend.connect_ups();
+        //run all threads
+        backend.startAllthreads();
+        backend.init_frontEndthread();
+    }
+
+
+    
 }
 

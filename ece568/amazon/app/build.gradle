@@ -28,7 +28,9 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'edu.duke.ece568.amazon.App'
+    mainClass = 'edu.duke.ece568.amazon.backfuncs'
+    // compile "com.oracle.ojdbc:ojdbc8:19.3.0.0"
+
 }
 
 tasks.named('test') {

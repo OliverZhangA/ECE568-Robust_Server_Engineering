@@ -1,7 +1,10 @@
 package edu.duke.ece568.amazon;
 
+import java.sql.SQLException;
+
 import edu.duke.ece568.amazon.protos.AmazonUps.Warehouse;
 import edu.duke.ece568.amazon.protos.WorldAmazon.APack;
+import edu.duke.ece568.amazon.destination.*;
 
 public class Package {
     // public static String PACKING = "packing";
@@ -18,10 +21,22 @@ public class Package {
     private String username;
     private APack amazon_pack;
     //destination
-    private Warehouse target_warehouse;
+    private destination dest;
 
     public Package(){
         truck_id = -1;
+    }
+
+    //for initialize package
+    public Package(int wh_id, long id, APack pack) throws ClassNotFoundException, SQLException{
+        warehouse_id = wh_id;
+        package_id = id;
+        amazon_pack = pack;
+        truck_id = -1;
+        //initialize the destination
+        //dbProcess db = new dbProcess();
+        //username = db.InitAmazonAccount(package_id);
+        //dest = db.setDest(package_id);
     }
 
     //getter
@@ -49,12 +64,19 @@ public class Package {
         return truck_id;
     }
 
+    public destination getDest(){
+        return dest;
+    }
+
     //setter
     public void setTruckid(int id){
         truck_id = id;
     }
 
-    public void setStatus(String newstatus){
+    public void setStatus(String newstatus) throws ClassNotFoundException, SQLException{
         status = newstatus;
+        //change the status in database
+        dbProcess db = new dbProcess();
+        db.setStatusforDB(package_id, status);
     }
 }
