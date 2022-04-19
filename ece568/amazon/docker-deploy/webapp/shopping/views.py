@@ -28,7 +28,7 @@ class CataDetail(ListView):
         pk = self.kwargs['pk']
         return commodity.objects.filter(commodity_catalog__cate_name=pk)
 
-class SeachResult(ListView):
+class SearchResult(ListView):
     model = commodity
     template_name = 'shopping/commodity_list.html'
     context_object_name = 'commodities'
@@ -146,10 +146,13 @@ def checkoutpage(request, package_id):
             return HttpResponse("checkout successful!")
     return render(request, "shopping/checkout_page.html")
 
-def toSeachResult(request):
-    for a in range(1, 100):
-        print('getting results\n')
+def toSearchResult(request):
     if request.method == "POST":
-        if request.POST.get("search"):
-            keyword=request.POST["search"]
+        keyword=""
+        if request.POST.get("keyword"):
+            keyword=request.POST["keyword"]
             return redirect(reverse("SearchResult", kwargs={'pk': keyword}))
+        else:
+            return redirect(reverse("shopping-home"))
+    else:
+        return HttpResponse("not working")

@@ -1,12 +1,12 @@
-/* body{
+body{
     margin: 0;
     padding: 0;
-    background: #e84118;
-} */
+    background: #62549e;
+}
 .search-box{
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 70%;
     transform: translate(-50%,-50%);
     background: #2f3640;
     height: 40px;
@@ -41,7 +41,7 @@
     color: white;
     font-size: 16px;
     transition: 0.4s;
-    line-height: 40px;
+    line-height: 0px;
     width: 0px;
 
 }

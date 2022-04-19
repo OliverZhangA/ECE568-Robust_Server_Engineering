@@ -5,8 +5,8 @@ from . import views as shop_views
 from .views import (
     CataDetail,
     commodityDetail,
-    SeachResult,
-    toSeachResult,
+    SearchResult,
+    toSearchResult,
 )
 #from .views import OrderDetail, OrderList
 # from .views import (
@@ -31,8 +31,8 @@ urlpatterns = [
     ## home page
     path('', shop_views.CatelogList.as_view(), name='shopping-home'),
     path('<str:pk>/', CataDetail.as_view(), name='catadetail'),
-    path('toSeachResult/', toSeachResult, name='toSearchResult'),
-    path('searchResult/<str:pk>', SeachResult.as_view(), name='SearchResult'),
+    path('loading/toSeachResult/', toSearchResult, name='toSearchResult'),
+    path('searchResult/<str:pk>', SearchResult.as_view(), name='SearchResult'),
     path('commodityDetail/<int:pk1>/', shop_views.commodityDetail, name='commoditydetail'),
     path('shopping cart', shop_views.shoppingCart, name='shoppingCart'),
     path('checkout/<int:package_id>', shop_views.checkoutpage, name="checkoutpage"),

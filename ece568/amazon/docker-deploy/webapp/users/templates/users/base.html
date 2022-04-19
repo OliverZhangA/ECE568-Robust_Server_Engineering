@@ -45,11 +45,13 @@
                 <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
                 <title> Awesome Search Box</title>
               </head>
-              <form class="d-flex">
+              <form class="d-flex" method="POST" action="{% url 'toSearchResult' %}">
+                {% csrf_token %}
               <div class="search-box">
                 <input class="search-txt" type="text" name="keyword" placeholder="Type to search">
-                <a class="search-btn" type="submit" name="search" value="text" href="{% url 'toSearchResult' %}">
-                </a>
+                <!-- <button type="submit" name="search" class="btn btn-primary mt-3">&nbsp;search</button> -->
+                <!-- <a class="search-btn" type="submit" name="search" value="text" >&nbsp;S</a> -->
+                <button type="submit" name="searching" class="search-btn" >&nbsp;</button>
               </div>
               </form>
               </div>
