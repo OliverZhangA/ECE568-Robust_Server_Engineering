@@ -28,6 +28,7 @@ class commodity(models.Model):
     commodity_amt = models.IntegerField(default=0)
     commodity_price = models.FloatField(default=0)
     commodity_catalog = models.ForeignKey(catalog, on_delete=models.SET_NULL, null=True)
+    #commodity_desc = models.CharField(max_length=200, blank=True, default="")
 
     def __str__(self):
         return str(self.commodity_name)
@@ -58,7 +59,7 @@ class order(models.Model):
     commodity = models.ForeignKey(commodity, on_delete=models.CASCADE, null=True)
     commodity_amt = models.IntegerField(default=1)
     #package status??
-    package_info = models.ForeignKey(package_info, on_delete=models.CASCADE, blank=False, null=False)
+    package_info = models.ForeignKey(package_info, on_delete=models.CASCADE, blank=False, null=True)
 
     def __str__(self):
         return "order time:" + str(self.order_time) + ", commodity:" + str(commodity) + "*" + str(self.commodity_amt) + "in package:" + str(package_info)

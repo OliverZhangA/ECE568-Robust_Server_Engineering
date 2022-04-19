@@ -1,0 +1,74 @@
+{% extends "users/base.html" %}
+{% block content %}
+    <h1>Shopping Cart</h1>
+    <!-- order list -->
+    {% if orders %}
+        <!-- NOTE: nested form is not allowed!!! -->
+        <form id="form_orders" name="form_orders" action="{% url 'shoppingCart' %}" method="post">
+            {% csrf_token %}
+            <div class="table-responsive mt-4 table-hover">
+                <table id="order_table" class="table">
+                    <thead>
+                    <tr class="row text-center">
+                        <!-- thumbnail + description -->
+                        <th class="col-3 text-left">
+                            <a href="#" style="color: #080000;">Commodity
+                                <i class="fa fa-sort"></i>
+                            </a>
+                        </th>
+                        <th class="col-2">
+                            <a href="#" style="color: #080000;">Qty
+                                <i class="fa fa-sort"></i>
+                            </a>
+                        </th>
+                        <th class="col-2">
+                            <a href="#" style="color: #080000;">Price
+                                <i class="fa fa-sort"></i>
+                            </a>
+                        </th>
+                        <th class="col-2">
+                            <a href="#" style="color: #080000;">Total
+                                <i class="fa fa-sort"></i>
+                            </a>
+                        </th>
+                        <!-- delete button -->
+                        <th class="col-2"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                        <tr class="row text-center border-bottom">
+                            <td class="col-3 text-left border-top-0">
+                                {{ order.commodity.commodity_name }}
+                            </td>
+                            <td class="col-2 align-self-center border-top-0">
+                                <button type="button" class="btn" onclick="change_cnt({{ order.id }}, false)">
+                                    <i class="fa fa-minus-square-o"></i>
+                                </button>
+                                <span id="cnt{{ order.id }}">{{ order.item_cnt }}</span>
+                                <button type="button" class="btn" onclick="change_cnt({{ order.id }}, true)">
+                                    <i class="fa fa-plus-square-o"></i>
+                                </button>
+                            </td>
+                            <td class="col-2 align-self-center border-top-0">
+                                &dollar; {{ order.item.price|floatformat:2 }}</td>
+                            <td class="col-2 align-self-center border-top-0">
+                                <button onclick="delete_order({{ order.id }})" class="btn btn-outline-secondary">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-right">
+                <button onclick="check_out()" class="btn btn-primary"><i class="fa fa-dollar"></i> Checkout</button>
+            </div>
+        </form>
+    {% else %}
+        <h4 class="m-4">Nothing in your shopping cart,
+            <a href="{% url 'home' %}">buy something TODAY!</a>
+        </h4>
+    {% endif %}
+{% endblock content %}

@@ -2,7 +2,7 @@ from itertools import product
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import catalog, commodity, package_info
+from .models import catalog, commodity, order, package_info
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .functions import buyandpack
@@ -57,6 +57,53 @@ def commodityDetail(request, pk1):
             buyandpack(package.id)
             return HttpResponse("buy successful")
             #return redirect(reverse("checkout", kwargs={'package_id': package.id}))
+        else:
+            #try to adding the item to cart
+            #check if there is existing cart
+            # order_in_cart = None
+            # order_in_cart = order.objects.get(owner=request.user, commodity=commo, package_info__isnull=True)
+            # #already in the cart
+            # if(order_in_cart != None):
+            #     order_in_cart.commodity_amt += amount
+            #     order_in_cart.save()
+            # #not in the cart
+            # else:
+            #     neworder = order(owner=request.user, commodity=commo, commodity_amt=amount)
+            #     neworder.save()
+            #     context = {
+            #         "prompt" : "Adding to cart successfully"
+            #     }
+            #     return render(request, "sucToCart.html", context)
+            try:
+                order_in_cart = order.objects.get(owner=request.user, commodity=commo, package_info__isnull=True)
+                order_in_cart.commodity_amt += amount
+                order_in_cart.save()
+            except order.DoesNotExist:
+                neworder = order(owner=request.user, commodity=commo, commodity_amt=amount)
+                neworder.save()
+            context = {
+                "prompt" : "Adding to cart successfully"
+            }
+            return render(request, "shopping/sucToCart.html", context)
+
     else:
         context['commo'] = commo
         return render(request, "shopping/commoditydetail.html", context)
+
+def shoppingCart(request):
+    orders = order.objects.filter(owner=request.user).filter(package_info__isnull=True).order_by("order_time")
+    if request.method == "POST":
+        op = request.POST["op"]
+        if op == "delete":
+            orderid = request.POST["order_id"]
+            orders.get(pk=orderid).delete()
+        #case that op is checkout
+        else:
+            pck = package_info(owner=request.user)
+            for ord in orders:
+                ord.package_info = pck
+                ord.save()
+            return redirect(reverse("checkout", kwargs={'package_id': pck.id}))
+    context = {"orders": orders}
+    return render(request, "shopping/shopping_cart.html", context)
+

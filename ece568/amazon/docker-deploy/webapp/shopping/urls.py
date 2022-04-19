@@ -30,6 +30,7 @@ urlpatterns = [
     path('', shop_views.CatelogList.as_view(), name='shopping-home'),
     path('<str:pk>/', CataDetail.as_view(), name='catadetail'),
     path('commodityDetail/<int:pk1>/', shop_views.commodityDetail, name='commoditydetail'),
+    path('shopping cart', shop_views.shoppingCart, name='shoppingCart')
     # ## owner pages
     # path('rideuser/', views.userhome, name='ride-user'),
     # path('rideuser/riderequest/', OrderCreate.as_view(), name='ride-request'),
