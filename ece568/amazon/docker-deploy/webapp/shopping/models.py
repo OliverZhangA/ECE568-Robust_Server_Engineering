@@ -28,7 +28,7 @@ class commodity(models.Model):
     commodity_amt = models.IntegerField(default=0)
     commodity_price = models.FloatField(default=0)
     commodity_catalog = models.ForeignKey(catalog, on_delete=models.SET_NULL, null=True)
-    #commodity_desc = models.CharField(max_length=200, blank=True, default="")
+    commodity_desc = models.CharField(max_length=200, blank=True, default="")
 
     def __str__(self):
         return str(self.commodity_name)

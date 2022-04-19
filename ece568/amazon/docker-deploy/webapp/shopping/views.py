@@ -28,6 +28,20 @@ class CataDetail(ListView):
         pk = self.kwargs['pk']
         return commodity.objects.filter(commodity_catalog__cate_name=pk)
 
+class SeachResult(ListView):
+    model = commodity
+    template_name = 'shopping/commodity_list.html'
+    context_object_name = 'commodities'
+    ordering = ['commodity_name']
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        queryset = commodity.objects.all()
+        query_name = queryset.filter(commodity_name__icontains=pk)
+        query_cata = queryset.filter(commodity_catalog__cate_name__icontains=pk)
+        query_desc = queryset.filter(commodity_desc__icontains=pk)
+        #return commodity.objects.filter(commodity_catalog__cate_name=pk)
+        return query_name.union(query_cata).union(query_desc)
+
 # class commodityDetail(DetailView):
 #     model = commodity
 #     template_name = 'shopping/commoditydetail.html'
@@ -131,3 +145,11 @@ def checkoutpage(request, package_id):
             #turn to the checkout successful page!
             return HttpResponse("checkout successful!")
     return render(request, "shopping/checkout_page.html")
+
+def toSeachResult(request):
+    for a in range(1, 100):
+        print('getting results\n')
+    if request.method == "POST":
+        if request.POST.get("search"):
+            keyword=request.POST["search"]
+            return redirect(reverse("SearchResult", kwargs={'pk': keyword}))
