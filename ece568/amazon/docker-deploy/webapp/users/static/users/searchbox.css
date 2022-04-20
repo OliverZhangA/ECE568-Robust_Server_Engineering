@@ -18,12 +18,13 @@ body{
     border-radius: 40px;
 }
 .search-btn{
+    background-image: url("images/dog.gif");
     color: #e84118;
     float: right;
     width: 40px;
     height: 40px;
     border-radius: 30%;
-    background: #2f3640;
+    /* background: #2f3640; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,6 +35,7 @@ body{
     padding: 0 6px;
 }
 .search-box:hover > .search-btn{
+    background-image: url("images/dog.gif");
     background: white;
 }
 .search-txt{

@@ -21,10 +21,11 @@ import java.io.PrintWriter;
 import java.io.InputStreamReader;
 
 public class backfuncs {
-    private static final String WORLD_HOST = "vcm-26608.vm.duke.edu";
-    private static final String UPS_HOST = "vcm-26608.vm.duke.edu";
+    private static final String WORLD_HOST = "vcm-25610.vm.duke.edu";
+    //private static final String WORLD_HOST = "vcm-24561.vm.duke.edu";
+    private static final String UPS_HOST = "vcm-26136.vm.duke.edu";
     private static final int WORLD_PORT = 23456;
-    private static final int UPS_PORT = 33333;
+    private static final int UPS_PORT = 6066;
     private static final int FRONT_PORT = 7777;
 
     private static final int MAXTIME = 20000;
@@ -156,13 +157,16 @@ public class backfuncs {
     }
 
     //handle request from Ups that "truck arrived"
-    void truckArrived(U2ATruckArrived.Builder upstruckarrived) throws IOException, ClassNotFoundException, SQLException{
+    void truckArrived(U2ATruckArrived upstruckarrived) throws IOException, ClassNotFoundException, SQLException{
         //to be modified: update the truck arrived protocol to have package_id!!
+        System.out.println("handling truck arrived:");
+        System.out.println(upstruckarrived.toString());
         for(long package_id : upstruckarrived.getShipidList()){
+            System.out.println("truck for package " + package_id+" arrived");
             if(package_list.containsKey(package_id)){
                 Package pkg = package_list.get(package_id);
-                System.out.println("UPS truck arrived");
                 pkg.setTruckid(upstruckarrived.getTruckid());
+                System.out.println("UPS truck "+ upstruckarrived.getTruckid() +" arrived");
                 //check if amazon packed or not
                 if(pkg.getPackageStatus().equals("packed")){
                     //start loading
@@ -207,9 +211,10 @@ public class backfuncs {
     public void handle_ups(UPSCommands.Builder recvUps) throws IOException, ClassNotFoundException, SQLException{
         // UPSCommands.Builder recvUps = UPSCommands.newBuilder();
         // recvMesgFrom(recvUps, toups.getInputStream());
-        ackToUps(recvUps);
+        //ackToUps(recvUps);
         for(U2ATruckArrived x : recvUps.getArrivedList()){
-            truckArrived(x.toBuilder());
+            System.out.println("entering truck arrived");
+            truckArrived(x);
         }
         for(U2ADelivering x : recvUps.getDeliveringList()){
             packageDelivering(x.toBuilder());
@@ -343,6 +348,7 @@ public class backfuncs {
             }
             System.out.println("world purchased this item");
             //request trucks from UPS
+            System.out.println("&&&&&&&&&&requesting a truck");
             rqstTrucks(pkg);
             //request pack from world
             rqstTopack(pkg);
@@ -445,7 +451,7 @@ public class backfuncs {
     //     //
     // }
 
-    //send Acommand to world
+    //send Acommand to world, hanlde re-send logic
     void sendACommand(ACommands accomands, long seqnum){
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -474,12 +480,15 @@ public class backfuncs {
 
     /*===========the world pack package for Amazon================*/
     void worldPacked(APacked x) throws ClassNotFoundException, SQLException{
+        System.out.println("----------enter worldpacked-----------");
         long package_id = x.getShipid();
         if(package_list.containsKey(package_id)){
             Package pkg = package_list.get(package_id);
             pkg.setStatus("packed");
             //if the truck is arrived, we can load the packages
+            System.out.println("---------------------getting truck id:"+pkg.getTruckid());
             if(pkg.getTruckid() != -1 ){
+                System.out.println("----------start loading-----------");
                 //start load the package
                 worldPutOnTruck(pkg);
             }

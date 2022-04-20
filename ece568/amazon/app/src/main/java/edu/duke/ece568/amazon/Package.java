@@ -34,9 +34,9 @@ public class Package {
         amazon_pack = pack;
         truck_id = -1;
         //initialize the destination
-        //dbProcess db = new dbProcess();
-        //username = db.InitAmazonAccount(package_id);
-        //dest = db.setDest(package_id);
+        dbProcess db = new dbProcess();
+        username = db.InitAmazonAccount(package_id);
+        dest = db.setDest(package_id);
     }
 
     //getter

@@ -144,8 +144,9 @@ public class dbProcess {
         db.setAutoCommit(false);
 
         Statement W = db.createStatement();
-        String sql_line = String.format("UPDATE %s SET status = '%s' WHERE id = %d;", PACKAGE, package_id);
-        W.executeQuery(sql_line);
+        System.out.println("updating the status of package <" + package_id + "> to" + status);
+        String sql_line = String.format("UPDATE %s SET status = '%s' WHERE id = %d;", PACKAGE, status, package_id);
+        W.executeUpdate(sql_line);
         db.commit();
         //close sql and driver
         W.close();
@@ -180,11 +181,13 @@ public class dbProcess {
         Connection db = DriverManager.getConnection(URL, USERNAME, PASSWD);
         db.setAutoCommit(false);
         Statement W = db.createStatement();
-        String sql_line = String.format("SELECT package_info.owner_username FROM %s WHERE id = %d;", PACKAGE, package_id);
+        //String sql_line = String.format("SELECT shopping_package_info.owner_username FROM %s WHERE id = %d;", PACKAGE, package_id);
+        String sql_line = String.format("SELECT auth_user.username FROM auth_user, %s WHERE shopping_package_info.id = %d AND auth_user.id = shopping_package_info.owner_id;", PACKAGE, package_id);
         ResultSet R = W.executeQuery(sql_line);
 
         if (R.next()){
-            username = R.getString("package_info.owner_usernam");
+            // username = R.getString("shopping_package_info.owner_username");
+            username = R.getString("username");
         }
         W.close();
         db.close();
