@@ -29,8 +29,8 @@ public class backfuncs {
 
     private static final int MAXTIME = 20000;
 
-    //private List<AInitWarehouse> warehouses = new ArrayList<>();
-    private Map<Lon, Package> package_list;
+    private List<AInitWarehouse> warehouses = new ArrayList<>();
+    //private Map<Integer, AInitWarehouse> warehouses;
     Socket toups;
     Socket toWorld;
     private final Map<Long, Package> package_list;

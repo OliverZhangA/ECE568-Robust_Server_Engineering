@@ -7,6 +7,8 @@ import java.sql.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.*;
 
 
 public class dbProcess {
@@ -25,7 +27,6 @@ public class dbProcess {
 
     /*============ Query functions for backend to access DB ==============*/
 
-    //access the warehouse table to get the warehouse to initialize AInitWarehouse
     public List<AInitWarehouse> initAmazonWarehouse() throws ClassNotFoundException, SQLException{
         List<AInitWarehouse> warehouses_list = new ArrayList<>();
         
@@ -53,6 +54,34 @@ public class dbProcess {
         db.close();
         return warehouses_list;
     }
+    //access the warehouse table to get the warehouse to initialize AInitWarehouse
+    // public Map<Integer, AInitWarehouse> initAmazonWarehouse() throws ClassNotFoundException, SQLException{
+    //     Map<Integer, AInitWarehouse> warehouses_list = new ConcurrentHashMap<>();
+        
+    //     //loading the driver
+    //     Class.forName("org.postgresql.Driver");
+    //     Connection db = DriverManager.getConnection(URL, USERNAME, PASSWD);
+    //     db.setAutoCommit(false);
+
+    //     Statement W = db.createStatement();
+    //     String sql_line = String.format("SELECT * FROM %s;", WAREHOUSE);
+    //     ResultSet R = W.executeQuery(sql_line);
+
+    //     while(R.next()){
+    //         int warehouse_id = R.getInt("id");
+    //         int x = R.getInt("pos_x");
+    //         int y = R.getInt("pos_y");
+    //         AInitWarehouse.Builder ainitwarehouse = AInitWarehouse.newBuilder();
+    //         ainitwarehouse.setId(warehouse_id);
+    //         ainitwarehouse.setX(x).setY(y);
+    //         warehouses_list.put(warehouse_id, ainitwarehouse.build());
+    //     }
+
+    //     //close sql and driver
+    //     W.close();
+    //     db.close();
+    //     return warehouses_list;
+    // }
 
     //access the packageinfo table to construct the APurchaseMore
     public void construcBuyrqst(long package_id, APurchaseMore.Builder apurchasemore) throws ClassNotFoundException, SQLException{
