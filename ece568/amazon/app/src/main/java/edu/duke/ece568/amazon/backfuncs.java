@@ -29,8 +29,8 @@ public class backfuncs {
 
     private static final int MAXTIME = 20000;
 
-    private List<AInitWarehouse> warehouses = new ArrayList<>();
-    //private Map<Integer, AInitWarehouse> warehouses;
+    //private List<AInitWarehouse> warehouses = new ArrayList<>();
+    private Map<Integer, AInitWarehouse> warehouses;
     Socket toups;
     Socket toWorld;
     private final Map<Long, Package> package_list;
@@ -44,6 +44,10 @@ public class backfuncs {
         // warehouses.add(newWH.build());
         dbProcess database = new dbProcess();
         warehouses = database.initAmazonWarehouse();
+        //print our result of warehouses initialization
+        for (Map.Entry<Integer, AInitWarehouse> entry : warehouses.entrySet())
+            System.out.println("Wh_Id = " + entry.getKey() +
+                             ", Value = " + entry.getValue());
         package_list = new ConcurrentHashMap<>();
         seqnum = 0;
         rqst_list = new ConcurrentHashMap<>();
@@ -88,7 +92,11 @@ public class backfuncs {
         System.out.println("world socket");
 
         AConnect.Builder connect = AConnect.newBuilder();
-        connect.setWorldid(id).setIsAmazon(true).addAllInitwh(warehouses);
+        //connect.setWorldid(id).setIsAmazon(true).addAllInitwh(warehouses);
+        connect.setWorldid(id).setIsAmazon(true);
+        for(Map.Entry<Integer, AInitWarehouse> entry : warehouses.entrySet()){
+            connect.addInitwh(entry.getValue());
+        }
         sendMesgTo(connect.build(), toWorld.getOutputStream());
 
         AConnected.Builder connected = AConnected.newBuilder();
@@ -354,7 +362,7 @@ public class backfuncs {
             //create the A2UAskTruck rqst
             A2UAskTruck.Builder asktruck = A2UAskTruck.newBuilder();
             asktruck.setSeqnum(seqnum);
-            asktruck.setWarehouse(AInintToWarehouse(warehouses.get(pkg.getWarehouseid() - 1)));
+            asktruck.setWarehouse(AInintToWarehouse(warehouses.get(pkg.getWarehouseid())));
             //类型转换: Apack to Packageinfo
             //还没有对user name赋值????
             //destination
@@ -516,7 +524,7 @@ public class backfuncs {
             A2ULoaded.Builder loaded = A2ULoaded.newBuilder();
             long seqnum = getSeqNum();
             loaded.setSeqnum(seqnum);
-            loaded.setWarehouse(AInintToWarehouse(warehouses.get(pkg.getWarehouseid() - 1)));
+            loaded.setWarehouse(AInintToWarehouse(warehouses.get(pkg.getWarehouseid())));
             loaded.setTruckid(pkg.getTruckid());
             AmazonCommands.Builder amazoncommand = AmazonCommands.newBuilder();
             amazoncommand.addLoaded(loaded);
