@@ -55,8 +55,8 @@ public class dbProcess {
     }
 
     //access the packageinfo table to construct the APurchaseMore
-    public APurchaseMore construcBuyrqst(long package_id) throws ClassNotFoundException, SQLException{
-        APurchaseMore.Builder apurchasemore = APurchaseMore.newBuilder();
+    public void construcBuyrqst(long package_id, APurchaseMore.Builder apurchasemore) throws ClassNotFoundException, SQLException{
+        // APurchaseMore.Builder apurchasemore = APurchaseMore.newBuilder();
         int whnum = getwhnum(package_id);
         apurchasemore.setWhnum(whnum);
         
@@ -66,7 +66,7 @@ public class dbProcess {
         db.setAutoCommit(false);
 
         Statement W = db.createStatement();
-        String sql_line = String.format("SELECT commodity.id, commodity.commodity_desc, order.commodity_amt FROM %s, %s WHERE order.commodity_id = commodity.id AND order.package_info_id = %d;", PRODUCT, ORDER, package_id);
+        String sql_line = String.format("SELECT shopping_commodity.id, shopping_commodity.commodity_desc, shopping_order.commodity_amt FROM %s, %s WHERE shopping_order.commodity_id = shopping_commodity.id AND shopping_order.package_info_id = %d;", PRODUCT, ORDER, package_id);
         ResultSet R = W.executeQuery(sql_line);
 
         while (R.next()){
@@ -81,7 +81,7 @@ public class dbProcess {
         //close sql and driver
         W.close();
         db.close();
-        return apurchasemore.build();
+        //return apurchasemore.build();
     }
 
     //helper function for setting the whnum for APurchaseMore
@@ -94,12 +94,12 @@ public class dbProcess {
         db.setAutoCommit(false);
 
         Statement W = db.createStatement();
-        String sql_line = String.format("SELECT from_wh FROM %s WHERE id = %d;", PACKAGE, package_id);
+        String sql_line = String.format("SELECT shopping_package_info.from_wh_id FROM %s WHERE id = %d;", PACKAGE, package_id);
         ResultSet R = W.executeQuery(sql_line);
         
         //set the whnum
         if (R.next()){
-            whnum  = R.getInt("from_wh");
+            whnum  = R.getInt("from_wh_id");
         }
 
         //close sql and driver
@@ -125,43 +125,43 @@ public class dbProcess {
     }
 
     //access the package_info table to set the destination according to the package id
-    // public destination setDest(long package_id) throws ClassNotFoundException, SQLException{
-    //     destination dest = new destination();
+    public destination setDest(long package_id) throws ClassNotFoundException, SQLException{
+        destination dest = new destination();
         
-    //     Class.forName("org.postgresql.Driver");
-    //     Connection db = DriverManager.getConnection(URL, USERNAME, PASSWD);
-    //     db.setAutoCommit(false);
-    //     Statement W = db.createStatement();
-    //     String sql_line = String.format("SELECT dest_x, dest_y FROM %s WHERE id = %d;", PACKAGE, package_id);
-    //     ResultSet R = W.executeQuery(sql_line);
+        Class.forName("org.postgresql.Driver");
+        Connection db = DriverManager.getConnection(URL, USERNAME, PASSWD);
+        db.setAutoCommit(false);
+        Statement W = db.createStatement();
+        String sql_line = String.format("SELECT dest_x, dest_y FROM %s WHERE id = %d;", PACKAGE, package_id);
+        ResultSet R = W.executeQuery(sql_line);
 
-    //     if (R.next()){
-    //         dest.setX(R.getInt("dest_x"));
-    //         dest.setY(R.getInt("dest_y"));
-    //     }
-    //     W.close();
-    //     db.close();
-    //     return dest;
-    // }
+        if (R.next()){
+            dest.setX(R.getInt("dest_x"));
+            dest.setY(R.getInt("dest_y"));
+        }
+        W.close();
+        db.close();
+        return dest;
+    }
 
     //access the package_info to set the username
-    // public String InitAmazonAccount(long package_id) throws ClassNotFoundException, SQLException{
-    //     String username = "";
-    //     Class.forName("org.postgresql.Driver");
-    //     Connection db = DriverManager.getConnection(URL, USERNAME, PASSWD);
-    //     db.setAutoCommit(false);
-    //     Statement W = db.createStatement();
-    //     String sql_line = String.format("SELECT package_info.owner_username FROM %s WHERE id = %d;", PACKAGE, package_id);
-    //     ResultSet R = W.executeQuery(sql_line);
+    public String InitAmazonAccount(long package_id) throws ClassNotFoundException, SQLException{
+        String username = "";
+        Class.forName("org.postgresql.Driver");
+        Connection db = DriverManager.getConnection(URL, USERNAME, PASSWD);
+        db.setAutoCommit(false);
+        Statement W = db.createStatement();
+        String sql_line = String.format("SELECT package_info.owner_username FROM %s WHERE id = %d;", PACKAGE, package_id);
+        ResultSet R = W.executeQuery(sql_line);
 
-    //     if (R.next()){
-    //         username = R.getString("package_info.owner_usernam");
-    //     }
-    //     W.close();
-    //     db.close();
-    //     return username;
+        if (R.next()){
+            username = R.getString("package_info.owner_usernam");
+        }
+        W.close();
+        db.close();
+        return username;
 
-    // }
+    }
 
     // public static void main(String[] args) throws SQLException, ClassNotFoundException {
     //     dbProcess db = new dbProcess();

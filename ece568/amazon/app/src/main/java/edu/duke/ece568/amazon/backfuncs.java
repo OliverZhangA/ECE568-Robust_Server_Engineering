@@ -21,13 +21,13 @@ import java.io.PrintWriter;
 import java.io.InputStreamReader;
 
 public class backfuncs {
-    private static final String WORLD_HOST = "vcm-24561.vm.duke.edu";
-    private static final String UPS_HOST = "vcm-24561.vm.duke.edu";
-    private static final int WORLD_PORT = 12345;
-    private static final int UPS_PORT = 54321;
+    private static final String WORLD_HOST = "vcm-26608.vm.duke.edu";
+    private static final String UPS_HOST = "vcm-26608.vm.duke.edu";
+    private static final int WORLD_PORT = 23456;
+    private static final int UPS_PORT = 33333;
     private static final int FRONT_PORT = 7777;
 
-    private static final int MAXTIME = 1000;
+    private static final int MAXTIME = 20000;
 
     private List<AInitWarehouse> warehouses = new ArrayList<>();
     Socket toups;
@@ -63,6 +63,7 @@ public class backfuncs {
                     //connect to world
                     //if connect successfully
                     long world_id = connect.getWorldid();
+                    System.out.println("worldid is: " + world_id);
                     A2UConnected.Builder connected = A2UConnected.newBuilder();
                     if(connect_world(world_id)){
                         System.out.println("connected to world yeah");
@@ -83,11 +84,15 @@ public class backfuncs {
     public boolean connect_world(long id) throws IOException{
         System.out.println("connecting to World simulator");
         toWorld = new Socket(WORLD_HOST, WORLD_PORT);
+        System.out.println("world socket");
+
         AConnect.Builder connect = AConnect.newBuilder();
         connect.setWorldid(id).setIsAmazon(true).addAllInitwh(warehouses);
         sendMesgTo(connect.build(), toWorld.getOutputStream());
+
         AConnected.Builder connected = AConnected.newBuilder();
         recvMesgFrom(connected, toWorld.getInputStream());
+        System.out.println("result from world is:" + connected.getResult());
         return connected.getResult().equals("connected!");
     }
 
@@ -287,7 +292,7 @@ public class backfuncs {
     }
 
     void ackToWorld(AResponses.Builder recvWorld) throws IOException{
-
+        
         for(APurchaseMore x : recvWorld.getArrivedList()){
             recvWorld.addAcks(x.getSeqnum());
         }
@@ -304,7 +309,8 @@ public class backfuncs {
             recvWorld.addAcks(x.getSeqnum());
         }
         System.out.println("sending acks back to world");
-        sendMesgTo(recvWorld.build(), toWorld.getOutputStream());
+
+        //sendMesgTo(recvWorld.build(), toWorld.getOutputStream());
     }
 
     /*=======the world purchase products for warehouse====== */
@@ -569,19 +575,22 @@ public class backfuncs {
         }
     }
 
-    //world buy for warehouse
+    //world buy for warehouse，构造Apurchasemore
     void worldBuy(long id) throws SQLException, ClassNotFoundException{
         //没有用线程池处理 没写完
         dbProcess DB = new dbProcess();
         APurchaseMore.Builder apurchasemore = APurchaseMore.newBuilder();
+
+        long seq_number = getSeqNum();
+        apurchasemore.setSeqnum(seq_number);
         try {
-            apurchasemore = DB.construcBuyrqst(id).toBuilder();
+            DB.construcBuyrqst(id, apurchasemore);
         } catch (ClassNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        long seq_number = getSeqNum();
-        apurchasemore.setSeqnum(seq_number);
+        // long seq_number = getSeqNum();
+        // apurchasemore.setSeqnum(seq_number);
 
         ACommands.Builder acommands = ACommands.newBuilder();
         acommands.addBuy(apurchasemore);
@@ -594,6 +603,7 @@ public class backfuncs {
         apack.setWhnum(whnum);
         apack.addAllThings(apurchasemore.getThingsList());
         apack.setShipid(id);
+        apack.setSeqnum(-1);
 
         //initialize the package list, since when backend receives the front-end's buy rqst
         //we rqst to world to buy for us, meanwhile we create a package
@@ -604,12 +614,33 @@ public class backfuncs {
 
 
     /*=========== start all threads ===========*/
-    void startAllthreads() throws IOException{
+    void startAllthreads() throws IOException, ClassNotFoundException{
+        Thread upsthread = new Thread(() -> {
+            
+            try {
+                init_upsthread();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
+        upsthread.start();
+        Thread worldthread = new Thread(() -> {
+            try {
+                init_worldthread();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
+        worldthread.start();
+        // Thread worldthread = new Thread(() -> {
         //start the thread for comm with ups
         //init_upsthread();
 
         //start a thread for comm with world
-        init_worldthread();
+        //init_worldthread();
+        init_frontEndthread();
     }
 
 
@@ -617,10 +648,10 @@ public class backfuncs {
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException{
         backfuncs backend = new backfuncs();
         //connect with ups
-        //backend.connect_ups();
+        backend.connect_ups();
         //run all threads
         backend.startAllthreads();
-        backend.init_frontEndthread();
+        //backend.init_frontEndthread();
     }
 
 
