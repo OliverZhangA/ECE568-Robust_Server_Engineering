@@ -16,10 +16,10 @@ public class dbProcess {
     private static final String PASSWD = "passw0rd";
 
     // tables
-    private static final String PRODUCT = "commodity";
-    private static final String ORDER = "order";
-    private static final String PACKAGE = "package_info";
-    private static final String WAREHOUSE = "warehouse";
+    private static final String PRODUCT = "shopping_commodity";
+    private static final String ORDER = "shopping_order";
+    private static final String PACKAGE = "shopping_package_info";
+    private static final String WAREHOUSE = "shopping_warehouse";
 
     public dbProcess(){}
 
