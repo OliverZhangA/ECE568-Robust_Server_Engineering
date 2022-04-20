@@ -29,7 +29,8 @@ public class backfuncs {
 
     private static final int MAXTIME = 20000;
 
-    private List<AInitWarehouse> warehouses = new ArrayList<>();
+    //private List<AInitWarehouse> warehouses = new ArrayList<>();
+    private Map<Lon, Package> package_list;
     Socket toups;
     Socket toWorld;
     private final Map<Long, Package> package_list;
@@ -292,24 +293,32 @@ public class backfuncs {
     }
 
     void ackToWorld(AResponses.Builder recvWorld) throws IOException{
-        
+        List<Long> seqnum_list = new ArrayList<>();
         for(APurchaseMore x : recvWorld.getArrivedList()){
-            recvWorld.addAcks(x.getSeqnum());
+            seqnum_list.add(x.getSeqnum());
         }
         for(APacked x : recvWorld.getReadyList()){
-            recvWorld.addAcks(x.getSeqnum());
+            seqnum_list.add(x.getSeqnum());
         }
         for(ALoaded x : recvWorld.getLoadedList()){
-            recvWorld.addAcks(x.getSeqnum());
+            seqnum_list.add(x.getSeqnum());
         }
         for(AErr x : recvWorld.getErrorList()){
-            recvWorld.addAcks(x.getSeqnum());
+            seqnum_list.add(x.getSeqnum());
         }
         for(APackage x : recvWorld.getPackagestatusList()){
-            recvWorld.addAcks(x.getSeqnum());
+            seqnum_list.add(x.getSeqnum());
         }
         System.out.println("sending acks back to world");
-
+        ACommands.Builder acommands = ACommands.newBuilder();
+        if(seqnum_list.size() > 0){
+            for(long x : seqnum_list){
+                acommands.addAcks(x);
+            }
+            synchronized(toWorld.getOutputStream()){
+                sendMesgTo(acommands.build(), toWorld.getOutputStream());
+            }
+        }
         //sendMesgTo(recvWorld.build(), toWorld.getOutputStream());
     }
 
