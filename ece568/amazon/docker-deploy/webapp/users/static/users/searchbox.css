@@ -1,7 +1,9 @@
 body{
     /* margin: 0; */
     padding: 0;
-    background: #62549e;
+    background-image: url("images/bb.gif");
+    /* background: #62549e; */
+
 }
 .search-box{
     position: absolute;

@@ -130,6 +130,10 @@ def checkoutpage(request, package_id):
                 ord.package_info = None
                 ord.save()
             pck.delete()
+            #to see if there are orders that can merge
+            # order_in_cart = order.objects.get(owner=request.user, commodity=commo, package_info__isnull=True)
+            # for ord in orders:
+                
             #delete the package
             print("!!!!!!!!!!!!!!canceling!!!!!!!!!!!!!!")
             return redirect(reverse("shoppingCart"))

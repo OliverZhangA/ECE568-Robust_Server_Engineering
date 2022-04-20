@@ -41,6 +41,9 @@
                             <td class="col-3 text-left border-top-0">
                                 {{ order.commodity.commodity_name }}
                             </td>
+                            <td class="col-3 text-left border-top-0">
+                                {{ order.commodity_amt }}
+                            </td>
                             <td class="col-2 align-self-center border-top-0">
                                 <button type="button" class="btn" onclick="change_cnt({{ order.id }}, false)">
                                     <i class="fa fa-minus-square-o"></i>
