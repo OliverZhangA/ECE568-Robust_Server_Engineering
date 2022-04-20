@@ -2,10 +2,10 @@ from itertools import product
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import catalog, commodity, order, package_info
+from .models import catalog, commodity, order, package_info, warehouse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .functions import buyandpack
+from .functions import buyandpack, match_warehouse
 
 
 # Create your views here.
@@ -140,6 +140,10 @@ def checkoutpage(request, package_id):
             pck.dest_x = request.POST.get("dest_x")
             pck.dest_y = request.POST.get("dest_y")
             pck.ups_account = request.POST.get("ups_account")
+            pck.save()
+            print("8888888888888888"+str(type(pck.dest_x)))
+            wh_id = match_warehouse(int(pck.dest_x), int(pck.dest_y))
+            pck.from_wh = warehouse.objects.get(id=wh_id)
             pck.save()
             buyandpack(package_id)
             #turn to the checkout successful page!

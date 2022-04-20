@@ -21,7 +21,7 @@ class warehouse(models.Model):
     pos_y = models.IntegerField(default=0)
 
     def __str__(self):
-        return "(" + str(self.x) + ", " + str(self.y) + ")"
+        return "(" + str(self.pos_x) + ", " + str(self.pos_y) + ")"
 
 class commodity(models.Model):
     commodity_name = models.CharField(max_length=100, null=False, blank=False)
