@@ -1,5 +1,5 @@
 syntax = "proto2";
- 
+
 //ups send world id to amazon to connect to the same world
 message U2AConnect{
     required int64 worldid = 1;
@@ -18,11 +18,18 @@ message A2UAskTruck{
     repeated PackageInfo package = 3;
 }
  
+//Amazon send UPS the package is packed 
+message A2UPacked{
+    required int64 seqnum = 1;
+    required int64 shipid = 2;
+}
+ 
 //Amazon send loading message of package is loading
 message A2ULoading{
     required int64 seqnum = 1;
     required Warehouse warehouse = 2;
     required int32 truckid = 3;
+    //repeated int64 shipid = 4;
 }
  
 //Amazon send UPS message of finishing loading.
@@ -30,9 +37,9 @@ message A2ULoaded{
     required int64 seqnum = 1;
     required Warehouse warehouse = 2;
     required int32 truckid = 3;
+    //repeated int64 shipid = 4;
 }
- 
- 
+  
 //UPS send Amazon message of truck arrival to warehouse
 message U2ATruckArrived{
     required int64 seqnum = 1;  
@@ -103,13 +110,14 @@ message U2AChangeAddress{
 }
  
 message AmazonCommands{
-    repeated A2UAskTruck getTruck = 1;  
-    repeated A2ULoading loading = 2;
-    repeated A2ULoaded loaded = 3;
-    repeated A2UQueryShip query = 4;
-    repeated Error error = 5;
-    repeated int64 acks = 6;
-    optional bool finish = 7;
+    repeated A2UAskTruck getTruck = 1; 
+    repeated A2UPacked packed = 2;
+    repeated A2ULoading loading = 3;
+    repeated A2ULoaded loaded = 4;
+    repeated A2UQueryShip query = 5;
+    repeated Error error = 6;
+    repeated int64 acks = 7;
+    optional bool finish = 8;
 }
  
 message UPSCommands{

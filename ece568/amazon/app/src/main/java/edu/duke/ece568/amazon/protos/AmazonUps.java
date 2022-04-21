@@ -2339,6 +2339,622 @@ public final class AmazonUps {
 
   }
 
+  public interface A2UPackedOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:A2UPacked)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required int64 seqnum = 1;</code>
+     */
+    boolean hasSeqnum();
+    /**
+     * <code>required int64 seqnum = 1;</code>
+     */
+    long getSeqnum();
+
+    /**
+     * <code>required int64 shipid = 2;</code>
+     */
+    boolean hasShipid();
+    /**
+     * <code>required int64 shipid = 2;</code>
+     */
+    long getShipid();
+  }
+  /**
+   * <pre>
+   *Amazon send UPS the package is packed 
+   * </pre>
+   *
+   * Protobuf type {@code A2UPacked}
+   */
+  public  static final class A2UPacked extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:A2UPacked)
+      A2UPackedOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use A2UPacked.newBuilder() to construct.
+    private A2UPacked(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private A2UPacked() {
+      seqnum_ = 0L;
+      shipid_ = 0L;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private A2UPacked(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              bitField0_ |= 0x00000001;
+              seqnum_ = input.readInt64();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              shipid_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return AmazonUps.internal_static_A2UPacked_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return AmazonUps.internal_static_A2UPacked_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              AmazonUps.A2UPacked.class, AmazonUps.A2UPacked.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int SEQNUM_FIELD_NUMBER = 1;
+    private long seqnum_;
+    /**
+     * <code>required int64 seqnum = 1;</code>
+     */
+    public boolean hasSeqnum() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int64 seqnum = 1;</code>
+     */
+    public long getSeqnum() {
+      return seqnum_;
+    }
+
+    public static final int SHIPID_FIELD_NUMBER = 2;
+    private long shipid_;
+    /**
+     * <code>required int64 shipid = 2;</code>
+     */
+    public boolean hasShipid() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int64 shipid = 2;</code>
+     */
+    public long getShipid() {
+      return shipid_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasSeqnum()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasShipid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt64(1, seqnum_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt64(2, shipid_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(1, seqnum_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(2, shipid_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof AmazonUps.A2UPacked)) {
+        return super.equals(obj);
+      }
+      AmazonUps.A2UPacked other = (AmazonUps.A2UPacked) obj;
+
+      boolean result = true;
+      result = result && (hasSeqnum() == other.hasSeqnum());
+      if (hasSeqnum()) {
+        result = result && (getSeqnum()
+            == other.getSeqnum());
+      }
+      result = result && (hasShipid() == other.hasShipid());
+      if (hasShipid()) {
+        result = result && (getShipid()
+            == other.getShipid());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasSeqnum()) {
+        hash = (37 * hash) + SEQNUM_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getSeqnum());
+      }
+      if (hasShipid()) {
+        hash = (37 * hash) + SHIPID_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getShipid());
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static AmazonUps.A2UPacked parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static AmazonUps.A2UPacked parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static AmazonUps.A2UPacked parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static AmazonUps.A2UPacked parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static AmazonUps.A2UPacked parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static AmazonUps.A2UPacked parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static AmazonUps.A2UPacked parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static AmazonUps.A2UPacked parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static AmazonUps.A2UPacked parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static AmazonUps.A2UPacked parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static AmazonUps.A2UPacked parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static AmazonUps.A2UPacked parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(AmazonUps.A2UPacked prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     *Amazon send UPS the package is packed 
+     * </pre>
+     *
+     * Protobuf type {@code A2UPacked}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:A2UPacked)
+        AmazonUps.A2UPackedOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return AmazonUps.internal_static_A2UPacked_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return AmazonUps.internal_static_A2UPacked_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                AmazonUps.A2UPacked.class, AmazonUps.A2UPacked.Builder.class);
+      }
+
+      // Construct using AmazonUps.A2UPacked.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        seqnum_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        shipid_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return AmazonUps.internal_static_A2UPacked_descriptor;
+      }
+
+      @java.lang.Override
+      public AmazonUps.A2UPacked getDefaultInstanceForType() {
+        return AmazonUps.A2UPacked.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public AmazonUps.A2UPacked build() {
+        AmazonUps.A2UPacked result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public AmazonUps.A2UPacked buildPartial() {
+        AmazonUps.A2UPacked result = new AmazonUps.A2UPacked(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.seqnum_ = seqnum_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.shipid_ = shipid_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof AmazonUps.A2UPacked) {
+          return mergeFrom((AmazonUps.A2UPacked)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(AmazonUps.A2UPacked other) {
+        if (other == AmazonUps.A2UPacked.getDefaultInstance()) return this;
+        if (other.hasSeqnum()) {
+          setSeqnum(other.getSeqnum());
+        }
+        if (other.hasShipid()) {
+          setShipid(other.getShipid());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        if (!hasSeqnum()) {
+          return false;
+        }
+        if (!hasShipid()) {
+          return false;
+        }
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        AmazonUps.A2UPacked parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (AmazonUps.A2UPacked) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private long seqnum_ ;
+      /**
+       * <code>required int64 seqnum = 1;</code>
+       */
+      public boolean hasSeqnum() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int64 seqnum = 1;</code>
+       */
+      public long getSeqnum() {
+        return seqnum_;
+      }
+      /**
+       * <code>required int64 seqnum = 1;</code>
+       */
+      public Builder setSeqnum(long value) {
+        bitField0_ |= 0x00000001;
+        seqnum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 seqnum = 1;</code>
+       */
+      public Builder clearSeqnum() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        seqnum_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long shipid_ ;
+      /**
+       * <code>required int64 shipid = 2;</code>
+       */
+      public boolean hasShipid() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int64 shipid = 2;</code>
+       */
+      public long getShipid() {
+        return shipid_;
+      }
+      /**
+       * <code>required int64 shipid = 2;</code>
+       */
+      public Builder setShipid(long value) {
+        bitField0_ |= 0x00000002;
+        shipid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 shipid = 2;</code>
+       */
+      public Builder clearShipid() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        shipid_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:A2UPacked)
+    }
+
+    // @@protoc_insertion_point(class_scope:A2UPacked)
+    private static final AmazonUps.A2UPacked DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new AmazonUps.A2UPacked();
+    }
+
+    public static AmazonUps.A2UPacked getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<A2UPacked>
+        PARSER = new com.google.protobuf.AbstractParser<A2UPacked>() {
+      @java.lang.Override
+      public A2UPacked parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new A2UPacked(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<A2UPacked> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<A2UPacked> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public AmazonUps.A2UPacked getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface A2ULoadingOrBuilder extends
       // @@protoc_insertion_point(interface_extends:A2ULoading)
       com.google.protobuf.MessageOrBuilder {
@@ -2366,10 +2982,18 @@ public final class AmazonUps {
     AmazonUps.WarehouseOrBuilder getWarehouseOrBuilder();
 
     /**
+     * <pre>
+     *repeated int64 shipid = 4;
+     * </pre>
+     *
      * <code>required int32 truckid = 3;</code>
      */
     boolean hasTruckid();
     /**
+     * <pre>
+     *repeated int64 shipid = 4;
+     * </pre>
+     *
      * <code>required int32 truckid = 3;</code>
      */
     int getTruckid();
@@ -2514,12 +3138,20 @@ public final class AmazonUps {
     public static final int TRUCKID_FIELD_NUMBER = 3;
     private int truckid_;
     /**
+     * <pre>
+     *repeated int64 shipid = 4;
+     * </pre>
+     *
      * <code>required int32 truckid = 3;</code>
      */
     public boolean hasTruckid() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
+     * <pre>
+     *repeated int64 shipid = 4;
+     * </pre>
+     *
      * <code>required int32 truckid = 3;</code>
      */
     public int getTruckid() {
@@ -3085,18 +3717,30 @@ public final class AmazonUps {
 
       private int truckid_ ;
       /**
+       * <pre>
+       *repeated int64 shipid = 4;
+       * </pre>
+       *
        * <code>required int32 truckid = 3;</code>
        */
       public boolean hasTruckid() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
+       * <pre>
+       *repeated int64 shipid = 4;
+       * </pre>
+       *
        * <code>required int32 truckid = 3;</code>
        */
       public int getTruckid() {
         return truckid_;
       }
       /**
+       * <pre>
+       *repeated int64 shipid = 4;
+       * </pre>
+       *
        * <code>required int32 truckid = 3;</code>
        */
       public Builder setTruckid(int value) {
@@ -3106,6 +3750,10 @@ public final class AmazonUps {
         return this;
       }
       /**
+       * <pre>
+       *repeated int64 shipid = 4;
+       * </pre>
+       *
        * <code>required int32 truckid = 3;</code>
        */
       public Builder clearTruckid() {
@@ -3194,10 +3842,18 @@ public final class AmazonUps {
     AmazonUps.WarehouseOrBuilder getWarehouseOrBuilder();
 
     /**
+     * <pre>
+     *repeated int64 shipid = 4;
+     * </pre>
+     *
      * <code>required int32 truckid = 3;</code>
      */
     boolean hasTruckid();
     /**
+     * <pre>
+     *repeated int64 shipid = 4;
+     * </pre>
+     *
      * <code>required int32 truckid = 3;</code>
      */
     int getTruckid();
@@ -3342,12 +3998,20 @@ public final class AmazonUps {
     public static final int TRUCKID_FIELD_NUMBER = 3;
     private int truckid_;
     /**
+     * <pre>
+     *repeated int64 shipid = 4;
+     * </pre>
+     *
      * <code>required int32 truckid = 3;</code>
      */
     public boolean hasTruckid() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
+     * <pre>
+     *repeated int64 shipid = 4;
+     * </pre>
+     *
      * <code>required int32 truckid = 3;</code>
      */
     public int getTruckid() {
@@ -3913,18 +4577,30 @@ public final class AmazonUps {
 
       private int truckid_ ;
       /**
+       * <pre>
+       *repeated int64 shipid = 4;
+       * </pre>
+       *
        * <code>required int32 truckid = 3;</code>
        */
       public boolean hasTruckid() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
+       * <pre>
+       *repeated int64 shipid = 4;
+       * </pre>
+       *
        * <code>required int32 truckid = 3;</code>
        */
       public int getTruckid() {
         return truckid_;
       }
       /**
+       * <pre>
+       *repeated int64 shipid = 4;
+       * </pre>
+       *
        * <code>required int32 truckid = 3;</code>
        */
       public Builder setTruckid(int value) {
@@ -3934,6 +4610,10 @@ public final class AmazonUps {
         return this;
       }
       /**
+       * <pre>
+       *repeated int64 shipid = 4;
+       * </pre>
+       *
        * <code>required int32 truckid = 3;</code>
        */
       public Builder clearTruckid() {
@@ -12260,120 +12940,144 @@ public final class AmazonUps {
         int index);
 
     /**
-     * <code>repeated .A2ULoading loading = 2;</code>
+     * <code>repeated .A2UPacked packed = 2;</code>
+     */
+    java.util.List<AmazonUps.A2UPacked> 
+        getPackedList();
+    /**
+     * <code>repeated .A2UPacked packed = 2;</code>
+     */
+    AmazonUps.A2UPacked getPacked(int index);
+    /**
+     * <code>repeated .A2UPacked packed = 2;</code>
+     */
+    int getPackedCount();
+    /**
+     * <code>repeated .A2UPacked packed = 2;</code>
+     */
+    java.util.List<? extends AmazonUps.A2UPackedOrBuilder> 
+        getPackedOrBuilderList();
+    /**
+     * <code>repeated .A2UPacked packed = 2;</code>
+     */
+    AmazonUps.A2UPackedOrBuilder getPackedOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .A2ULoading loading = 3;</code>
      */
     java.util.List<AmazonUps.A2ULoading> 
         getLoadingList();
     /**
-     * <code>repeated .A2ULoading loading = 2;</code>
+     * <code>repeated .A2ULoading loading = 3;</code>
      */
     AmazonUps.A2ULoading getLoading(int index);
     /**
-     * <code>repeated .A2ULoading loading = 2;</code>
+     * <code>repeated .A2ULoading loading = 3;</code>
      */
     int getLoadingCount();
     /**
-     * <code>repeated .A2ULoading loading = 2;</code>
+     * <code>repeated .A2ULoading loading = 3;</code>
      */
     java.util.List<? extends AmazonUps.A2ULoadingOrBuilder> 
         getLoadingOrBuilderList();
     /**
-     * <code>repeated .A2ULoading loading = 2;</code>
+     * <code>repeated .A2ULoading loading = 3;</code>
      */
     AmazonUps.A2ULoadingOrBuilder getLoadingOrBuilder(
         int index);
 
     /**
-     * <code>repeated .A2ULoaded loaded = 3;</code>
+     * <code>repeated .A2ULoaded loaded = 4;</code>
      */
     java.util.List<AmazonUps.A2ULoaded> 
         getLoadedList();
     /**
-     * <code>repeated .A2ULoaded loaded = 3;</code>
+     * <code>repeated .A2ULoaded loaded = 4;</code>
      */
     AmazonUps.A2ULoaded getLoaded(int index);
     /**
-     * <code>repeated .A2ULoaded loaded = 3;</code>
+     * <code>repeated .A2ULoaded loaded = 4;</code>
      */
     int getLoadedCount();
     /**
-     * <code>repeated .A2ULoaded loaded = 3;</code>
+     * <code>repeated .A2ULoaded loaded = 4;</code>
      */
     java.util.List<? extends AmazonUps.A2ULoadedOrBuilder> 
         getLoadedOrBuilderList();
     /**
-     * <code>repeated .A2ULoaded loaded = 3;</code>
+     * <code>repeated .A2ULoaded loaded = 4;</code>
      */
     AmazonUps.A2ULoadedOrBuilder getLoadedOrBuilder(
         int index);
 
     /**
-     * <code>repeated .A2UQueryShip query = 4;</code>
+     * <code>repeated .A2UQueryShip query = 5;</code>
      */
     java.util.List<AmazonUps.A2UQueryShip> 
         getQueryList();
     /**
-     * <code>repeated .A2UQueryShip query = 4;</code>
+     * <code>repeated .A2UQueryShip query = 5;</code>
      */
     AmazonUps.A2UQueryShip getQuery(int index);
     /**
-     * <code>repeated .A2UQueryShip query = 4;</code>
+     * <code>repeated .A2UQueryShip query = 5;</code>
      */
     int getQueryCount();
     /**
-     * <code>repeated .A2UQueryShip query = 4;</code>
+     * <code>repeated .A2UQueryShip query = 5;</code>
      */
     java.util.List<? extends AmazonUps.A2UQueryShipOrBuilder> 
         getQueryOrBuilderList();
     /**
-     * <code>repeated .A2UQueryShip query = 4;</code>
+     * <code>repeated .A2UQueryShip query = 5;</code>
      */
     AmazonUps.A2UQueryShipOrBuilder getQueryOrBuilder(
         int index);
 
     /**
-     * <code>repeated .Error error = 5;</code>
+     * <code>repeated .Error error = 6;</code>
      */
     java.util.List<AmazonUps.Error> 
         getErrorList();
     /**
-     * <code>repeated .Error error = 5;</code>
+     * <code>repeated .Error error = 6;</code>
      */
     AmazonUps.Error getError(int index);
     /**
-     * <code>repeated .Error error = 5;</code>
+     * <code>repeated .Error error = 6;</code>
      */
     int getErrorCount();
     /**
-     * <code>repeated .Error error = 5;</code>
+     * <code>repeated .Error error = 6;</code>
      */
     java.util.List<? extends AmazonUps.ErrorOrBuilder> 
         getErrorOrBuilderList();
     /**
-     * <code>repeated .Error error = 5;</code>
+     * <code>repeated .Error error = 6;</code>
      */
     AmazonUps.ErrorOrBuilder getErrorOrBuilder(
         int index);
 
     /**
-     * <code>repeated int64 acks = 6;</code>
+     * <code>repeated int64 acks = 7;</code>
      */
     java.util.List<java.lang.Long> getAcksList();
     /**
-     * <code>repeated int64 acks = 6;</code>
+     * <code>repeated int64 acks = 7;</code>
      */
     int getAcksCount();
     /**
-     * <code>repeated int64 acks = 6;</code>
+     * <code>repeated int64 acks = 7;</code>
      */
     long getAcks(int index);
 
     /**
-     * <code>optional bool finish = 7;</code>
+     * <code>optional bool finish = 8;</code>
      */
     boolean hasFinish();
     /**
-     * <code>optional bool finish = 7;</code>
+     * <code>optional bool finish = 8;</code>
      */
     boolean getFinish();
   }
@@ -12391,6 +13095,7 @@ public final class AmazonUps {
     }
     private AmazonCommands() {
       getTruck_ = java.util.Collections.emptyList();
+      packed_ = java.util.Collections.emptyList();
       loading_ = java.util.Collections.emptyList();
       loaded_ = java.util.Collections.emptyList();
       query_ = java.util.Collections.emptyList();
@@ -12434,54 +13139,63 @@ public final class AmazonUps {
             }
             case 18: {
               if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                loading_ = new java.util.ArrayList<AmazonUps.A2ULoading>();
+                packed_ = new java.util.ArrayList<AmazonUps.A2UPacked>();
                 mutable_bitField0_ |= 0x00000002;
+              }
+              packed_.add(
+                  input.readMessage(AmazonUps.A2UPacked.PARSER, extensionRegistry));
+              break;
+            }
+            case 26: {
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                loading_ = new java.util.ArrayList<AmazonUps.A2ULoading>();
+                mutable_bitField0_ |= 0x00000004;
               }
               loading_.add(
                   input.readMessage(AmazonUps.A2ULoading.PARSER, extensionRegistry));
               break;
             }
-            case 26: {
-              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+            case 34: {
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
                 loaded_ = new java.util.ArrayList<AmazonUps.A2ULoaded>();
-                mutable_bitField0_ |= 0x00000004;
+                mutable_bitField0_ |= 0x00000008;
               }
               loaded_.add(
                   input.readMessage(AmazonUps.A2ULoaded.PARSER, extensionRegistry));
               break;
             }
-            case 34: {
-              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+            case 42: {
+              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
                 query_ = new java.util.ArrayList<AmazonUps.A2UQueryShip>();
-                mutable_bitField0_ |= 0x00000008;
+                mutable_bitField0_ |= 0x00000010;
               }
               query_.add(
                   input.readMessage(AmazonUps.A2UQueryShip.PARSER, extensionRegistry));
               break;
             }
-            case 42: {
-              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+            case 50: {
+              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
                 error_ = new java.util.ArrayList<AmazonUps.Error>();
-                mutable_bitField0_ |= 0x00000010;
+                mutable_bitField0_ |= 0x00000020;
               }
               error_.add(
                   input.readMessage(AmazonUps.Error.PARSER, extensionRegistry));
               break;
             }
-            case 48: {
-              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+            case 56: {
+              if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
                 acks_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000020;
+                mutable_bitField0_ |= 0x00000040;
               }
               acks_.add(input.readInt64());
               break;
             }
-            case 50: {
+            case 58: {
               int length = input.readRawVarint32();
               int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020) && input.getBytesUntilLimit() > 0) {
+              if (!((mutable_bitField0_ & 0x00000040) == 0x00000040) && input.getBytesUntilLimit() > 0) {
                 acks_ = new java.util.ArrayList<java.lang.Long>();
-                mutable_bitField0_ |= 0x00000020;
+                mutable_bitField0_ |= 0x00000040;
               }
               while (input.getBytesUntilLimit() > 0) {
                 acks_.add(input.readInt64());
@@ -12489,7 +13203,7 @@ public final class AmazonUps {
               input.popLimit(limit);
               break;
             }
-            case 56: {
+            case 64: {
               bitField0_ |= 0x00000001;
               finish_ = input.readBool();
               break;
@@ -12513,18 +13227,21 @@ public final class AmazonUps {
           getTruck_ = java.util.Collections.unmodifiableList(getTruck_);
         }
         if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          loading_ = java.util.Collections.unmodifiableList(loading_);
+          packed_ = java.util.Collections.unmodifiableList(packed_);
         }
         if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-          loaded_ = java.util.Collections.unmodifiableList(loaded_);
+          loading_ = java.util.Collections.unmodifiableList(loading_);
         }
         if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-          query_ = java.util.Collections.unmodifiableList(query_);
+          loaded_ = java.util.Collections.unmodifiableList(loaded_);
         }
         if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
-          error_ = java.util.Collections.unmodifiableList(error_);
+          query_ = java.util.Collections.unmodifiableList(query_);
         }
         if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+          error_ = java.util.Collections.unmodifiableList(error_);
+        }
+        if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
           acks_ = java.util.Collections.unmodifiableList(acks_);
         }
         this.unknownFields = unknownFields.build();
@@ -12580,178 +13297,213 @@ public final class AmazonUps {
       return getTruck_.get(index);
     }
 
-    public static final int LOADING_FIELD_NUMBER = 2;
+    public static final int PACKED_FIELD_NUMBER = 2;
+    private java.util.List<AmazonUps.A2UPacked> packed_;
+    /**
+     * <code>repeated .A2UPacked packed = 2;</code>
+     */
+    public java.util.List<AmazonUps.A2UPacked> getPackedList() {
+      return packed_;
+    }
+    /**
+     * <code>repeated .A2UPacked packed = 2;</code>
+     */
+    public java.util.List<? extends AmazonUps.A2UPackedOrBuilder> 
+        getPackedOrBuilderList() {
+      return packed_;
+    }
+    /**
+     * <code>repeated .A2UPacked packed = 2;</code>
+     */
+    public int getPackedCount() {
+      return packed_.size();
+    }
+    /**
+     * <code>repeated .A2UPacked packed = 2;</code>
+     */
+    public AmazonUps.A2UPacked getPacked(int index) {
+      return packed_.get(index);
+    }
+    /**
+     * <code>repeated .A2UPacked packed = 2;</code>
+     */
+    public AmazonUps.A2UPackedOrBuilder getPackedOrBuilder(
+        int index) {
+      return packed_.get(index);
+    }
+
+    public static final int LOADING_FIELD_NUMBER = 3;
     private java.util.List<AmazonUps.A2ULoading> loading_;
     /**
-     * <code>repeated .A2ULoading loading = 2;</code>
+     * <code>repeated .A2ULoading loading = 3;</code>
      */
     public java.util.List<AmazonUps.A2ULoading> getLoadingList() {
       return loading_;
     }
     /**
-     * <code>repeated .A2ULoading loading = 2;</code>
+     * <code>repeated .A2ULoading loading = 3;</code>
      */
     public java.util.List<? extends AmazonUps.A2ULoadingOrBuilder> 
         getLoadingOrBuilderList() {
       return loading_;
     }
     /**
-     * <code>repeated .A2ULoading loading = 2;</code>
+     * <code>repeated .A2ULoading loading = 3;</code>
      */
     public int getLoadingCount() {
       return loading_.size();
     }
     /**
-     * <code>repeated .A2ULoading loading = 2;</code>
+     * <code>repeated .A2ULoading loading = 3;</code>
      */
     public AmazonUps.A2ULoading getLoading(int index) {
       return loading_.get(index);
     }
     /**
-     * <code>repeated .A2ULoading loading = 2;</code>
+     * <code>repeated .A2ULoading loading = 3;</code>
      */
     public AmazonUps.A2ULoadingOrBuilder getLoadingOrBuilder(
         int index) {
       return loading_.get(index);
     }
 
-    public static final int LOADED_FIELD_NUMBER = 3;
+    public static final int LOADED_FIELD_NUMBER = 4;
     private java.util.List<AmazonUps.A2ULoaded> loaded_;
     /**
-     * <code>repeated .A2ULoaded loaded = 3;</code>
+     * <code>repeated .A2ULoaded loaded = 4;</code>
      */
     public java.util.List<AmazonUps.A2ULoaded> getLoadedList() {
       return loaded_;
     }
     /**
-     * <code>repeated .A2ULoaded loaded = 3;</code>
+     * <code>repeated .A2ULoaded loaded = 4;</code>
      */
     public java.util.List<? extends AmazonUps.A2ULoadedOrBuilder> 
         getLoadedOrBuilderList() {
       return loaded_;
     }
     /**
-     * <code>repeated .A2ULoaded loaded = 3;</code>
+     * <code>repeated .A2ULoaded loaded = 4;</code>
      */
     public int getLoadedCount() {
       return loaded_.size();
     }
     /**
-     * <code>repeated .A2ULoaded loaded = 3;</code>
+     * <code>repeated .A2ULoaded loaded = 4;</code>
      */
     public AmazonUps.A2ULoaded getLoaded(int index) {
       return loaded_.get(index);
     }
     /**
-     * <code>repeated .A2ULoaded loaded = 3;</code>
+     * <code>repeated .A2ULoaded loaded = 4;</code>
      */
     public AmazonUps.A2ULoadedOrBuilder getLoadedOrBuilder(
         int index) {
       return loaded_.get(index);
     }
 
-    public static final int QUERY_FIELD_NUMBER = 4;
+    public static final int QUERY_FIELD_NUMBER = 5;
     private java.util.List<AmazonUps.A2UQueryShip> query_;
     /**
-     * <code>repeated .A2UQueryShip query = 4;</code>
+     * <code>repeated .A2UQueryShip query = 5;</code>
      */
     public java.util.List<AmazonUps.A2UQueryShip> getQueryList() {
       return query_;
     }
     /**
-     * <code>repeated .A2UQueryShip query = 4;</code>
+     * <code>repeated .A2UQueryShip query = 5;</code>
      */
     public java.util.List<? extends AmazonUps.A2UQueryShipOrBuilder> 
         getQueryOrBuilderList() {
       return query_;
     }
     /**
-     * <code>repeated .A2UQueryShip query = 4;</code>
+     * <code>repeated .A2UQueryShip query = 5;</code>
      */
     public int getQueryCount() {
       return query_.size();
     }
     /**
-     * <code>repeated .A2UQueryShip query = 4;</code>
+     * <code>repeated .A2UQueryShip query = 5;</code>
      */
     public AmazonUps.A2UQueryShip getQuery(int index) {
       return query_.get(index);
     }
     /**
-     * <code>repeated .A2UQueryShip query = 4;</code>
+     * <code>repeated .A2UQueryShip query = 5;</code>
      */
     public AmazonUps.A2UQueryShipOrBuilder getQueryOrBuilder(
         int index) {
       return query_.get(index);
     }
 
-    public static final int ERROR_FIELD_NUMBER = 5;
+    public static final int ERROR_FIELD_NUMBER = 6;
     private java.util.List<AmazonUps.Error> error_;
     /**
-     * <code>repeated .Error error = 5;</code>
+     * <code>repeated .Error error = 6;</code>
      */
     public java.util.List<AmazonUps.Error> getErrorList() {
       return error_;
     }
     /**
-     * <code>repeated .Error error = 5;</code>
+     * <code>repeated .Error error = 6;</code>
      */
     public java.util.List<? extends AmazonUps.ErrorOrBuilder> 
         getErrorOrBuilderList() {
       return error_;
     }
     /**
-     * <code>repeated .Error error = 5;</code>
+     * <code>repeated .Error error = 6;</code>
      */
     public int getErrorCount() {
       return error_.size();
     }
     /**
-     * <code>repeated .Error error = 5;</code>
+     * <code>repeated .Error error = 6;</code>
      */
     public AmazonUps.Error getError(int index) {
       return error_.get(index);
     }
     /**
-     * <code>repeated .Error error = 5;</code>
+     * <code>repeated .Error error = 6;</code>
      */
     public AmazonUps.ErrorOrBuilder getErrorOrBuilder(
         int index) {
       return error_.get(index);
     }
 
-    public static final int ACKS_FIELD_NUMBER = 6;
+    public static final int ACKS_FIELD_NUMBER = 7;
     private java.util.List<java.lang.Long> acks_;
     /**
-     * <code>repeated int64 acks = 6;</code>
+     * <code>repeated int64 acks = 7;</code>
      */
     public java.util.List<java.lang.Long>
         getAcksList() {
       return acks_;
     }
     /**
-     * <code>repeated int64 acks = 6;</code>
+     * <code>repeated int64 acks = 7;</code>
      */
     public int getAcksCount() {
       return acks_.size();
     }
     /**
-     * <code>repeated int64 acks = 6;</code>
+     * <code>repeated int64 acks = 7;</code>
      */
     public long getAcks(int index) {
       return acks_.get(index);
     }
 
-    public static final int FINISH_FIELD_NUMBER = 7;
+    public static final int FINISH_FIELD_NUMBER = 8;
     private boolean finish_;
     /**
-     * <code>optional bool finish = 7;</code>
+     * <code>optional bool finish = 8;</code>
      */
     public boolean hasFinish() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional bool finish = 7;</code>
+     * <code>optional bool finish = 8;</code>
      */
     public boolean getFinish() {
       return finish_;
@@ -12766,6 +13518,12 @@ public final class AmazonUps {
 
       for (int i = 0; i < getGetTruckCount(); i++) {
         if (!getGetTruck(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      for (int i = 0; i < getPackedCount(); i++) {
+        if (!getPacked(i).isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -12804,23 +13562,26 @@ public final class AmazonUps {
       for (int i = 0; i < getTruck_.size(); i++) {
         output.writeMessage(1, getTruck_.get(i));
       }
+      for (int i = 0; i < packed_.size(); i++) {
+        output.writeMessage(2, packed_.get(i));
+      }
       for (int i = 0; i < loading_.size(); i++) {
-        output.writeMessage(2, loading_.get(i));
+        output.writeMessage(3, loading_.get(i));
       }
       for (int i = 0; i < loaded_.size(); i++) {
-        output.writeMessage(3, loaded_.get(i));
+        output.writeMessage(4, loaded_.get(i));
       }
       for (int i = 0; i < query_.size(); i++) {
-        output.writeMessage(4, query_.get(i));
+        output.writeMessage(5, query_.get(i));
       }
       for (int i = 0; i < error_.size(); i++) {
-        output.writeMessage(5, error_.get(i));
+        output.writeMessage(6, error_.get(i));
       }
       for (int i = 0; i < acks_.size(); i++) {
-        output.writeInt64(6, acks_.get(i));
+        output.writeInt64(7, acks_.get(i));
       }
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBool(7, finish_);
+        output.writeBool(8, finish_);
       }
       unknownFields.writeTo(output);
     }
@@ -12835,21 +13596,25 @@ public final class AmazonUps {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getTruck_.get(i));
       }
+      for (int i = 0; i < packed_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, packed_.get(i));
+      }
       for (int i = 0; i < loading_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, loading_.get(i));
+          .computeMessageSize(3, loading_.get(i));
       }
       for (int i = 0; i < loaded_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, loaded_.get(i));
+          .computeMessageSize(4, loaded_.get(i));
       }
       for (int i = 0; i < query_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, query_.get(i));
+          .computeMessageSize(5, query_.get(i));
       }
       for (int i = 0; i < error_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, error_.get(i));
+          .computeMessageSize(6, error_.get(i));
       }
       {
         int dataSize = 0;
@@ -12862,7 +13627,7 @@ public final class AmazonUps {
       }
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(7, finish_);
+          .computeBoolSize(8, finish_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -12882,6 +13647,8 @@ public final class AmazonUps {
       boolean result = true;
       result = result && getGetTruckList()
           .equals(other.getGetTruckList());
+      result = result && getPackedList()
+          .equals(other.getPackedList());
       result = result && getLoadingList()
           .equals(other.getLoadingList());
       result = result && getLoadedList()
@@ -12911,6 +13678,10 @@ public final class AmazonUps {
       if (getGetTruckCount() > 0) {
         hash = (37 * hash) + GETTRUCK_FIELD_NUMBER;
         hash = (53 * hash) + getGetTruckList().hashCode();
+      }
+      if (getPackedCount() > 0) {
+        hash = (37 * hash) + PACKED_FIELD_NUMBER;
+        hash = (53 * hash) + getPackedList().hashCode();
       }
       if (getLoadingCount() > 0) {
         hash = (37 * hash) + LOADING_FIELD_NUMBER;
@@ -13066,6 +13837,7 @@ public final class AmazonUps {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
           getGetTruckFieldBuilder();
+          getPackedFieldBuilder();
           getLoadingFieldBuilder();
           getLoadedFieldBuilder();
           getQueryFieldBuilder();
@@ -13081,34 +13853,40 @@ public final class AmazonUps {
         } else {
           getTruckBuilder_.clear();
         }
+        if (packedBuilder_ == null) {
+          packed_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          packedBuilder_.clear();
+        }
         if (loadingBuilder_ == null) {
           loading_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000004);
         } else {
           loadingBuilder_.clear();
         }
         if (loadedBuilder_ == null) {
           loaded_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000008);
         } else {
           loadedBuilder_.clear();
         }
         if (queryBuilder_ == null) {
           query_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000010);
         } else {
           queryBuilder_.clear();
         }
         if (errorBuilder_ == null) {
           error_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000020);
         } else {
           errorBuilder_.clear();
         }
         acks_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000020);
-        finish_ = false;
         bitField0_ = (bitField0_ & ~0x00000040);
+        finish_ = false;
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -13146,48 +13924,57 @@ public final class AmazonUps {
         } else {
           result.getTruck_ = getTruckBuilder_.build();
         }
-        if (loadingBuilder_ == null) {
+        if (packedBuilder_ == null) {
           if (((bitField0_ & 0x00000002) == 0x00000002)) {
-            loading_ = java.util.Collections.unmodifiableList(loading_);
+            packed_ = java.util.Collections.unmodifiableList(packed_);
             bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.packed_ = packed_;
+        } else {
+          result.packed_ = packedBuilder_.build();
+        }
+        if (loadingBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+            loading_ = java.util.Collections.unmodifiableList(loading_);
+            bitField0_ = (bitField0_ & ~0x00000004);
           }
           result.loading_ = loading_;
         } else {
           result.loading_ = loadingBuilder_.build();
         }
         if (loadedBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+          if (((bitField0_ & 0x00000008) == 0x00000008)) {
             loaded_ = java.util.Collections.unmodifiableList(loaded_);
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000008);
           }
           result.loaded_ = loaded_;
         } else {
           result.loaded_ = loadedBuilder_.build();
         }
         if (queryBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          if (((bitField0_ & 0x00000010) == 0x00000010)) {
             query_ = java.util.Collections.unmodifiableList(query_);
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000010);
           }
           result.query_ = query_;
         } else {
           result.query_ = queryBuilder_.build();
         }
         if (errorBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+          if (((bitField0_ & 0x00000020) == 0x00000020)) {
             error_ = java.util.Collections.unmodifiableList(error_);
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000020);
           }
           result.error_ = error_;
         } else {
           result.error_ = errorBuilder_.build();
         }
-        if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        if (((bitField0_ & 0x00000040) == 0x00000040)) {
           acks_ = java.util.Collections.unmodifiableList(acks_);
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000040);
         }
         result.acks_ = acks_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
           to_bitField0_ |= 0x00000001;
         }
         result.finish_ = finish_;
@@ -13266,11 +14053,37 @@ public final class AmazonUps {
             }
           }
         }
+        if (packedBuilder_ == null) {
+          if (!other.packed_.isEmpty()) {
+            if (packed_.isEmpty()) {
+              packed_ = other.packed_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensurePackedIsMutable();
+              packed_.addAll(other.packed_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.packed_.isEmpty()) {
+            if (packedBuilder_.isEmpty()) {
+              packedBuilder_.dispose();
+              packedBuilder_ = null;
+              packed_ = other.packed_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              packedBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getPackedFieldBuilder() : null;
+            } else {
+              packedBuilder_.addAllMessages(other.packed_);
+            }
+          }
+        }
         if (loadingBuilder_ == null) {
           if (!other.loading_.isEmpty()) {
             if (loading_.isEmpty()) {
               loading_ = other.loading_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000004);
             } else {
               ensureLoadingIsMutable();
               loading_.addAll(other.loading_);
@@ -13283,7 +14096,7 @@ public final class AmazonUps {
               loadingBuilder_.dispose();
               loadingBuilder_ = null;
               loading_ = other.loading_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+              bitField0_ = (bitField0_ & ~0x00000004);
               loadingBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getLoadingFieldBuilder() : null;
@@ -13296,7 +14109,7 @@ public final class AmazonUps {
           if (!other.loaded_.isEmpty()) {
             if (loaded_.isEmpty()) {
               loaded_ = other.loaded_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000008);
             } else {
               ensureLoadedIsMutable();
               loaded_.addAll(other.loaded_);
@@ -13309,7 +14122,7 @@ public final class AmazonUps {
               loadedBuilder_.dispose();
               loadedBuilder_ = null;
               loaded_ = other.loaded_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000008);
               loadedBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getLoadedFieldBuilder() : null;
@@ -13322,7 +14135,7 @@ public final class AmazonUps {
           if (!other.query_.isEmpty()) {
             if (query_.isEmpty()) {
               query_ = other.query_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000010);
             } else {
               ensureQueryIsMutable();
               query_.addAll(other.query_);
@@ -13335,7 +14148,7 @@ public final class AmazonUps {
               queryBuilder_.dispose();
               queryBuilder_ = null;
               query_ = other.query_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000010);
               queryBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getQueryFieldBuilder() : null;
@@ -13348,7 +14161,7 @@ public final class AmazonUps {
           if (!other.error_.isEmpty()) {
             if (error_.isEmpty()) {
               error_ = other.error_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000020);
             } else {
               ensureErrorIsMutable();
               error_.addAll(other.error_);
@@ -13361,7 +14174,7 @@ public final class AmazonUps {
               errorBuilder_.dispose();
               errorBuilder_ = null;
               error_ = other.error_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000020);
               errorBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getErrorFieldBuilder() : null;
@@ -13373,7 +14186,7 @@ public final class AmazonUps {
         if (!other.acks_.isEmpty()) {
           if (acks_.isEmpty()) {
             acks_ = other.acks_;
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000040);
           } else {
             ensureAcksIsMutable();
             acks_.addAll(other.acks_);
@@ -13392,6 +14205,11 @@ public final class AmazonUps {
       public final boolean isInitialized() {
         for (int i = 0; i < getGetTruckCount(); i++) {
           if (!getGetTruck(i).isInitialized()) {
+            return false;
+          }
+        }
+        for (int i = 0; i < getPackedCount(); i++) {
+          if (!getPacked(i).isInitialized()) {
             return false;
           }
         }
@@ -13678,12 +14496,252 @@ public final class AmazonUps {
         return getTruckBuilder_;
       }
 
+      private java.util.List<AmazonUps.A2UPacked> packed_ =
+        java.util.Collections.emptyList();
+      private void ensurePackedIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          packed_ = new java.util.ArrayList<AmazonUps.A2UPacked>(packed_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          AmazonUps.A2UPacked, AmazonUps.A2UPacked.Builder, AmazonUps.A2UPackedOrBuilder> packedBuilder_;
+
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public java.util.List<AmazonUps.A2UPacked> getPackedList() {
+        if (packedBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(packed_);
+        } else {
+          return packedBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public int getPackedCount() {
+        if (packedBuilder_ == null) {
+          return packed_.size();
+        } else {
+          return packedBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public AmazonUps.A2UPacked getPacked(int index) {
+        if (packedBuilder_ == null) {
+          return packed_.get(index);
+        } else {
+          return packedBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public Builder setPacked(
+          int index, AmazonUps.A2UPacked value) {
+        if (packedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePackedIsMutable();
+          packed_.set(index, value);
+          onChanged();
+        } else {
+          packedBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public Builder setPacked(
+          int index, AmazonUps.A2UPacked.Builder builderForValue) {
+        if (packedBuilder_ == null) {
+          ensurePackedIsMutable();
+          packed_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          packedBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public Builder addPacked(AmazonUps.A2UPacked value) {
+        if (packedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePackedIsMutable();
+          packed_.add(value);
+          onChanged();
+        } else {
+          packedBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public Builder addPacked(
+          int index, AmazonUps.A2UPacked value) {
+        if (packedBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePackedIsMutable();
+          packed_.add(index, value);
+          onChanged();
+        } else {
+          packedBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public Builder addPacked(
+          AmazonUps.A2UPacked.Builder builderForValue) {
+        if (packedBuilder_ == null) {
+          ensurePackedIsMutable();
+          packed_.add(builderForValue.build());
+          onChanged();
+        } else {
+          packedBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public Builder addPacked(
+          int index, AmazonUps.A2UPacked.Builder builderForValue) {
+        if (packedBuilder_ == null) {
+          ensurePackedIsMutable();
+          packed_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          packedBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public Builder addAllPacked(
+          java.lang.Iterable<? extends AmazonUps.A2UPacked> values) {
+        if (packedBuilder_ == null) {
+          ensurePackedIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, packed_);
+          onChanged();
+        } else {
+          packedBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public Builder clearPacked() {
+        if (packedBuilder_ == null) {
+          packed_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          packedBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public Builder removePacked(int index) {
+        if (packedBuilder_ == null) {
+          ensurePackedIsMutable();
+          packed_.remove(index);
+          onChanged();
+        } else {
+          packedBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public AmazonUps.A2UPacked.Builder getPackedBuilder(
+          int index) {
+        return getPackedFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public AmazonUps.A2UPackedOrBuilder getPackedOrBuilder(
+          int index) {
+        if (packedBuilder_ == null) {
+          return packed_.get(index);  } else {
+          return packedBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public java.util.List<? extends AmazonUps.A2UPackedOrBuilder> 
+           getPackedOrBuilderList() {
+        if (packedBuilder_ != null) {
+          return packedBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(packed_);
+        }
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public AmazonUps.A2UPacked.Builder addPackedBuilder() {
+        return getPackedFieldBuilder().addBuilder(
+            AmazonUps.A2UPacked.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public AmazonUps.A2UPacked.Builder addPackedBuilder(
+          int index) {
+        return getPackedFieldBuilder().addBuilder(
+            index, AmazonUps.A2UPacked.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .A2UPacked packed = 2;</code>
+       */
+      public java.util.List<AmazonUps.A2UPacked.Builder> 
+           getPackedBuilderList() {
+        return getPackedFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          AmazonUps.A2UPacked, AmazonUps.A2UPacked.Builder, AmazonUps.A2UPackedOrBuilder> 
+          getPackedFieldBuilder() {
+        if (packedBuilder_ == null) {
+          packedBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              AmazonUps.A2UPacked, AmazonUps.A2UPacked.Builder, AmazonUps.A2UPackedOrBuilder>(
+                  packed_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          packed_ = null;
+        }
+        return packedBuilder_;
+      }
+
       private java.util.List<AmazonUps.A2ULoading> loading_ =
         java.util.Collections.emptyList();
       private void ensureLoadingIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
           loading_ = new java.util.ArrayList<AmazonUps.A2ULoading>(loading_);
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000004;
          }
       }
 
@@ -13691,7 +14749,7 @@ public final class AmazonUps {
           AmazonUps.A2ULoading, AmazonUps.A2ULoading.Builder, AmazonUps.A2ULoadingOrBuilder> loadingBuilder_;
 
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public java.util.List<AmazonUps.A2ULoading> getLoadingList() {
         if (loadingBuilder_ == null) {
@@ -13701,7 +14759,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public int getLoadingCount() {
         if (loadingBuilder_ == null) {
@@ -13711,7 +14769,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public AmazonUps.A2ULoading getLoading(int index) {
         if (loadingBuilder_ == null) {
@@ -13721,7 +14779,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public Builder setLoading(
           int index, AmazonUps.A2ULoading value) {
@@ -13738,7 +14796,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public Builder setLoading(
           int index, AmazonUps.A2ULoading.Builder builderForValue) {
@@ -13752,7 +14810,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public Builder addLoading(AmazonUps.A2ULoading value) {
         if (loadingBuilder_ == null) {
@@ -13768,7 +14826,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public Builder addLoading(
           int index, AmazonUps.A2ULoading value) {
@@ -13785,7 +14843,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public Builder addLoading(
           AmazonUps.A2ULoading.Builder builderForValue) {
@@ -13799,7 +14857,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public Builder addLoading(
           int index, AmazonUps.A2ULoading.Builder builderForValue) {
@@ -13813,7 +14871,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public Builder addAllLoading(
           java.lang.Iterable<? extends AmazonUps.A2ULoading> values) {
@@ -13828,12 +14886,12 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public Builder clearLoading() {
         if (loadingBuilder_ == null) {
           loading_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000004);
           onChanged();
         } else {
           loadingBuilder_.clear();
@@ -13841,7 +14899,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public Builder removeLoading(int index) {
         if (loadingBuilder_ == null) {
@@ -13854,14 +14912,14 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public AmazonUps.A2ULoading.Builder getLoadingBuilder(
           int index) {
         return getLoadingFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public AmazonUps.A2ULoadingOrBuilder getLoadingOrBuilder(
           int index) {
@@ -13871,7 +14929,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public java.util.List<? extends AmazonUps.A2ULoadingOrBuilder> 
            getLoadingOrBuilderList() {
@@ -13882,14 +14940,14 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public AmazonUps.A2ULoading.Builder addLoadingBuilder() {
         return getLoadingFieldBuilder().addBuilder(
             AmazonUps.A2ULoading.getDefaultInstance());
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public AmazonUps.A2ULoading.Builder addLoadingBuilder(
           int index) {
@@ -13897,7 +14955,7 @@ public final class AmazonUps {
             index, AmazonUps.A2ULoading.getDefaultInstance());
       }
       /**
-       * <code>repeated .A2ULoading loading = 2;</code>
+       * <code>repeated .A2ULoading loading = 3;</code>
        */
       public java.util.List<AmazonUps.A2ULoading.Builder> 
            getLoadingBuilderList() {
@@ -13910,7 +14968,7 @@ public final class AmazonUps {
           loadingBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               AmazonUps.A2ULoading, AmazonUps.A2ULoading.Builder, AmazonUps.A2ULoadingOrBuilder>(
                   loading_,
-                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  ((bitField0_ & 0x00000004) == 0x00000004),
                   getParentForChildren(),
                   isClean());
           loading_ = null;
@@ -13921,9 +14979,9 @@ public final class AmazonUps {
       private java.util.List<AmazonUps.A2ULoaded> loaded_ =
         java.util.Collections.emptyList();
       private void ensureLoadedIsMutable() {
-        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
           loaded_ = new java.util.ArrayList<AmazonUps.A2ULoaded>(loaded_);
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000008;
          }
       }
 
@@ -13931,7 +14989,7 @@ public final class AmazonUps {
           AmazonUps.A2ULoaded, AmazonUps.A2ULoaded.Builder, AmazonUps.A2ULoadedOrBuilder> loadedBuilder_;
 
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public java.util.List<AmazonUps.A2ULoaded> getLoadedList() {
         if (loadedBuilder_ == null) {
@@ -13941,7 +14999,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public int getLoadedCount() {
         if (loadedBuilder_ == null) {
@@ -13951,7 +15009,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public AmazonUps.A2ULoaded getLoaded(int index) {
         if (loadedBuilder_ == null) {
@@ -13961,7 +15019,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public Builder setLoaded(
           int index, AmazonUps.A2ULoaded value) {
@@ -13978,7 +15036,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public Builder setLoaded(
           int index, AmazonUps.A2ULoaded.Builder builderForValue) {
@@ -13992,7 +15050,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public Builder addLoaded(AmazonUps.A2ULoaded value) {
         if (loadedBuilder_ == null) {
@@ -14008,7 +15066,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public Builder addLoaded(
           int index, AmazonUps.A2ULoaded value) {
@@ -14025,7 +15083,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public Builder addLoaded(
           AmazonUps.A2ULoaded.Builder builderForValue) {
@@ -14039,7 +15097,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public Builder addLoaded(
           int index, AmazonUps.A2ULoaded.Builder builderForValue) {
@@ -14053,7 +15111,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public Builder addAllLoaded(
           java.lang.Iterable<? extends AmazonUps.A2ULoaded> values) {
@@ -14068,12 +15126,12 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public Builder clearLoaded() {
         if (loadedBuilder_ == null) {
           loaded_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000008);
           onChanged();
         } else {
           loadedBuilder_.clear();
@@ -14081,7 +15139,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public Builder removeLoaded(int index) {
         if (loadedBuilder_ == null) {
@@ -14094,14 +15152,14 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public AmazonUps.A2ULoaded.Builder getLoadedBuilder(
           int index) {
         return getLoadedFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public AmazonUps.A2ULoadedOrBuilder getLoadedOrBuilder(
           int index) {
@@ -14111,7 +15169,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public java.util.List<? extends AmazonUps.A2ULoadedOrBuilder> 
            getLoadedOrBuilderList() {
@@ -14122,14 +15180,14 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public AmazonUps.A2ULoaded.Builder addLoadedBuilder() {
         return getLoadedFieldBuilder().addBuilder(
             AmazonUps.A2ULoaded.getDefaultInstance());
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public AmazonUps.A2ULoaded.Builder addLoadedBuilder(
           int index) {
@@ -14137,7 +15195,7 @@ public final class AmazonUps {
             index, AmazonUps.A2ULoaded.getDefaultInstance());
       }
       /**
-       * <code>repeated .A2ULoaded loaded = 3;</code>
+       * <code>repeated .A2ULoaded loaded = 4;</code>
        */
       public java.util.List<AmazonUps.A2ULoaded.Builder> 
            getLoadedBuilderList() {
@@ -14150,7 +15208,7 @@ public final class AmazonUps {
           loadedBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               AmazonUps.A2ULoaded, AmazonUps.A2ULoaded.Builder, AmazonUps.A2ULoadedOrBuilder>(
                   loaded_,
-                  ((bitField0_ & 0x00000004) == 0x00000004),
+                  ((bitField0_ & 0x00000008) == 0x00000008),
                   getParentForChildren(),
                   isClean());
           loaded_ = null;
@@ -14161,9 +15219,9 @@ public final class AmazonUps {
       private java.util.List<AmazonUps.A2UQueryShip> query_ =
         java.util.Collections.emptyList();
       private void ensureQueryIsMutable() {
-        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
           query_ = new java.util.ArrayList<AmazonUps.A2UQueryShip>(query_);
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000010;
          }
       }
 
@@ -14171,7 +15229,7 @@ public final class AmazonUps {
           AmazonUps.A2UQueryShip, AmazonUps.A2UQueryShip.Builder, AmazonUps.A2UQueryShipOrBuilder> queryBuilder_;
 
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public java.util.List<AmazonUps.A2UQueryShip> getQueryList() {
         if (queryBuilder_ == null) {
@@ -14181,7 +15239,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public int getQueryCount() {
         if (queryBuilder_ == null) {
@@ -14191,7 +15249,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public AmazonUps.A2UQueryShip getQuery(int index) {
         if (queryBuilder_ == null) {
@@ -14201,7 +15259,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public Builder setQuery(
           int index, AmazonUps.A2UQueryShip value) {
@@ -14218,7 +15276,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public Builder setQuery(
           int index, AmazonUps.A2UQueryShip.Builder builderForValue) {
@@ -14232,7 +15290,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public Builder addQuery(AmazonUps.A2UQueryShip value) {
         if (queryBuilder_ == null) {
@@ -14248,7 +15306,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public Builder addQuery(
           int index, AmazonUps.A2UQueryShip value) {
@@ -14265,7 +15323,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public Builder addQuery(
           AmazonUps.A2UQueryShip.Builder builderForValue) {
@@ -14279,7 +15337,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public Builder addQuery(
           int index, AmazonUps.A2UQueryShip.Builder builderForValue) {
@@ -14293,7 +15351,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public Builder addAllQuery(
           java.lang.Iterable<? extends AmazonUps.A2UQueryShip> values) {
@@ -14308,12 +15366,12 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public Builder clearQuery() {
         if (queryBuilder_ == null) {
           query_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000010);
           onChanged();
         } else {
           queryBuilder_.clear();
@@ -14321,7 +15379,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public Builder removeQuery(int index) {
         if (queryBuilder_ == null) {
@@ -14334,14 +15392,14 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public AmazonUps.A2UQueryShip.Builder getQueryBuilder(
           int index) {
         return getQueryFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public AmazonUps.A2UQueryShipOrBuilder getQueryOrBuilder(
           int index) {
@@ -14351,7 +15409,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public java.util.List<? extends AmazonUps.A2UQueryShipOrBuilder> 
            getQueryOrBuilderList() {
@@ -14362,14 +15420,14 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public AmazonUps.A2UQueryShip.Builder addQueryBuilder() {
         return getQueryFieldBuilder().addBuilder(
             AmazonUps.A2UQueryShip.getDefaultInstance());
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public AmazonUps.A2UQueryShip.Builder addQueryBuilder(
           int index) {
@@ -14377,7 +15435,7 @@ public final class AmazonUps {
             index, AmazonUps.A2UQueryShip.getDefaultInstance());
       }
       /**
-       * <code>repeated .A2UQueryShip query = 4;</code>
+       * <code>repeated .A2UQueryShip query = 5;</code>
        */
       public java.util.List<AmazonUps.A2UQueryShip.Builder> 
            getQueryBuilderList() {
@@ -14390,7 +15448,7 @@ public final class AmazonUps {
           queryBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               AmazonUps.A2UQueryShip, AmazonUps.A2UQueryShip.Builder, AmazonUps.A2UQueryShipOrBuilder>(
                   query_,
-                  ((bitField0_ & 0x00000008) == 0x00000008),
+                  ((bitField0_ & 0x00000010) == 0x00000010),
                   getParentForChildren(),
                   isClean());
           query_ = null;
@@ -14401,9 +15459,9 @@ public final class AmazonUps {
       private java.util.List<AmazonUps.Error> error_ =
         java.util.Collections.emptyList();
       private void ensureErrorIsMutable() {
-        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
           error_ = new java.util.ArrayList<AmazonUps.Error>(error_);
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000020;
          }
       }
 
@@ -14411,7 +15469,7 @@ public final class AmazonUps {
           AmazonUps.Error, AmazonUps.Error.Builder, AmazonUps.ErrorOrBuilder> errorBuilder_;
 
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public java.util.List<AmazonUps.Error> getErrorList() {
         if (errorBuilder_ == null) {
@@ -14421,7 +15479,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public int getErrorCount() {
         if (errorBuilder_ == null) {
@@ -14431,7 +15489,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public AmazonUps.Error getError(int index) {
         if (errorBuilder_ == null) {
@@ -14441,7 +15499,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public Builder setError(
           int index, AmazonUps.Error value) {
@@ -14458,7 +15516,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public Builder setError(
           int index, AmazonUps.Error.Builder builderForValue) {
@@ -14472,7 +15530,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public Builder addError(AmazonUps.Error value) {
         if (errorBuilder_ == null) {
@@ -14488,7 +15546,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public Builder addError(
           int index, AmazonUps.Error value) {
@@ -14505,7 +15563,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public Builder addError(
           AmazonUps.Error.Builder builderForValue) {
@@ -14519,7 +15577,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public Builder addError(
           int index, AmazonUps.Error.Builder builderForValue) {
@@ -14533,7 +15591,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public Builder addAllError(
           java.lang.Iterable<? extends AmazonUps.Error> values) {
@@ -14548,12 +15606,12 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public Builder clearError() {
         if (errorBuilder_ == null) {
           error_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000020);
           onChanged();
         } else {
           errorBuilder_.clear();
@@ -14561,7 +15619,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public Builder removeError(int index) {
         if (errorBuilder_ == null) {
@@ -14574,14 +15632,14 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public AmazonUps.Error.Builder getErrorBuilder(
           int index) {
         return getErrorFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public AmazonUps.ErrorOrBuilder getErrorOrBuilder(
           int index) {
@@ -14591,7 +15649,7 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public java.util.List<? extends AmazonUps.ErrorOrBuilder> 
            getErrorOrBuilderList() {
@@ -14602,14 +15660,14 @@ public final class AmazonUps {
         }
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public AmazonUps.Error.Builder addErrorBuilder() {
         return getErrorFieldBuilder().addBuilder(
             AmazonUps.Error.getDefaultInstance());
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public AmazonUps.Error.Builder addErrorBuilder(
           int index) {
@@ -14617,7 +15675,7 @@ public final class AmazonUps {
             index, AmazonUps.Error.getDefaultInstance());
       }
       /**
-       * <code>repeated .Error error = 5;</code>
+       * <code>repeated .Error error = 6;</code>
        */
       public java.util.List<AmazonUps.Error.Builder> 
            getErrorBuilderList() {
@@ -14630,7 +15688,7 @@ public final class AmazonUps {
           errorBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               AmazonUps.Error, AmazonUps.Error.Builder, AmazonUps.ErrorOrBuilder>(
                   error_,
-                  ((bitField0_ & 0x00000010) == 0x00000010),
+                  ((bitField0_ & 0x00000020) == 0x00000020),
                   getParentForChildren(),
                   isClean());
           error_ = null;
@@ -14640,32 +15698,32 @@ public final class AmazonUps {
 
       private java.util.List<java.lang.Long> acks_ = java.util.Collections.emptyList();
       private void ensureAcksIsMutable() {
-        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
+        if (!((bitField0_ & 0x00000040) == 0x00000040)) {
           acks_ = new java.util.ArrayList<java.lang.Long>(acks_);
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000040;
          }
       }
       /**
-       * <code>repeated int64 acks = 6;</code>
+       * <code>repeated int64 acks = 7;</code>
        */
       public java.util.List<java.lang.Long>
           getAcksList() {
         return java.util.Collections.unmodifiableList(acks_);
       }
       /**
-       * <code>repeated int64 acks = 6;</code>
+       * <code>repeated int64 acks = 7;</code>
        */
       public int getAcksCount() {
         return acks_.size();
       }
       /**
-       * <code>repeated int64 acks = 6;</code>
+       * <code>repeated int64 acks = 7;</code>
        */
       public long getAcks(int index) {
         return acks_.get(index);
       }
       /**
-       * <code>repeated int64 acks = 6;</code>
+       * <code>repeated int64 acks = 7;</code>
        */
       public Builder setAcks(
           int index, long value) {
@@ -14675,7 +15733,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated int64 acks = 6;</code>
+       * <code>repeated int64 acks = 7;</code>
        */
       public Builder addAcks(long value) {
         ensureAcksIsMutable();
@@ -14684,7 +15742,7 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated int64 acks = 6;</code>
+       * <code>repeated int64 acks = 7;</code>
        */
       public Builder addAllAcks(
           java.lang.Iterable<? extends java.lang.Long> values) {
@@ -14695,42 +15753,42 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <code>repeated int64 acks = 6;</code>
+       * <code>repeated int64 acks = 7;</code>
        */
       public Builder clearAcks() {
         acks_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         onChanged();
         return this;
       }
 
       private boolean finish_ ;
       /**
-       * <code>optional bool finish = 7;</code>
+       * <code>optional bool finish = 8;</code>
        */
       public boolean hasFinish() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
-       * <code>optional bool finish = 7;</code>
+       * <code>optional bool finish = 8;</code>
        */
       public boolean getFinish() {
         return finish_;
       }
       /**
-       * <code>optional bool finish = 7;</code>
+       * <code>optional bool finish = 8;</code>
        */
       public Builder setFinish(boolean value) {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000080;
         finish_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool finish = 7;</code>
+       * <code>optional bool finish = 8;</code>
        */
       public Builder clearFinish() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         finish_ = false;
         onChanged();
         return this;
@@ -17739,6 +18797,11 @@ public final class AmazonUps {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_A2UAskTruck_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_A2UPacked_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_A2UPacked_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_A2ULoading_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -17821,39 +18884,41 @@ public final class AmazonUps {
       "did\030\001 \002(\003\"/\n\014A2UConnected\022\017\n\007worldid\030\001 \002" +
       "(\003\022\016\n\006result\030\002 \002(\t\"[\n\013A2UAskTruck\022\016\n\006seq" +
       "num\030\001 \002(\003\022\035\n\twarehouse\030\002 \002(\0132\n.Warehouse" +
-      "\022\035\n\007package\030\003 \003(\0132\014.PackageInfo\"L\n\nA2ULo" +
-      "ading\022\016\n\006seqnum\030\001 \002(\003\022\035\n\twarehouse\030\002 \002(\013" +
-      "2\n.Warehouse\022\017\n\007truckid\030\003 \002(\005\"K\n\tA2ULoad" +
-      "ed\022\016\n\006seqnum\030\001 \002(\003\022\035\n\twarehouse\030\002 \002(\0132\n." +
-      "Warehouse\022\017\n\007truckid\030\003 \002(\005\"a\n\017U2ATruckAr" +
-      "rived\022\016\n\006seqnum\030\001 \002(\003\022\035\n\twarehouse\030\002 \002(\013" +
-      "2\n.Warehouse\022\017\n\007truckid\030\003 \002(\005\022\016\n\006shipid\030" +
-      "\004 \003(\003\"@\n\rU2ADelivering\022\016\n\006seqnum\030\001 \002(\003\022\016" +
-      "\n\006shipid\030\002 \003(\003\022\017\n\007truckid\030\003 \002(\005\".\n\014U2ADe" +
-      "livered\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shipid\030\002 \003(\003\"" +
-      "a\n\013PackageInfo\022\016\n\006shipid\030\001 \002(\003\022\t\n\001x\030\002 \002(" +
-      "\005\022\t\n\001y\030\003 \002(\005\022\021\n\tuser_name\030\004 \001(\t\022\031\n\007produ" +
-      "ct\030\005 \003(\0132\010.Product\";\n\007Product\022\014\n\004name\030\001 " +
-      "\002(\t\022\023\n\013description\030\002 \002(\t\022\r\n\005count\030\003 \002(\005\"" +
-      "6\n\tWarehouse\022\023\n\013warehouseid\030\001 \002(\005\022\t\n\001x\030\002" +
-      " \002(\005\022\t\n\001y\030\003 \002(\005\";\n\005Error\022\016\n\006seqnum\030\001 \002(\003" +
-      "\022\024\n\014originseqnum\030\002 \002(\003\022\014\n\004info\030\003 \001(\t\".\n\014" +
-      "A2UQueryShip\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shipid\030\002" +
-      " \002(\003\"?\n\rU2AShipStatus\022\016\n\006seqnum\030\001 \002(\003\022\016\n" +
-      "\006shipid\030\002 \002(\003\022\016\n\006status\030\003 \002(\t\"H\n\020U2AChan" +
-      "geAddress\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shipid\030\002 \002(" +
-      "\003\022\t\n\001x\030\003 \002(\005\022\t\n\001y\030\004 \002(\005\"\275\001\n\016AmazonComman" +
-      "ds\022\036\n\010getTruck\030\001 \003(\0132\014.A2UAskTruck\022\034\n\007lo" +
-      "ading\030\002 \003(\0132\013.A2ULoading\022\032\n\006loaded\030\003 \003(\013" +
-      "2\n.A2ULoaded\022\034\n\005query\030\004 \003(\0132\r.A2UQuerySh" +
-      "ip\022\025\n\005error\030\005 \003(\0132\006.Error\022\014\n\004acks\030\006 \003(\003\022" +
-      "\016\n\006finish\030\007 \001(\010\"\357\001\n\013UPSCommands\022!\n\007arriv" +
-      "ed\030\001 \003(\0132\020.U2ATruckArrived\022\"\n\ndelivering" +
-      "\030\002 \003(\0132\016.U2ADelivering\022 \n\tdelivered\030\003 \003(" +
-      "\0132\r.U2ADelivered\022\036\n\006status\030\004 \003(\0132\016.U2ASh" +
-      "ipStatus\022\"\n\007address\030\005 \003(\0132\021.U2AChangeAdd" +
-      "ress\022\025\n\005error\030\006 \003(\0132\006.Error\022\014\n\004acks\030\007 \003(" +
-      "\003\022\016\n\006finish\030\010 \001(\010"
+      "\022\035\n\007package\030\003 \003(\0132\014.PackageInfo\"+\n\tA2UPa" +
+      "cked\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shipid\030\002 \002(\003\"L\n\n" +
+      "A2ULoading\022\016\n\006seqnum\030\001 \002(\003\022\035\n\twarehouse\030" +
+      "\002 \002(\0132\n.Warehouse\022\017\n\007truckid\030\003 \002(\005\"K\n\tA2" +
+      "ULoaded\022\016\n\006seqnum\030\001 \002(\003\022\035\n\twarehouse\030\002 \002" +
+      "(\0132\n.Warehouse\022\017\n\007truckid\030\003 \002(\005\"a\n\017U2ATr" +
+      "uckArrived\022\016\n\006seqnum\030\001 \002(\003\022\035\n\twarehouse\030" +
+      "\002 \002(\0132\n.Warehouse\022\017\n\007truckid\030\003 \002(\005\022\016\n\006sh" +
+      "ipid\030\004 \003(\003\"@\n\rU2ADelivering\022\016\n\006seqnum\030\001 " +
+      "\002(\003\022\016\n\006shipid\030\002 \003(\003\022\017\n\007truckid\030\003 \002(\005\".\n\014" +
+      "U2ADelivered\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shipid\030\002" +
+      " \003(\003\"a\n\013PackageInfo\022\016\n\006shipid\030\001 \002(\003\022\t\n\001x" +
+      "\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\021\n\tuser_name\030\004 \001(\t\022\031\n\007" +
+      "product\030\005 \003(\0132\010.Product\";\n\007Product\022\014\n\004na" +
+      "me\030\001 \002(\t\022\023\n\013description\030\002 \002(\t\022\r\n\005count\030\003" +
+      " \002(\005\"6\n\tWarehouse\022\023\n\013warehouseid\030\001 \002(\005\022\t" +
+      "\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\";\n\005Error\022\016\n\006seqnum\030" +
+      "\001 \002(\003\022\024\n\014originseqnum\030\002 \002(\003\022\014\n\004info\030\003 \001(" +
+      "\t\".\n\014A2UQueryShip\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shi" +
+      "pid\030\002 \002(\003\"?\n\rU2AShipStatus\022\016\n\006seqnum\030\001 \002" +
+      "(\003\022\016\n\006shipid\030\002 \002(\003\022\016\n\006status\030\003 \002(\t\"H\n\020U2" +
+      "AChangeAddress\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shipid" +
+      "\030\002 \002(\003\022\t\n\001x\030\003 \002(\005\022\t\n\001y\030\004 \002(\005\"\331\001\n\016AmazonC" +
+      "ommands\022\036\n\010getTruck\030\001 \003(\0132\014.A2UAskTruck\022" +
+      "\032\n\006packed\030\002 \003(\0132\n.A2UPacked\022\034\n\007loading\030\003" +
+      " \003(\0132\013.A2ULoading\022\032\n\006loaded\030\004 \003(\0132\n.A2UL" +
+      "oaded\022\034\n\005query\030\005 \003(\0132\r.A2UQueryShip\022\025\n\005e" +
+      "rror\030\006 \003(\0132\006.Error\022\014\n\004acks\030\007 \003(\003\022\016\n\006fini" +
+      "sh\030\010 \001(\010\"\357\001\n\013UPSCommands\022!\n\007arrived\030\001 \003(" +
+      "\0132\020.U2ATruckArrived\022\"\n\ndelivering\030\002 \003(\0132" +
+      "\016.U2ADelivering\022 \n\tdelivered\030\003 \003(\0132\r.U2A" +
+      "Delivered\022\036\n\006status\030\004 \003(\0132\016.U2AShipStatu" +
+      "s\022\"\n\007address\030\005 \003(\0132\021.U2AChangeAddress\022\025\n" +
+      "\005error\030\006 \003(\0132\006.Error\022\014\n\004acks\030\007 \003(\003\022\016\n\006fi" +
+      "nish\030\010 \001(\010"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -17885,86 +18950,92 @@ public final class AmazonUps {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_A2UAskTruck_descriptor,
         new java.lang.String[] { "Seqnum", "Warehouse", "Package", });
-    internal_static_A2ULoading_descriptor =
+    internal_static_A2UPacked_descriptor =
       getDescriptor().getMessageTypes().get(3);
+    internal_static_A2UPacked_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_A2UPacked_descriptor,
+        new java.lang.String[] { "Seqnum", "Shipid", });
+    internal_static_A2ULoading_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_A2ULoading_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_A2ULoading_descriptor,
         new java.lang.String[] { "Seqnum", "Warehouse", "Truckid", });
     internal_static_A2ULoaded_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_A2ULoaded_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_A2ULoaded_descriptor,
         new java.lang.String[] { "Seqnum", "Warehouse", "Truckid", });
     internal_static_U2ATruckArrived_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_U2ATruckArrived_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_U2ATruckArrived_descriptor,
         new java.lang.String[] { "Seqnum", "Warehouse", "Truckid", "Shipid", });
     internal_static_U2ADelivering_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_U2ADelivering_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_U2ADelivering_descriptor,
         new java.lang.String[] { "Seqnum", "Shipid", "Truckid", });
     internal_static_U2ADelivered_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_U2ADelivered_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_U2ADelivered_descriptor,
         new java.lang.String[] { "Seqnum", "Shipid", });
     internal_static_PackageInfo_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_PackageInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PackageInfo_descriptor,
         new java.lang.String[] { "Shipid", "X", "Y", "UserName", "Product", });
     internal_static_Product_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_Product_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Product_descriptor,
         new java.lang.String[] { "Name", "Description", "Count", });
     internal_static_Warehouse_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_Warehouse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Warehouse_descriptor,
         new java.lang.String[] { "Warehouseid", "X", "Y", });
     internal_static_Error_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_Error_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Error_descriptor,
         new java.lang.String[] { "Seqnum", "Originseqnum", "Info", });
     internal_static_A2UQueryShip_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_A2UQueryShip_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_A2UQueryShip_descriptor,
         new java.lang.String[] { "Seqnum", "Shipid", });
     internal_static_U2AShipStatus_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_U2AShipStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_U2AShipStatus_descriptor,
         new java.lang.String[] { "Seqnum", "Shipid", "Status", });
     internal_static_U2AChangeAddress_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_U2AChangeAddress_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_U2AChangeAddress_descriptor,
         new java.lang.String[] { "Seqnum", "Shipid", "X", "Y", });
     internal_static_AmazonCommands_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_AmazonCommands_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AmazonCommands_descriptor,
-        new java.lang.String[] { "GetTruck", "Loading", "Loaded", "Query", "Error", "Acks", "Finish", });
+        new java.lang.String[] { "GetTruck", "Packed", "Loading", "Loaded", "Query", "Error", "Acks", "Finish", });
     internal_static_UPSCommands_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_UPSCommands_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_UPSCommands_descriptor,
