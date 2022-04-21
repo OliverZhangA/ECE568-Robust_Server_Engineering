@@ -2982,21 +2982,26 @@ public final class AmazonUps {
     AmazonUps.WarehouseOrBuilder getWarehouseOrBuilder();
 
     /**
-     * <pre>
-     *repeated int64 shipid = 4;
-     * </pre>
-     *
      * <code>required int32 truckid = 3;</code>
      */
     boolean hasTruckid();
     /**
-     * <pre>
-     *repeated int64 shipid = 4;
-     * </pre>
-     *
      * <code>required int32 truckid = 3;</code>
      */
     int getTruckid();
+
+    /**
+     * <code>repeated int64 shipid = 4;</code>
+     */
+    java.util.List<java.lang.Long> getShipidList();
+    /**
+     * <code>repeated int64 shipid = 4;</code>
+     */
+    int getShipidCount();
+    /**
+     * <code>repeated int64 shipid = 4;</code>
+     */
+    long getShipid(int index);
   }
   /**
    * <pre>
@@ -3017,6 +3022,7 @@ public final class AmazonUps {
     private A2ULoading() {
       seqnum_ = 0L;
       truckid_ = 0;
+      shipid_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -3066,6 +3072,27 @@ public final class AmazonUps {
               truckid_ = input.readInt32();
               break;
             }
+            case 32: {
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                shipid_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              shipid_.add(input.readInt64());
+              break;
+            }
+            case 34: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008) && input.getBytesUntilLimit() > 0) {
+                shipid_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                shipid_.add(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -3081,6 +3108,9 @@ public final class AmazonUps {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+          shipid_ = java.util.Collections.unmodifiableList(shipid_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -3138,24 +3168,38 @@ public final class AmazonUps {
     public static final int TRUCKID_FIELD_NUMBER = 3;
     private int truckid_;
     /**
-     * <pre>
-     *repeated int64 shipid = 4;
-     * </pre>
-     *
      * <code>required int32 truckid = 3;</code>
      */
     public boolean hasTruckid() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <pre>
-     *repeated int64 shipid = 4;
-     * </pre>
-     *
      * <code>required int32 truckid = 3;</code>
      */
     public int getTruckid() {
       return truckid_;
+    }
+
+    public static final int SHIPID_FIELD_NUMBER = 4;
+    private java.util.List<java.lang.Long> shipid_;
+    /**
+     * <code>repeated int64 shipid = 4;</code>
+     */
+    public java.util.List<java.lang.Long>
+        getShipidList() {
+      return shipid_;
+    }
+    /**
+     * <code>repeated int64 shipid = 4;</code>
+     */
+    public int getShipidCount() {
+      return shipid_.size();
+    }
+    /**
+     * <code>repeated int64 shipid = 4;</code>
+     */
+    public long getShipid(int index) {
+      return shipid_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -3197,6 +3241,9 @@ public final class AmazonUps {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt32(3, truckid_);
       }
+      for (int i = 0; i < shipid_.size(); i++) {
+        output.writeInt64(4, shipid_.get(i));
+      }
       unknownFields.writeTo(output);
     }
 
@@ -3217,6 +3264,15 @@ public final class AmazonUps {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, truckid_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < shipid_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(shipid_.get(i));
+        }
+        size += dataSize;
+        size += 1 * getShipidList().size();
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3249,6 +3305,8 @@ public final class AmazonUps {
         result = result && (getTruckid()
             == other.getTruckid());
       }
+      result = result && getShipidList()
+          .equals(other.getShipidList());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -3272,6 +3330,10 @@ public final class AmazonUps {
       if (hasTruckid()) {
         hash = (37 * hash) + TRUCKID_FIELD_NUMBER;
         hash = (53 * hash) + getTruckid();
+      }
+      if (getShipidCount() > 0) {
+        hash = (37 * hash) + SHIPID_FIELD_NUMBER;
+        hash = (53 * hash) + getShipidList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -3421,6 +3483,8 @@ public final class AmazonUps {
         bitField0_ = (bitField0_ & ~0x00000002);
         truckid_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        shipid_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -3465,6 +3529,11 @@ public final class AmazonUps {
           to_bitField0_ |= 0x00000004;
         }
         result.truckid_ = truckid_;
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          shipid_ = java.util.Collections.unmodifiableList(shipid_);
+          bitField0_ = (bitField0_ & ~0x00000008);
+        }
+        result.shipid_ = shipid_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -3522,6 +3591,16 @@ public final class AmazonUps {
         }
         if (other.hasTruckid()) {
           setTruckid(other.getTruckid());
+        }
+        if (!other.shipid_.isEmpty()) {
+          if (shipid_.isEmpty()) {
+            shipid_ = other.shipid_;
+            bitField0_ = (bitField0_ & ~0x00000008);
+          } else {
+            ensureShipidIsMutable();
+            shipid_.addAll(other.shipid_);
+          }
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3717,30 +3796,18 @@ public final class AmazonUps {
 
       private int truckid_ ;
       /**
-       * <pre>
-       *repeated int64 shipid = 4;
-       * </pre>
-       *
        * <code>required int32 truckid = 3;</code>
        */
       public boolean hasTruckid() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <pre>
-       *repeated int64 shipid = 4;
-       * </pre>
-       *
        * <code>required int32 truckid = 3;</code>
        */
       public int getTruckid() {
         return truckid_;
       }
       /**
-       * <pre>
-       *repeated int64 shipid = 4;
-       * </pre>
-       *
        * <code>required int32 truckid = 3;</code>
        */
       public Builder setTruckid(int value) {
@@ -3750,15 +3817,77 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <pre>
-       *repeated int64 shipid = 4;
-       * </pre>
-       *
        * <code>required int32 truckid = 3;</code>
        */
       public Builder clearTruckid() {
         bitField0_ = (bitField0_ & ~0x00000004);
         truckid_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<java.lang.Long> shipid_ = java.util.Collections.emptyList();
+      private void ensureShipidIsMutable() {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+          shipid_ = new java.util.ArrayList<java.lang.Long>(shipid_);
+          bitField0_ |= 0x00000008;
+         }
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public java.util.List<java.lang.Long>
+          getShipidList() {
+        return java.util.Collections.unmodifiableList(shipid_);
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public int getShipidCount() {
+        return shipid_.size();
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public long getShipid(int index) {
+        return shipid_.get(index);
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public Builder setShipid(
+          int index, long value) {
+        ensureShipidIsMutable();
+        shipid_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public Builder addShipid(long value) {
+        ensureShipidIsMutable();
+        shipid_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public Builder addAllShipid(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureShipidIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, shipid_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public Builder clearShipid() {
+        shipid_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000008);
         onChanged();
         return this;
       }
@@ -3842,21 +3971,26 @@ public final class AmazonUps {
     AmazonUps.WarehouseOrBuilder getWarehouseOrBuilder();
 
     /**
-     * <pre>
-     *repeated int64 shipid = 4;
-     * </pre>
-     *
      * <code>required int32 truckid = 3;</code>
      */
     boolean hasTruckid();
     /**
-     * <pre>
-     *repeated int64 shipid = 4;
-     * </pre>
-     *
      * <code>required int32 truckid = 3;</code>
      */
     int getTruckid();
+
+    /**
+     * <code>repeated int64 shipid = 4;</code>
+     */
+    java.util.List<java.lang.Long> getShipidList();
+    /**
+     * <code>repeated int64 shipid = 4;</code>
+     */
+    int getShipidCount();
+    /**
+     * <code>repeated int64 shipid = 4;</code>
+     */
+    long getShipid(int index);
   }
   /**
    * <pre>
@@ -3877,6 +4011,7 @@ public final class AmazonUps {
     private A2ULoaded() {
       seqnum_ = 0L;
       truckid_ = 0;
+      shipid_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -3926,6 +4061,27 @@ public final class AmazonUps {
               truckid_ = input.readInt32();
               break;
             }
+            case 32: {
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                shipid_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              shipid_.add(input.readInt64());
+              break;
+            }
+            case 34: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008) && input.getBytesUntilLimit() > 0) {
+                shipid_ = new java.util.ArrayList<java.lang.Long>();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                shipid_.add(input.readInt64());
+              }
+              input.popLimit(limit);
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -3941,6 +4097,9 @@ public final class AmazonUps {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+          shipid_ = java.util.Collections.unmodifiableList(shipid_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -3998,24 +4157,38 @@ public final class AmazonUps {
     public static final int TRUCKID_FIELD_NUMBER = 3;
     private int truckid_;
     /**
-     * <pre>
-     *repeated int64 shipid = 4;
-     * </pre>
-     *
      * <code>required int32 truckid = 3;</code>
      */
     public boolean hasTruckid() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <pre>
-     *repeated int64 shipid = 4;
-     * </pre>
-     *
      * <code>required int32 truckid = 3;</code>
      */
     public int getTruckid() {
       return truckid_;
+    }
+
+    public static final int SHIPID_FIELD_NUMBER = 4;
+    private java.util.List<java.lang.Long> shipid_;
+    /**
+     * <code>repeated int64 shipid = 4;</code>
+     */
+    public java.util.List<java.lang.Long>
+        getShipidList() {
+      return shipid_;
+    }
+    /**
+     * <code>repeated int64 shipid = 4;</code>
+     */
+    public int getShipidCount() {
+      return shipid_.size();
+    }
+    /**
+     * <code>repeated int64 shipid = 4;</code>
+     */
+    public long getShipid(int index) {
+      return shipid_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -4057,6 +4230,9 @@ public final class AmazonUps {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt32(3, truckid_);
       }
+      for (int i = 0; i < shipid_.size(); i++) {
+        output.writeInt64(4, shipid_.get(i));
+      }
       unknownFields.writeTo(output);
     }
 
@@ -4077,6 +4253,15 @@ public final class AmazonUps {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, truckid_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < shipid_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt64SizeNoTag(shipid_.get(i));
+        }
+        size += dataSize;
+        size += 1 * getShipidList().size();
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4109,6 +4294,8 @@ public final class AmazonUps {
         result = result && (getTruckid()
             == other.getTruckid());
       }
+      result = result && getShipidList()
+          .equals(other.getShipidList());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -4132,6 +4319,10 @@ public final class AmazonUps {
       if (hasTruckid()) {
         hash = (37 * hash) + TRUCKID_FIELD_NUMBER;
         hash = (53 * hash) + getTruckid();
+      }
+      if (getShipidCount() > 0) {
+        hash = (37 * hash) + SHIPID_FIELD_NUMBER;
+        hash = (53 * hash) + getShipidList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -4281,6 +4472,8 @@ public final class AmazonUps {
         bitField0_ = (bitField0_ & ~0x00000002);
         truckid_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        shipid_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -4325,6 +4518,11 @@ public final class AmazonUps {
           to_bitField0_ |= 0x00000004;
         }
         result.truckid_ = truckid_;
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          shipid_ = java.util.Collections.unmodifiableList(shipid_);
+          bitField0_ = (bitField0_ & ~0x00000008);
+        }
+        result.shipid_ = shipid_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -4382,6 +4580,16 @@ public final class AmazonUps {
         }
         if (other.hasTruckid()) {
           setTruckid(other.getTruckid());
+        }
+        if (!other.shipid_.isEmpty()) {
+          if (shipid_.isEmpty()) {
+            shipid_ = other.shipid_;
+            bitField0_ = (bitField0_ & ~0x00000008);
+          } else {
+            ensureShipidIsMutable();
+            shipid_.addAll(other.shipid_);
+          }
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -4577,30 +4785,18 @@ public final class AmazonUps {
 
       private int truckid_ ;
       /**
-       * <pre>
-       *repeated int64 shipid = 4;
-       * </pre>
-       *
        * <code>required int32 truckid = 3;</code>
        */
       public boolean hasTruckid() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <pre>
-       *repeated int64 shipid = 4;
-       * </pre>
-       *
        * <code>required int32 truckid = 3;</code>
        */
       public int getTruckid() {
         return truckid_;
       }
       /**
-       * <pre>
-       *repeated int64 shipid = 4;
-       * </pre>
-       *
        * <code>required int32 truckid = 3;</code>
        */
       public Builder setTruckid(int value) {
@@ -4610,15 +4806,77 @@ public final class AmazonUps {
         return this;
       }
       /**
-       * <pre>
-       *repeated int64 shipid = 4;
-       * </pre>
-       *
        * <code>required int32 truckid = 3;</code>
        */
       public Builder clearTruckid() {
         bitField0_ = (bitField0_ & ~0x00000004);
         truckid_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<java.lang.Long> shipid_ = java.util.Collections.emptyList();
+      private void ensureShipidIsMutable() {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+          shipid_ = new java.util.ArrayList<java.lang.Long>(shipid_);
+          bitField0_ |= 0x00000008;
+         }
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public java.util.List<java.lang.Long>
+          getShipidList() {
+        return java.util.Collections.unmodifiableList(shipid_);
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public int getShipidCount() {
+        return shipid_.size();
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public long getShipid(int index) {
+        return shipid_.get(index);
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public Builder setShipid(
+          int index, long value) {
+        ensureShipidIsMutable();
+        shipid_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public Builder addShipid(long value) {
+        ensureShipidIsMutable();
+        shipid_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public Builder addAllShipid(
+          java.lang.Iterable<? extends java.lang.Long> values) {
+        ensureShipidIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, shipid_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int64 shipid = 4;</code>
+       */
+      public Builder clearShipid() {
+        shipid_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000008);
         onChanged();
         return this;
       }
@@ -18885,40 +19143,41 @@ public final class AmazonUps {
       "(\003\022\016\n\006result\030\002 \002(\t\"[\n\013A2UAskTruck\022\016\n\006seq" +
       "num\030\001 \002(\003\022\035\n\twarehouse\030\002 \002(\0132\n.Warehouse" +
       "\022\035\n\007package\030\003 \003(\0132\014.PackageInfo\"+\n\tA2UPa" +
-      "cked\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shipid\030\002 \002(\003\"L\n\n" +
+      "cked\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shipid\030\002 \002(\003\"\\\n\n" +
       "A2ULoading\022\016\n\006seqnum\030\001 \002(\003\022\035\n\twarehouse\030" +
-      "\002 \002(\0132\n.Warehouse\022\017\n\007truckid\030\003 \002(\005\"K\n\tA2" +
-      "ULoaded\022\016\n\006seqnum\030\001 \002(\003\022\035\n\twarehouse\030\002 \002" +
-      "(\0132\n.Warehouse\022\017\n\007truckid\030\003 \002(\005\"a\n\017U2ATr" +
-      "uckArrived\022\016\n\006seqnum\030\001 \002(\003\022\035\n\twarehouse\030" +
       "\002 \002(\0132\n.Warehouse\022\017\n\007truckid\030\003 \002(\005\022\016\n\006sh" +
-      "ipid\030\004 \003(\003\"@\n\rU2ADelivering\022\016\n\006seqnum\030\001 " +
-      "\002(\003\022\016\n\006shipid\030\002 \003(\003\022\017\n\007truckid\030\003 \002(\005\".\n\014" +
-      "U2ADelivered\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shipid\030\002" +
-      " \003(\003\"a\n\013PackageInfo\022\016\n\006shipid\030\001 \002(\003\022\t\n\001x" +
-      "\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\021\n\tuser_name\030\004 \001(\t\022\031\n\007" +
-      "product\030\005 \003(\0132\010.Product\";\n\007Product\022\014\n\004na" +
-      "me\030\001 \002(\t\022\023\n\013description\030\002 \002(\t\022\r\n\005count\030\003" +
-      " \002(\005\"6\n\tWarehouse\022\023\n\013warehouseid\030\001 \002(\005\022\t" +
-      "\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\";\n\005Error\022\016\n\006seqnum\030" +
-      "\001 \002(\003\022\024\n\014originseqnum\030\002 \002(\003\022\014\n\004info\030\003 \001(" +
-      "\t\".\n\014A2UQueryShip\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shi" +
-      "pid\030\002 \002(\003\"?\n\rU2AShipStatus\022\016\n\006seqnum\030\001 \002" +
-      "(\003\022\016\n\006shipid\030\002 \002(\003\022\016\n\006status\030\003 \002(\t\"H\n\020U2" +
-      "AChangeAddress\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shipid" +
-      "\030\002 \002(\003\022\t\n\001x\030\003 \002(\005\022\t\n\001y\030\004 \002(\005\"\331\001\n\016AmazonC" +
-      "ommands\022\036\n\010getTruck\030\001 \003(\0132\014.A2UAskTruck\022" +
-      "\032\n\006packed\030\002 \003(\0132\n.A2UPacked\022\034\n\007loading\030\003" +
-      " \003(\0132\013.A2ULoading\022\032\n\006loaded\030\004 \003(\0132\n.A2UL" +
-      "oaded\022\034\n\005query\030\005 \003(\0132\r.A2UQueryShip\022\025\n\005e" +
-      "rror\030\006 \003(\0132\006.Error\022\014\n\004acks\030\007 \003(\003\022\016\n\006fini" +
-      "sh\030\010 \001(\010\"\357\001\n\013UPSCommands\022!\n\007arrived\030\001 \003(" +
-      "\0132\020.U2ATruckArrived\022\"\n\ndelivering\030\002 \003(\0132" +
-      "\016.U2ADelivering\022 \n\tdelivered\030\003 \003(\0132\r.U2A" +
-      "Delivered\022\036\n\006status\030\004 \003(\0132\016.U2AShipStatu" +
-      "s\022\"\n\007address\030\005 \003(\0132\021.U2AChangeAddress\022\025\n" +
-      "\005error\030\006 \003(\0132\006.Error\022\014\n\004acks\030\007 \003(\003\022\016\n\006fi" +
-      "nish\030\010 \001(\010"
+      "ipid\030\004 \003(\003\"[\n\tA2ULoaded\022\016\n\006seqnum\030\001 \002(\003\022" +
+      "\035\n\twarehouse\030\002 \002(\0132\n.Warehouse\022\017\n\007trucki" +
+      "d\030\003 \002(\005\022\016\n\006shipid\030\004 \003(\003\"a\n\017U2ATruckArriv" +
+      "ed\022\016\n\006seqnum\030\001 \002(\003\022\035\n\twarehouse\030\002 \002(\0132\n." +
+      "Warehouse\022\017\n\007truckid\030\003 \002(\005\022\016\n\006shipid\030\004 \003" +
+      "(\003\"@\n\rU2ADelivering\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006s" +
+      "hipid\030\002 \003(\003\022\017\n\007truckid\030\003 \002(\005\".\n\014U2ADeliv" +
+      "ered\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shipid\030\002 \003(\003\"a\n\013" +
+      "PackageInfo\022\016\n\006shipid\030\001 \002(\003\022\t\n\001x\030\002 \002(\005\022\t" +
+      "\n\001y\030\003 \002(\005\022\021\n\tuser_name\030\004 \001(\t\022\031\n\007product\030" +
+      "\005 \003(\0132\010.Product\";\n\007Product\022\014\n\004name\030\001 \002(\t" +
+      "\022\023\n\013description\030\002 \002(\t\022\r\n\005count\030\003 \002(\005\"6\n\t" +
+      "Warehouse\022\023\n\013warehouseid\030\001 \002(\005\022\t\n\001x\030\002 \002(" +
+      "\005\022\t\n\001y\030\003 \002(\005\";\n\005Error\022\016\n\006seqnum\030\001 \002(\003\022\024\n" +
+      "\014originseqnum\030\002 \002(\003\022\014\n\004info\030\003 \001(\t\".\n\014A2U" +
+      "QueryShip\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shipid\030\002 \002(" +
+      "\003\"?\n\rU2AShipStatus\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006sh" +
+      "ipid\030\002 \002(\003\022\016\n\006status\030\003 \002(\t\"H\n\020U2AChangeA" +
+      "ddress\022\016\n\006seqnum\030\001 \002(\003\022\016\n\006shipid\030\002 \002(\003\022\t" +
+      "\n\001x\030\003 \002(\005\022\t\n\001y\030\004 \002(\005\"\331\001\n\016AmazonCommands\022" +
+      "\036\n\010getTruck\030\001 \003(\0132\014.A2UAskTruck\022\032\n\006packe" +
+      "d\030\002 \003(\0132\n.A2UPacked\022\034\n\007loading\030\003 \003(\0132\013.A" +
+      "2ULoading\022\032\n\006loaded\030\004 \003(\0132\n.A2ULoaded\022\034\n" +
+      "\005query\030\005 \003(\0132\r.A2UQueryShip\022\025\n\005error\030\006 \003" +
+      "(\0132\006.Error\022\014\n\004acks\030\007 \003(\003\022\016\n\006finish\030\010 \001(\010" +
+      "\"\357\001\n\013UPSCommands\022!\n\007arrived\030\001 \003(\0132\020.U2AT" +
+      "ruckArrived\022\"\n\ndelivering\030\002 \003(\0132\016.U2ADel" +
+      "ivering\022 \n\tdelivered\030\003 \003(\0132\r.U2ADelivere" +
+      "d\022\036\n\006status\030\004 \003(\0132\016.U2AShipStatus\022\"\n\007add" +
+      "ress\030\005 \003(\0132\021.U2AChangeAddress\022\025\n\005error\030\006" +
+      " \003(\0132\006.Error\022\014\n\004acks\030\007 \003(\003\022\016\n\006finish\030\010 \001" +
+      "(\010"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -18961,13 +19220,13 @@ public final class AmazonUps {
     internal_static_A2ULoading_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_A2ULoading_descriptor,
-        new java.lang.String[] { "Seqnum", "Warehouse", "Truckid", });
+        new java.lang.String[] { "Seqnum", "Warehouse", "Truckid", "Shipid", });
     internal_static_A2ULoaded_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_A2ULoaded_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_A2ULoaded_descriptor,
-        new java.lang.String[] { "Seqnum", "Warehouse", "Truckid", });
+        new java.lang.String[] { "Seqnum", "Warehouse", "Truckid", "Shipid", });
     internal_static_U2ATruckArrived_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_U2ATruckArrived_fieldAccessorTable = new

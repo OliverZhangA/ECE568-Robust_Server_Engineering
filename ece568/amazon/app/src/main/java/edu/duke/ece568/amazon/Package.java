@@ -73,6 +73,14 @@ public class Package {
         truck_id = id;
     }
 
+    public void setAddress(int x, int y) throws ClassNotFoundException, SQLException{
+        dest.setX(x);
+        dest.setY(y);
+        //change addr in our database
+        dbProcess db = new dbProcess();
+        db.updateAddr(package_id, x, y);
+    }
+
     public void setStatus(String newstatus) throws ClassNotFoundException, SQLException{
         status = newstatus;
         //change the status in database

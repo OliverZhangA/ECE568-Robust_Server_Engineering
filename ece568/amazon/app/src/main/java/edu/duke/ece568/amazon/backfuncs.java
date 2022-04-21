@@ -182,6 +182,8 @@ public class backfuncs {
                 if(pkg.getPackageStatus().equals("packed")){
                     //start loading
                     worldPutOnTruck(pkg);
+                    //加给ups的loading信息
+                    
                 }
             }
             else {
@@ -218,6 +220,44 @@ public class backfuncs {
         // long package_id = upsPkgDelivered.getShipid();
     }
 
+    //query status from UPS, 好像不需要主动调用
+    void queryShiptoUps(long package_id) throws IOException{
+        A2UQueryShip.Builder a2uqueryship = A2UQueryShip.newBuilder();
+        long seq = getSeqNum();
+        a2uqueryship.setSeqnum(seq);
+        a2uqueryship.setShipid(package_id);
+        AmazonCommands.Builder amazoncommands = AmazonCommands.newBuilder();
+        amazoncommands.addQuery(a2uqueryship);
+        sendMesgTo(amazoncommands.build(), toups.getOutputStream());
+    }
+
+    //hanlde U2AShipStatus
+    void packageSetstatus_fromUps(U2AShipStatus.Builder upsPkgstatus) throws IOException, ClassNotFoundException, SQLException { 
+        long id = upsPkgstatus.getShipid();
+        String status = upsPkgstatus.getStatus();
+        if(package_list.containsKey(id)){
+            package_list.get(id).setStatus(status);
+        } else {
+            //can not find the package according to id
+            System.out.println("package query status from UPS does not exists!");
+        }
+        // long package_id = upsPkgDelivered.getShipid();
+    }
+
+    //change address in our database if we receive U2AChangeAddress from UPS
+    public void changeAddrinDB(U2AChangeAddress.Builder changeaddr) throws ClassNotFoundException, SQLException{
+        long id = changeaddr.getShipid();
+        int x = changeaddr.getX();
+        int y = changeaddr.getY();
+        if(package_list.containsKey(id)){
+            package_list.get(id).setAddress(x, y);;
+        } else {
+            //can not find the package according to id
+            System.out.println("package changing address from UPS does not exists!");
+        }
+    }
+
+
     //handle communication with Ups
     public void handle_ups(UPSCommands.Builder recvUps) throws IOException, ClassNotFoundException, SQLException{
         // UPSCommands.Builder recvUps = UPSCommands.newBuilder();
@@ -233,15 +273,16 @@ public class backfuncs {
         for(U2ADelivered x : recvUps.getDeliveredList()){
             packageDelivered(x.toBuilder());
         }
-        // for(U2AShipStatus x : recvUps.getStatusList()){
-        //     //response to query status
-        // }
-        // for(U2AChangeAddress x : recvUps.getAddressList()){
-        //     //change the address
-               //如果我们前端需要显示地址就需要做操作
-        // }
+        for(U2AShipStatus x : recvUps.getStatusList()){
+            //response to query status, update the status of the package
+            packageSetstatus_fromUps(x.toBuilder());
+        }
+        for(U2AChangeAddress x : recvUps.getAddressList()){
+            //change the address, 如果我们前端需要显示地址就需要做操作
+            //change address in our database
+            changeAddrinDB(x.toBuilder());
+        }
         for(edu.duke.ece568.amazon.protos.AmazonUps.Error x : recvUps.getErrorList()){
-            //response to query status
             if(x.getInfo() != null){
                 System.err.println(x.getInfo());
             }
@@ -251,7 +292,7 @@ public class backfuncs {
         }
     }
 
-    //send acks back to Ups
+    //send acks back to Ups, no need to send ack to ups, TCP connection
     void ackToUps(UPSCommands.Builder recvUps) throws IOException{
         for(U2ATruckArrived x : recvUps.getArrivedList()){
             recvUps.addAcks(x.getSeqnum());
@@ -490,12 +531,21 @@ public class backfuncs {
 
 
     /*===========the world pack package for Amazon================*/
-    void worldPacked(APacked x) throws ClassNotFoundException, SQLException{
+    void worldPacked(APacked x) throws ClassNotFoundException, SQLException, IOException{
         System.out.println("----------enter worldpacked-----------");
         long package_id = x.getShipid();
         if(package_list.containsKey(package_id)){
             Package pkg = package_list.get(package_id);
             pkg.setStatus("packed");
+            //tell ups we have already packed
+            A2UPacked.Builder a2upacked = A2UPacked.newBuilder();
+            long seq = getSeqNum();
+            a2upacked.setSeqnum(seq);
+            a2upacked.setShipid(package_id);
+            AmazonCommands.Builder amazoncommand = AmazonCommands.newBuilder();
+            amazoncommand.addPacked(a2upacked);
+            sendMesgTo(amazoncommand.build(), toups.getOutputStream());
+
             //if the truck is arrived, we can load the packages
             System.out.println("---------------------getting truck id:"+pkg.getTruckid());
             if(pkg.getTruckid() != -1 ){
@@ -510,23 +560,35 @@ public class backfuncs {
         }
     }
 
-    void worldPutOnTruck(Package pkg) throws ClassNotFoundException, SQLException{
+    //tell world to load for us
+    void worldPutOnTruck(Package pkg) throws ClassNotFoundException, SQLException, IOException{
         long package_id = pkg.getPackageId();
         if(package_list.containsKey(package_id)){
             pkg.setStatus("loading");
             //没有用线程池处理
             long seqnum = getSeqNum();
+            //tell world to load our packages
             APutOnTruck.Builder aputontruck = APutOnTruck.newBuilder();
             aputontruck.setWhnum(pkg.getWarehouseid());
             aputontruck.setTruckid(pkg.getTruckid());
             aputontruck.setShipid(package_id);
             aputontruck.setSeqnum(seqnum);
-
             ACommands.Builder acommand = ACommands.newBuilder();
             acommand.addLoad(aputontruck);
-
             //send Acommand to the world
             sendACommand(acommand.build(), seqnum);
+
+            //tell ups we start loading
+            long seqnum_forloading = getSeqNum(); 
+            A2ULoading.Builder a2uloading = A2ULoading.newBuilder();
+            a2uloading.setSeqnum(seqnum_forloading);
+            a2uloading.setWarehouse(AInintToWarehouse(warehouses.get(pkg.getWarehouseid())));
+            a2uloading.setSeqnum(pkg.getTruckid());
+            a2uloading.addShipid(package_id);
+            AmazonCommands.Builder amazoncommands = AmazonCommands.newBuilder();
+            amazoncommands.addLoading(a2uloading);
+            //send A2ULoading to ups
+            sendMesgTo(amazoncommands.build(), toups.getOutputStream());
         }
         else{
             //can not find the package according to id
@@ -546,6 +608,7 @@ public class backfuncs {
             loaded.setSeqnum(seqnum);
             loaded.setWarehouse(AInintToWarehouse(warehouses.get(pkg.getWarehouseid())));
             loaded.setTruckid(pkg.getTruckid());
+            loaded.addShipid(package_id);
             AmazonCommands.Builder amazoncommand = AmazonCommands.newBuilder();
             amazoncommand.addLoaded(loaded);
 
@@ -561,10 +624,15 @@ public class backfuncs {
         }
     }
 
-    //for query from world
-    // void queryToworld(){
-
-    // }
+    //for query from world, AQuery
+    public void queryToworld(long package_id){
+        long seq = getSeqNum();
+        AQuery.Builder query = AQuery.newBuilder();
+        query.setSeqnum(seq);
+        query.setPackageid(package_id);
+        ACommands.Builder accomands = ACommands.newBuilder();
+        sendACommand(accomands.build(), seq);
+    }
 
     //for disconnect from world
     void disconnectFromworld(){
@@ -690,8 +758,5 @@ public class backfuncs {
         backend.startAllthreads();
         //backend.init_frontEndthread();
     }
-
-
-    
 }
 

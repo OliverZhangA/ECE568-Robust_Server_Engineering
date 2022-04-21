@@ -9,6 +9,23 @@ from .functions import buyandpack, match_warehouse
 
 
 # Create your views here.
+class OrderList(ListView):
+    model = order
+    template_name = 'shopping/Orderlist.html'
+    context_object_name = 'orders'
+    ordering = ['commodity.commodity_name']
+    def get_queryset(self):
+        pk = self.kwargs['package_id']
+        return order.objects.filter(package_info__id=pk)
+
+class PackageList(ListView):
+    model = package_info
+    template_name = 'shopping/packagelist.html'
+    context_object_name = 'packs'
+    ordering = ['package_job_time']
+    def get_queryset(self):
+        return package_info.objects.filter(owner=self.request.user)
+
 class CatelogList(ListView):
     model = catalog
     template_name = 'shopping/catalog.html'

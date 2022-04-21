@@ -1,0 +1,23 @@
+{% extends "users/base.html" %}
+{% block content %}
+<h1> Package Details </h1>
+  {% if orders %}
+    {% for order in orders %}
+        <article class="media content-section">
+          <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="text-muted">item :{{ order.commodity.commodity_name }}</a >
+              <a class="text-muted">amount :{{ order.commodity_amt }}</a>
+              <a class="text-muted">description :{{ order.commodity.commodity_desc }}</a>
+              <small class="text-muted">{{ cata.status }}</small>
+            </div>
+            <h2><a class="article-title" >{{ pack.ups_account }}</a ></h2>
+          </div>
+        </article>
+    {% endfor %}
+  
+  {% else %}
+  <p> No placed orders </p>
+  {% endif%}
+{% endblock content %}

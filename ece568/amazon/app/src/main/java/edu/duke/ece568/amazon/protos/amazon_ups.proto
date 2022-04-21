@@ -1,5 +1,5 @@
 syntax = "proto2";
-
+ 
 //ups send world id to amazon to connect to the same world
 message U2AConnect{
     required int64 worldid = 1;
@@ -29,7 +29,7 @@ message A2ULoading{
     required int64 seqnum = 1;
     required Warehouse warehouse = 2;
     required int32 truckid = 3;
-    //repeated int64 shipid = 4;
+    repeated int64 shipid = 4;
 }
  
 //Amazon send UPS message of finishing loading.
@@ -37,7 +37,7 @@ message A2ULoaded{
     required int64 seqnum = 1;
     required Warehouse warehouse = 2;
     required int32 truckid = 3;
-    //repeated int64 shipid = 4;
+    repeated int64 shipid = 4;
 }
   
 //UPS send Amazon message of truck arrival to warehouse

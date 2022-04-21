@@ -195,10 +195,20 @@ public class dbProcess {
 
     }
 
-    // public static void main(String[] args) throws SQLException, ClassNotFoundException {
-    //     dbProcess db = new dbProcess();
-    //     System.out.println(db.initAmazonWarehouse());;
-    //     System.out.println(db.InitAmazonAccount(36));
-    // }
+    //update delivery address
+    public void updateAddr(long package_id, int x, int y) throws ClassNotFoundException, SQLException{
+        Class.forName("org.postgresql.Driver");
+        Connection db = DriverManager.getConnection(URL, USERNAME, PASSWD);
+        db.setAutoCommit(false);
+
+        Statement W = db.createStatement();
+        System.out.println("updating the delivery address: x is "+ x + ", y is" + y);
+        String sql_line = String.format("UPDATE %s SET dest_x = %d, dest_y = %d WHERE id = %d;", PACKAGE, x, y, package_id);
+        W.executeUpdate(sql_line);
+        db.commit();
+        //close sql and driver
+        W.close();
+        db.close();
+    }
     
 }

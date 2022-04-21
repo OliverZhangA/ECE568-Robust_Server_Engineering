@@ -7,6 +7,8 @@ from .views import (
     commodityDetail,
     SearchResult,
     toSearchResult,
+    PackageList,
+    OrderList
 )
 #from .views import OrderDetail, OrderList
 # from .views import (
@@ -36,6 +38,8 @@ urlpatterns = [
     path('commodityDetail/<int:pk1>/', shop_views.commodityDetail, name='commoditydetail'),
     path('shopping cart', shop_views.shoppingCart, name='shoppingCart'),
     path('checkout/<int:package_id>', shop_views.checkoutpage, name="checkoutpage"),
+    path('orders', PackageList.as_view(), name='packagelist'),
+    path('orders/<int:package_id>', OrderList.as_view(), name='orderlist'),
     # ## owner pages
     # path('rideuser/', views.userhome, name='ride-user'),
     # path('rideuser/riderequest/', OrderCreate.as_view(), name='ride-request'),

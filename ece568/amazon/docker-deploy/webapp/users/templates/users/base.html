@@ -65,9 +65,14 @@
                   <i class="fa-solid fa-magnifying-glass-arrow-right"></i>
                 </button>
                 <!-- <a class="search-btn" href="#"> -->
-                
               </div>
               </form>
+              {% if request.user.is_authenticated %}
+                  <!-- <a class="cart-btn" href="/catalog/orders/">orders</a> -->
+                  <a href="{% url 'packagelist' %}" class="cart-btn">
+                    <i class="fa fa-list-check"></i>
+                  </a>
+              {% endif %}
               </div>
         {% endif %}
       </div>

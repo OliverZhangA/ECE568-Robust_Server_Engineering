@@ -29,6 +29,7 @@ class commodity(models.Model):
     commodity_price = models.FloatField(default=0)
     commodity_catalog = models.ForeignKey(catalog, on_delete=models.SET_NULL, null=True)
     commodity_desc = models.CharField(max_length=200, blank=True, default="")
+    commodity_img = models.CharField(max_length=100, default="/static/img/sample.jpg")
 
     def __str__(self):
         return str(self.commodity_name)

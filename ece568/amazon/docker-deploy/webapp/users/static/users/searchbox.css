@@ -23,7 +23,7 @@ body{
     float: right;
     width: 40px;
     height: 40px;
-    border-radius: 30%;
+    border-radius: 100%;
     /* background: #2f3640; */
     display: flex;
     justify-content: center;
@@ -36,7 +36,7 @@ body{
 }
 .search-box:hover > .search-btn{
     background-image: url("images/dog.gif");
-    background: white;
+    /* background: white; */
 }
 .search-txt{
     border: none;
@@ -51,3 +51,44 @@ body{
     width: 0px;
 
 }
+/* .cart-btn{
+    color: #e84118;
+    float: right;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+} */
+
+.cart-btn {
+    position: absolute;
+    top: 15%;
+    left: 80%;
+    font-size:15px;
+    font-family:Arial;
+    width:40px;
+    height:40px;
+    border-width:2px;
+    color:#505739;
+    border-color:#333029;
+    font-weight:bold;
+    border-top-left-radius:5px;
+    border-top-right-radius:15px;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:15px;
+    box-shadow: 0px 1px 0px 0px #1c1b18;
+    text-shadow: 0px 1px 0px #ffffff;
+    /* background:linear-gradient(#eae0c2, #ccc2a6); */
+    /* background-image: url("images/order_icon.jpeg");
+    background-size: contain;
+    background-repeat: no-repeat; */
+  }
+  
+  .cart-btn:hover {
+    background: linear-gradient(#ccc2a6, #eae0c2);
+  }
+                
