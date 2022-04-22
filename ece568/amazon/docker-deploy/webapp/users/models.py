@@ -28,5 +28,8 @@ class DriverProfile(models.Model):
     plate_num = CharField(max_length=7,blank=False)
     license_num = CharField(max_length=12,blank=False)
     special_info = TextField(max_length=200,blank=TRUE)
+    UPS_account = models.CharField(default = "", max_length=100, blank=True, null=True)
+    dest_x = models.IntegerField(default=0, blank=True, null=False)
+    dest_y = models.IntegerField(default=0, blank=True, null=False)
     def __str__(self):
         return f'{self.user.username} Profile'

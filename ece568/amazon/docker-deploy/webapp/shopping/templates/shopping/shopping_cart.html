@@ -37,24 +37,19 @@
                     </thead>
                     <tbody>
                     {% for order in orders %}
+                            <td class="col-3 text-left border-top-0">
                         <tr class="row text-center border-bottom">
+                            <td class="col-3 text-left border-top-0">
+                                <!-- <img class="img-thumbnail" style="width: 50px; height: 50px" src="{{ order.item.img }}"> -->
+                                <img src="{{ order.commodity.commodity_img }}" class="img-thumbnail" alt="picture of the product" width="50">
+                                {{ order.item.description }}
+                            </td>
                             <td class="col-3 text-left border-top-0">
                                 {{ order.commodity.commodity_name }}
                             </td>
                             <td class="col-3 text-left border-top-0">
                                 {{ order.commodity_amt }}
                             </td>
-                            <td class="col-2 align-self-center border-top-0">
-                                <button type="button" class="btn" onclick="change_cnt({{ order.id }}, false)">
-                                    <i class="fa fa-minus-square-o"></i>
-                                </button>
-                                <span id="cnt{{ order.id }}">{{ order.item_cnt }}</span>
-                                <button type="button" class="btn" onclick="change_cnt({{ order.id }}, true)">
-                                    <i class="fa fa-plus-square-o"></i>
-                                </button>
-                            </td>
-                            <td class="col-2 align-self-center border-top-0">
-                                &dollar; {{ order.item.price|floatformat:2 }}</td>
                             <td class="col-2 align-self-center border-top-0">
                                 <button type="submit" name="delete" value="{{order.id}}" class="btn btn-primary mt-3">&nbsp;delete</button>
                                 <!-- <button onclick="delete_order('{{ order.id }}')" class="btn btn-outline-secondary">

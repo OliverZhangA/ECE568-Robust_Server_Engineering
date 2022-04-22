@@ -1,3 +1,4 @@
+from functools import lru_cache
 from itertools import product
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -6,7 +7,15 @@ from .models import catalog, commodity, order, package_info, warehouse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .functions import buyandpack, match_warehouse
-
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+from django.core.mail import send_mail
+from email.mime.image import MIMEImage
+from django.contrib.staticfiles.finders import find
+from django.contrib.staticfiles import finders
+from datetime import datetime, timedelta
+import math
+from django.db.models import Count
 
 # Create your views here.
 class OrderList(ListView):
@@ -24,7 +33,7 @@ class PackageList(ListView):
     context_object_name = 'packs'
     ordering = ['package_job_time']
     def get_queryset(self):
-        return package_info.objects.filter(owner=self.request.user)
+        return package_info.objects.filter(owner=self.request.user).order_by('-package_job_time')
 
 class CatelogList(ListView):
     model = catalog
@@ -158,18 +167,69 @@ def checkoutpage(request, package_id):
         elif request.POST.get("check_out"):
             print("!!!!!!!!!!!!!!checkingout!!!!!!!!!!!!!!")
             pck = package_info.objects.get(id=package_id)
+            if pck.status == "created":
+                return HttpResponse("this order has been created, do not repeat placing order!")
             pck.dest_x = request.POST.get("dest_x")
             pck.dest_y = request.POST.get("dest_y")
             pck.ups_account = request.POST.get("ups_account")
+            pck.status = "created"
             pck.save()
             print("8888888888888888"+str(type(pck.dest_x)))
             wh_id = match_warehouse(int(pck.dest_x), int(pck.dest_y))
             pck.from_wh = warehouse.objects.get(id=wh_id)
+            #makeup offset from EST to EDT
+            offset = timedelta(hours=1)
+            pck.package_job_time = pck.package_job_time + offset
+            #update the arrival time
+            d = timedelta(hours=estimateArrtime(pck))
+            pck.estimate_arrtime = pck.estimate_arrtime + offset + d
             pck.save()
             buyandpack(package_id)
+            
+            #sendemail(pck)
+            
             #turn to the checkout successful page!
             return HttpResponse("checkout successful!")
     return render(request, "shopping/checkout_page.html")
+
+def estimateArrtime(pck):
+    wh = pck.from_wh
+    x = int(pck.dest_x)
+    y = int(pck.dest_y)
+    dist = math.sqrt(math.pow(int(wh.pos_x) - x, 2) + math.pow(int(wh.pos_y) - y, 2))
+    num_items=pck.order_set.count()
+    print("num_items in this package is" + str(num_items))
+    est_hours = dist/(700/24) + num_items * 6
+    print("est_transfer error is: " + str(est_hours))
+    return int(est_hours)
+
+def sendemail(pck):
+    subject = 'Your order has been placed!'
+    message = pck.info() + 'Thank you for choosing us!'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list1 = [pck.owner.email]
+    send_mail(subject,message,email_from,recipient_list1)
+
+def send_advanced_email(pck):
+    message = EmailMultiAlternatives(
+        subject='Your order has been placed!',
+        body=pck.info() + 'Thank you for choosing us!',
+        from_email=settings.EMAIL_HOST_USER,
+        to=[pck.owner.email],
+    )
+    message.mixed_subtype = 'related'
+    #message.attach_alternative(body_html, "text/html")
+    message.attach(logo_data())
+
+    message.send(fail_silently=False)
+
+@lru_cache()
+def logo_data():
+    with open(finders.find('templates/mail.jpeg'), 'rb') as f:
+        logo_data = f.read()
+    logo = MIMEImage(logo_data)
+    logo.add_header('Content-ID', '<logo>')
+    return logo
 
 def toSearchResult(request):
     if request.method == "POST":

@@ -10,6 +10,7 @@
               <a class="text-muted">package id is :{{ pack.id }}</a >
               <a class="text-muted">package status is :{{ pack.status }}</a>
               <a class="text-muted">package dest is :({{ pack.dest_x }},{{ pack.dest_y }})</a>
+              <a class="text-muted">estimated arrtime is :{{ pack.estimate_arrtime }}</a>
               <small class="text-muted">{{ cata.status }}</small>
             </div>
             <h2><a class="article-title" href="{% url 'orderlist' pack.id %}">{{ pack.ups_account }}</a ></h2>

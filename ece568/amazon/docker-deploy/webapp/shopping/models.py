@@ -11,6 +11,7 @@ from django.utils.timezone import now
 #catalog for different kinds of products
 class catalog(models.Model):
     cate_name = models.CharField(max_length=100, null=False, blank=False)
+    catalog_img = models.CharField(max_length=100, default="/static/imgs/cart.jpeg")
     def __str__(self):
         return str(self.cate_name)
 
@@ -29,7 +30,7 @@ class commodity(models.Model):
     commodity_price = models.FloatField(default=0)
     commodity_catalog = models.ForeignKey(catalog, on_delete=models.SET_NULL, null=True)
     commodity_desc = models.CharField(max_length=200, blank=True, default="")
-    commodity_img = models.CharField(max_length=100, default="/static/img/sample.jpg")
+    commodity_img = models.CharField(max_length=100, default="/static/imgs/cart.jpeg")
 
     def __str__(self):
         return str(self.commodity_name)
@@ -42,13 +43,13 @@ class package_info(models.Model):
     package_job_time = models.DateTimeField(default=now)
     status = models.CharField(max_length=10, blank=False, null=False)
     ups_account = models.CharField(max_length=100, blank=True, null=True)
+    estimate_arrtime = models.DateTimeField(default=now)
     def __str__(self):
         return "<" + str(self.from_wh) + ", " + self.status + ">"
-
-    def show_order(self):
-        order_detail="order has been placed with following items:\n"
-        for order in self.orders.all():
-            order_detail+="+ %s*%s\n" % (str(order.commodity), str(order.commodity_amt))
+    def info(self):
+        order_detail="Your order has been placed with following items:\n"
+        for order in self.order_set.all():
+            order_detail+="*** %s*%s\n" % (str(order.commodity), str(order.commodity_amt))
         return order_detail
 
 class order(models.Model):

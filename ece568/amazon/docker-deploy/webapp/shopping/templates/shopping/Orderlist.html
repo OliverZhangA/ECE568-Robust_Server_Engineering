@@ -7,6 +7,7 @@
           <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
           <div class="media-body">
             <div class="article-metadata">
+                <img src="{{ order.commodity.commodity_img }}" class="img-thumbnail" alt="picture of the product" width="50">
               <a class="text-muted">item :{{ order.commodity.commodity_name }}</a >
               <a class="text-muted">amount :{{ order.commodity_amt }}</a>
               <a class="text-muted">description :{{ order.commodity.commodity_desc }}</a>

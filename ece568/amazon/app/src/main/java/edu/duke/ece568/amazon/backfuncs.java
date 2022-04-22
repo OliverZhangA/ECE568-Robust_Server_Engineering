@@ -15,6 +15,7 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.HashSet;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -45,9 +46,12 @@ public class backfuncs {
     private Map<Integer, AInitWarehouse> warehouses;
     Socket toups;
     Socket toWorld;
+    //a data structure to store the identifiers in the response to figure out what rqst a msg is in response to
+    private HashSet<Long> seqnumFromworld_list;
+    
     private final Map<Long, Package> package_list;
     private long seqnum;
-    //private final ThreadPoolExecutor threadPool;
+    // a data sturcture to record the time each command is sent
     private final Map<Long, Timer> rqst_list;
 
     //construct function
@@ -57,9 +61,11 @@ public class backfuncs {
         dbProcess database = new dbProcess();
         warehouses = database.initAmazonWarehouse();
         //print our result of warehouses initialization
-        for (Map.Entry<Integer, AInitWarehouse> entry : warehouses.entrySet())
+        for (Map.Entry<Integer, AInitWarehouse> entry : warehouses.entrySet()){
             System.out.println("Wh_Id = " + entry.getKey() +
                              ", Value = " + entry.getValue());
+        }
+        seqnumFromworld_list = new HashSet<Long>();
         package_list = new ConcurrentHashMap<>();
         seqnum = 0;
         rqst_list = new ConcurrentHashMap<>();
@@ -325,23 +331,68 @@ public class backfuncs {
         ackToWorld(recvWorld);
         for(APurchaseMore x : recvWorld.getArrivedList()){
             //handle purchased item from world to warehouse
-            worldPurchased(x);
+            long seq_fromworld = x.getSeqnum();
+            //check this sequence number is in the list or not
+            if(seqnumFromworld_list.contains(seq_fromworld)){
+                continue;
+            }
+            else{
+                worldPurchased(x);
+                seqnumFromworld_list.add(seq_fromworld);
+            }
         }
         for(APacked x : recvWorld.getReadyList()){
             //handle the packed package: packed->load
-            worldPacked(x);
+            long seq_fromworld = x.getSeqnum();
+            //check this sequence number is in the list or not
+            if(seqnumFromworld_list.contains(seq_fromworld)){
+                continue;
+            }
+            else{
+                worldPacked(x);
+                seqnumFromworld_list.add(seq_fromworld);
+            }
+            
+            //worldPacked(x);
         }
         for(ALoaded x : recvWorld.getLoadedList()){
             //handle loaded truck from world to amazon: loaded->delivering
-            worldLoaded(x);
+            long seq_fromworld = x.getSeqnum();
+            //check this sequence number is in the list or not
+            if(seqnumFromworld_list.contains(seq_fromworld)){
+                continue;
+            }
+            else{
+                worldLoaded(x);
+                seqnumFromworld_list.add(seq_fromworld);
+            }
+            //worldLoaded(x);
         }
         for(AErr x : recvWorld.getErrorList()){
             //print the error message
-            System.err.println("error msg:" + x.getErr());
+            long seq_fromworld = x.getSeqnum();
+            //check this sequence number is in the list or not
+            if(seqnumFromworld_list.contains(seq_fromworld)){
+                continue;
+            }
+            else{
+                System.err.println("error msg from world:" + x.getErr());
+                seqnumFromworld_list.add(seq_fromworld);
+            }
+            //System.err.println("error msg from world:" + x.getErr());
         }
         for(APackage x : recvWorld.getPackagestatusList()){
             //get the status of package from world, change the status in Package
-            package_list.get(x.getPackageid()).setStatus(x.getStatus());
+            long seq_fromworld = x.getSeqnum();
+            //check this sequence number is in the list or not
+            if(seqnumFromworld_list.contains(seq_fromworld)){
+                continue;
+            }
+            else{
+                package_list.get(x.getPackageid()).setStatus(x.getStatus());
+                seqnumFromworld_list.add(seq_fromworld);
+            }
+            //package_list.get(x.getPackageid()).setStatus(x.getStatus());
         }
         //handle acks mechanism, for re-send
         for(long x : recvWorld.getAcksList()){
@@ -354,6 +405,8 @@ public class backfuncs {
         if(recvWorld.hasFinished()){
             //connection disconnected, need to close the connection
             System.out.println("disconnect to world");
+            //查一下这个逻辑，不知道是不是我们这边close
+            toWorld.close();
         }
     }
 
@@ -416,10 +469,10 @@ public class backfuncs {
             // Package new_pkg = package_list.get(package_id);
             //没有用thread处理？？？
             //get the sequence number
-            long seqnum = getSeqNum();
+            long seq = getSeqNum();
             //create the A2UAskTruck rqst
             A2UAskTruck.Builder asktruck = A2UAskTruck.newBuilder();
-            asktruck.setSeqnum(seqnum);
+            asktruck.setSeqnum(seq);
             asktruck.setWarehouse(AInintToWarehouse(warehouses.get(pkg.getWarehouseid())));
             //类型转换: Apack to Packageinfo
             //还没有对user name赋值????
@@ -442,6 +495,7 @@ public class backfuncs {
     }
 
     //set the sequence number to each rqst
+    //keep track of the incrementing of seqnum coming from our side
     synchronized long getSeqNum() {
         long cur = seqnum;
         seqnum++;
@@ -457,12 +511,12 @@ public class backfuncs {
             //threadPool.execute(() -> {
             //construct the Acommand
             ACommands.Builder acommand = ACommands.newBuilder();
-            long seqnum = getSeqNum();
+            long seq = getSeqNum();
             APack apack = package_list.get(package_id).getAmazonPack();
-            acommand.addTopack(apack.toBuilder().setSeqnum(seqnum));
+            acommand.addTopack(apack.toBuilder().setSeqnum(seq));
 
             //send request Acommand to world 
-            sendACommand(acommand.build(), seqnum);
+            sendACommand(acommand.build(), seq);
             //});
         }
         else{
@@ -504,7 +558,9 @@ public class backfuncs {
     // }
 
     //send Acommand to world, hanlde re-send logic
-    void sendACommand(ACommands accomands, long seqnum){
+    void sendACommand(ACommands accomands, long seq){
+        //set the simspeed for debugging
+        //accomands.getSimspeed();
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -526,7 +582,7 @@ public class backfuncs {
             }
         }, 0, MAXTIME);
         //update the reqeust hash map
-        rqst_list.put(seqnum, timer);
+        rqst_list.put(seq, timer);
     }
 
 
@@ -566,17 +622,17 @@ public class backfuncs {
         if(package_list.containsKey(package_id)){
             pkg.setStatus("loading");
             //没有用线程池处理
-            long seqnum = getSeqNum();
+            long seq = getSeqNum();
             //tell world to load our packages
             APutOnTruck.Builder aputontruck = APutOnTruck.newBuilder();
             aputontruck.setWhnum(pkg.getWarehouseid());
             aputontruck.setTruckid(pkg.getTruckid());
             aputontruck.setShipid(package_id);
-            aputontruck.setSeqnum(seqnum);
+            aputontruck.setSeqnum(seq);
             ACommands.Builder acommand = ACommands.newBuilder();
             acommand.addLoad(aputontruck);
             //send Acommand to the world
-            sendACommand(acommand.build(), seqnum);
+            sendACommand(acommand.build(), seq);
 
             //tell ups we start loading
             long seqnum_forloading = getSeqNum(); 
@@ -604,8 +660,8 @@ public class backfuncs {
             pkg.setStatus("loaded");
             //tell ups we loaded, send A2ULoaded and start deliver
             A2ULoaded.Builder loaded = A2ULoaded.newBuilder();
-            long seqnum = getSeqNum();
-            loaded.setSeqnum(seqnum);
+            long seq = getSeqNum();
+            loaded.setSeqnum(seq);
             loaded.setWarehouse(AInintToWarehouse(warehouses.get(pkg.getWarehouseid())));
             loaded.setTruckid(pkg.getTruckid());
             loaded.addShipid(package_id);
@@ -635,7 +691,7 @@ public class backfuncs {
     }
 
     //for disconnect from world
-    void disconnectFromworld(){
+    public void disconnectFromworld(){
         ACommands.Builder acommand = ACommands.newBuilder();
         acommand.setDisconnect(true);
         sendACommand(acommand.build(), 0);
@@ -713,6 +769,7 @@ public class backfuncs {
         //initialize the package list, since when backend receives the front-end's buy rqst
         //we rqst to world to buy for us, meanwhile we create a package
         Package pkg = new Package(whnum, id, apack.build());
+
         package_list.put(id, pkg);
     }
     
