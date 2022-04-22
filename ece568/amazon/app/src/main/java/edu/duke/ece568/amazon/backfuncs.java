@@ -639,7 +639,7 @@ public class backfuncs {
             A2ULoading.Builder a2uloading = A2ULoading.newBuilder();
             a2uloading.setSeqnum(seqnum_forloading);
             a2uloading.setWarehouse(AInintToWarehouse(warehouses.get(pkg.getWarehouseid())));
-            a2uloading.setSeqnum(pkg.getTruckid());
+            a2uloading.setTruckid(pkg.getTruckid());
             a2uloading.addShipid(package_id);
             AmazonCommands.Builder amazoncommands = AmazonCommands.newBuilder();
             amazoncommands.addLoading(a2uloading);

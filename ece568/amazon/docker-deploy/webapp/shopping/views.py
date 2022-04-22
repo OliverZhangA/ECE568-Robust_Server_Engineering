@@ -167,7 +167,7 @@ def checkoutpage(request, package_id):
         elif request.POST.get("check_out"):
             print("!!!!!!!!!!!!!!checkingout!!!!!!!!!!!!!!")
             pck = package_info.objects.get(id=package_id)
-            if pck.status == "created":
+            if pck.status != "":
                 return HttpResponse("this order has been created, do not repeat placing order!")
             pck.dest_x = request.POST.get("dest_x")
             pck.dest_y = request.POST.get("dest_y")
@@ -200,12 +200,12 @@ def estimateArrtime(pck):
     num_items=pck.order_set.count()
     print("num_items in this package is" + str(num_items))
     est_hours = dist/(700/24) + num_items * 6
-    print("est_transfer error is: " + str(est_hours))
+    print("est_transfer time is: " + str(est_hours))
     return int(est_hours)
 
 def sendemail(pck):
     subject = 'Your order has been placed!'
-    message = pck.info() + 'Thank you for choosing us!'
+    message = pck.info() + 'Thank you for choosing us!' + pck.estimate_arrtime
     email_from = settings.EMAIL_HOST_USER
     recipient_list1 = [pck.owner.email]
     send_mail(subject,message,email_from,recipient_list1)

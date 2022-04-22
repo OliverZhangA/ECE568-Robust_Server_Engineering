@@ -175,19 +175,38 @@ public class dbProcess {
     }
 
     //access the package_info to set the username
-    public String InitAmazonAccount(long package_id) throws ClassNotFoundException, SQLException{
+    // public String InitAmazonAccount(long package_id) throws ClassNotFoundException, SQLException{
+    //     String username = "";
+    //     Class.forName("org.postgresql.Driver");
+    //     Connection db = DriverManager.getConnection(URL, USERNAME, PASSWD);
+    //     db.setAutoCommit(false);
+    //     Statement W = db.createStatement();
+    //     //String sql_line = String.format("SELECT shopping_package_info.owner_username FROM %s WHERE id = %d;", PACKAGE, package_id);
+    //     String sql_line = String.format("SELECT auth_user.username FROM auth_user, %s WHERE shopping_package_info.id = %d AND auth_user.id = shopping_package_info.owner_id;", PACKAGE, package_id);
+    //     ResultSet R = W.executeQuery(sql_line);
+
+    //     if (R.next()){
+    //         // username = R.getString("shopping_package_info.owner_username");
+    //         username = R.getString("username");
+    //     }
+    //     W.close();
+    //     db.close();
+    //     return username;
+
+    // }
+    public String InitUPSAccount(long package_id) throws ClassNotFoundException, SQLException{
         String username = "";
         Class.forName("org.postgresql.Driver");
         Connection db = DriverManager.getConnection(URL, USERNAME, PASSWD);
         db.setAutoCommit(false);
         Statement W = db.createStatement();
         //String sql_line = String.format("SELECT shopping_package_info.owner_username FROM %s WHERE id = %d;", PACKAGE, package_id);
-        String sql_line = String.format("SELECT auth_user.username FROM auth_user, %s WHERE shopping_package_info.id = %d AND auth_user.id = shopping_package_info.owner_id;", PACKAGE, package_id);
+        String sql_line = String.format("SELECT ups_account FROM %s WHERE shopping_package_info.id = %d;", PACKAGE, package_id);
         ResultSet R = W.executeQuery(sql_line);
 
         if (R.next()){
             // username = R.getString("shopping_package_info.owner_username");
-            username = R.getString("username");
+            username = R.getString("ups_account");
         }
         W.close();
         db.close();

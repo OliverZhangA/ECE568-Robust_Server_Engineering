@@ -41,7 +41,7 @@ class package_info(models.Model):
     dest_x = models.IntegerField(default=0, blank=False, null=False)
     dest_y = models.IntegerField(default=0, blank=False, null=False)
     package_job_time = models.DateTimeField(default=now)
-    status = models.CharField(max_length=10, blank=False, null=False)
+    status = models.CharField(default = "",max_length=10, blank=False, null=False)
     ups_account = models.CharField(max_length=100, blank=True, null=True)
     estimate_arrtime = models.DateTimeField(default=now)
     def __str__(self):

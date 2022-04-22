@@ -35,7 +35,9 @@ public class Package {
         truck_id = -1;
         //initialize the destination
         dbProcess db = new dbProcess();
-        username = db.InitAmazonAccount(package_id);
+        //改这里
+        //username = db.InitAmazonAccount(package_id);
+        username = db.InitUPSAccount(package_id);
         dest = db.setDest(package_id);
     }
 
