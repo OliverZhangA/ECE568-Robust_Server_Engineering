@@ -4,9 +4,15 @@ import static edu.duke.ece568.amazon.interactions.sendMesgTo;
 import static edu.duke.ece568.amazon.interactions.recvMesgFrom;
 import edu.duke.ece568.amazon.dbProcess.*;
 
+import com.google.common.collect.ImmutableMultiset;
+ 
+import java.util.List;
+
 import edu.duke.ece568.amazon.protos.AmazonUps.*;
 import edu.duke.ece568.amazon.protos.AmazonUps.Error;
 import edu.duke.ece568.amazon.protos.WorldAmazon.*;
+import oracle.net.aso.b;
+import oracle.security.o3logon.a;
 
 import java.io.IOException;
 import java.io.*;
@@ -455,50 +461,49 @@ public class backfuncs {
                 continue;
             }
             //judge if the products are correct or not
-            // for(){
-                
-            // }
-            //sorting
+            //compare the size
             List<AProduct> a = pkg.getAmazonPack().getThingsList();
             List<AProduct> b = x.getThingsList();
-            Collections.sort(a, new Comparator<AProduct>() {
-
-                public int compare(AProduct o1, AProduct o2) {
-                    // compare two instance of `Score` and return `int` as result.
-                    if(Long.compare(x, y)) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-            });
-            Collections.sort(b, new Comparator<AProduct>() {
-
-                public int compare(AProduct o1, AProduct o2) {
-                    // compare two instance of `Score` and return `int` as result.
-                    if(o1.getId()>o2.getId()) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                }
-            });
-            // Collections.sort(a, (s1, s2) -> { 
-            //     return s1.getId().compareTo(s2.getId());
-            //  });
-            // Collections.sort(b, (s1, s2) -> { 
-            //     return s1.getId().compareTo(s2.getId());
-            // });
-            if(!a.equals(b)){
-                // System.out.println("first compare result is" + Arrays.equals(pkg.getAmazonPack().getThingsList().toArray(), x.getThingsList().toArray()));
-                // System.out.println("second compare result is" + (Arrays.toString(pkg.getAmazonPack().getThingsList().toArray())).equals(Arrays.toString(x.getThingsList().toArray())));
-                System.out.println("==================================================================");
-                System.out.println(Arrays.toString(a.toArray()));
-                System.out.println("---------------------------------------------------------------");
-                System.out.println(Arrays.toString(b.toArray()));
-                System.out.println("=================world purchased processing: products not match======");
+            if(!checkProductList(a, b)){
                 continue;
             }
+
+            //sorting
+            // List<AProduct> a = pkg.getAmazonPack().getThingsList();
+            // List<AProduct> b = x.getThingsList();
+            // Collections.sort(a, new Comparator<AProduct>() {
+
+            //     public int compare(AProduct o1, AProduct o2) {
+            //         // compare two instance of `Score` and return `int` as result.
+            //         if(Long.compare(x, y)) {
+            //             return 1;
+            //         } else {
+            //             return -1;
+            //         }
+            //     }
+            // });
+            // Collections.sort(b, new Comparator<AProduct>() {
+
+            //     public int compare(AProduct o1, AProduct o2) {
+            //         // compare two instance of `Score` and return `int` as result.
+            //         if(o1.getId()>o2.getId()) {
+            //             return 1;
+            //         } else {
+            //             return -1;
+            //         }
+            //     }
+            // });
+            
+            // if(!a.equals(b)){
+            //     // System.out.println("first compare result is" + Arrays.equals(pkg.getAmazonPack().getThingsList().toArray(), x.getThingsList().toArray()));
+            //     // System.out.println("second compare result is" + (Arrays.toString(pkg.getAmazonPack().getThingsList().toArray())).equals(Arrays.toString(x.getThingsList().toArray())));
+            //     System.out.println("==================================================================");
+            //     System.out.println(Arrays.toString(a.toArray()));
+            //     System.out.println("---------------------------------------------------------------");
+            //     System.out.println(Arrays.toString(b.toArray()));
+            //     System.out.println("=================world purchased processing: products not match======");
+            //     continue;
+            // }
             // if(!pkg.getAmazonPack().getThingsList().equals(x.getThingsList())){
             //     System.out.println("==================================================================");
             //     System.out.println(Arrays.toString(pkg.getAmazonPack().getThingsList().toArray()));
@@ -515,6 +520,26 @@ public class backfuncs {
             rqstTopack(pkg);
             break;
         }
+    }
+
+    //check if two products list are equal
+    // public static boolean isEqualIgnoringOrder(List<Integer> x, List<Integer> y) {
+    //     if (x == null) {
+    //         return y == null;
+    //     }
+ 
+    //     if (x.size() != y.size()) {
+    //         return true;
+    //     }
+ 
+    //     return ImmutableMultiset.copyOf(x).equals(ImmutableMultiset.copyOf(y));
+    // }
+
+    public static boolean checkProductList(List<AProduct> a, List<AProduct> b){
+        if(a.size() != b.size()){
+            return false;
+        }
+        return ImmutableMultiset.copyOf(a).equals(ImmutableMultiset.copyOf(b));
     }
 
     //send request to UPS to send us trucks
@@ -826,6 +851,7 @@ public class backfuncs {
         ACommands.Builder acommands = ACommands.newBuilder();
         acommands.addBuy(apurchasemore);
         //send the ACommand to world
+        //用来测试小函数的时候把它注释掉了
         sendACommand(acommands.build(), seq_number);
 
         //update some info of the package
@@ -839,8 +865,9 @@ public class backfuncs {
         //initialize the package list, since when backend receives the front-end's buy rqst
         //we rqst to world to buy for us, meanwhile we create a package
         Package pkg = new Package(whnum, id, apack.build());
-
+        
         package_list.put(id, pkg);
+
     }
     
 
@@ -878,12 +905,32 @@ public class backfuncs {
 
     /*========== main function ==========*/
     public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException{
+        //=================== test the func to cheack product list ======================
+        // AProduct.Builder pdt1 = AProduct.newBuilder();
+        // pdt1.setCount(2222);
+        // pdt1.setDescription("fuck!");
+        // pdt1.setId(2);
+        // AProduct.Builder pdt2 = AProduct.newBuilder();
+        // pdt2.setCount(35635);
+        // pdt2.setDescription("fuck!fuck!");
+        // pdt2.setId(3);
+        // List<AProduct> a = new ArrayList<AProduct>();
+        // List<AProduct> b = new ArrayList<AProduct>();
+        // a.add(pdt1.build());
+        // a.add(pdt2.build());
+        // b.add(pdt2.build());
+        // b.add(pdt2.build());
+        // System.out.println(checkProductList(a, b));
+
+        //checkProductList(List<AProduct> a, List<AProduct> b)
         backfuncs backend = new backfuncs();
         //connect with ups
         backend.connect_ups();
         //run all threads
         backend.startAllthreads();
         //backend.init_frontEndthread();
+
+
     }
 }
 
