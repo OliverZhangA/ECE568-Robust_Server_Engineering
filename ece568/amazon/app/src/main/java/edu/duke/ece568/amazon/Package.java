@@ -20,6 +20,7 @@ public class Package {
     private String status;
     private String username;
     private APack amazon_pack;
+    
     //destination
     private destination dest;
 
@@ -38,7 +39,7 @@ public class Package {
         //改这里
         //username = db.InitAmazonAccount(package_id);
         username = db.InitUPSAccount(package_id);
-        dest = db.setDest(package_id);
+        dest = db.setDest(package_id);  
     }
 
     //getter

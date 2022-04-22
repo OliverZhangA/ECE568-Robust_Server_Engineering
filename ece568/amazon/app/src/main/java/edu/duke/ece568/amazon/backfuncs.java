@@ -47,6 +47,7 @@ public class backfuncs {
     Socket toups;
     Socket toWorld;
     //a data structure to store the identifiers in the response to figure out what rqst a msg is in response to
+    //处理drop ack的情况，收到处理过的response不是什么都不做，而是要回复ack
     private HashSet<Long> seqnumFromworld_list;
     
     private final Map<Long, Package> package_list;
@@ -331,12 +332,15 @@ public class backfuncs {
         ackToWorld(recvWorld);
         for(APurchaseMore x : recvWorld.getArrivedList()){
             //handle purchased item from world to warehouse
+            System.out.println("=============receive world arrived msg===========");
             long seq_fromworld = x.getSeqnum();
             //check this sequence number is in the list or not
             if(seqnumFromworld_list.contains(seq_fromworld)){
+                System.out.println("=============arrived msg: already handled===========");
                 continue;
             }
             else{
+                System.out.println("=============arrived msg: not handle, now handling===========");
                 worldPurchased(x);
                 seqnumFromworld_list.add(seq_fromworld);
             }
@@ -445,12 +449,64 @@ public class backfuncs {
         //需要synchronized吗？？？？？
         //find the package
         for(Package pkg : package_list.values()){
+            System.out.println("=================world purchased processing for each package======");
             if(pkg.getWarehouseid() != x.getWhnum()){
+                System.out.println("=================world purchased processing: warehouse not match======");
                 continue;
             }
-            if(!pkg.getAmazonPack().getThingsList().equals(x.getThingsList())){
+            //judge if the products are correct or not
+            // for(){
+                
+            // }
+            //sorting
+            List<AProduct> a = pkg.getAmazonPack().getThingsList();
+            List<AProduct> b = x.getThingsList();
+            Collections.sort(a, new Comparator<AProduct>() {
+
+                public int compare(AProduct o1, AProduct o2) {
+                    // compare two instance of `Score` and return `int` as result.
+                    if(Long.compare(x, y)) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+            });
+            Collections.sort(b, new Comparator<AProduct>() {
+
+                public int compare(AProduct o1, AProduct o2) {
+                    // compare two instance of `Score` and return `int` as result.
+                    if(o1.getId()>o2.getId()) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+            });
+            // Collections.sort(a, (s1, s2) -> { 
+            //     return s1.getId().compareTo(s2.getId());
+            //  });
+            // Collections.sort(b, (s1, s2) -> { 
+            //     return s1.getId().compareTo(s2.getId());
+            // });
+            if(!a.equals(b)){
+                // System.out.println("first compare result is" + Arrays.equals(pkg.getAmazonPack().getThingsList().toArray(), x.getThingsList().toArray()));
+                // System.out.println("second compare result is" + (Arrays.toString(pkg.getAmazonPack().getThingsList().toArray())).equals(Arrays.toString(x.getThingsList().toArray())));
+                System.out.println("==================================================================");
+                System.out.println(Arrays.toString(a.toArray()));
+                System.out.println("---------------------------------------------------------------");
+                System.out.println(Arrays.toString(b.toArray()));
+                System.out.println("=================world purchased processing: products not match======");
                 continue;
             }
+            // if(!pkg.getAmazonPack().getThingsList().equals(x.getThingsList())){
+            //     System.out.println("==================================================================");
+            //     System.out.println(Arrays.toString(pkg.getAmazonPack().getThingsList().toArray()));
+            //     System.out.println("---------------------------------------------------------------");
+            //     System.out.println(Arrays.toString(pkg.getAmazonPack().getThingsList().toArray()));
+            //     System.out.println("=================world purchased processing: products not match======");
+            //     continue;
+            // }
             System.out.println("world purchased this item");
             //request trucks from UPS
             System.out.println("&&&&&&&&&&requesting a truck");
@@ -462,7 +518,7 @@ public class backfuncs {
     }
 
     //send request to UPS to send us trucks
-    void rqstTrucks(Package pkg) throws IOException{
+    void rqstTrucks(Package pkg) throws IOException, ClassNotFoundException, SQLException{
         long package_id = pkg.getPackageId();
         if(package_list.containsKey(package_id)){
             System.out.println("asking trucks");
@@ -471,6 +527,7 @@ public class backfuncs {
             //get the sequence number
             long seq = getSeqNum();
             //create the A2UAskTruck rqst
+            
             A2UAskTruck.Builder asktruck = A2UAskTruck.newBuilder();
             asktruck.setSeqnum(seq);
             asktruck.setWarehouse(AInintToWarehouse(warehouses.get(pkg.getWarehouseid())));
@@ -537,14 +594,27 @@ public class backfuncs {
     }
 
     //assign PackageInfo: Apack to Packageinfo
-    PackageInfo.Builder APackToPackageinfo(Package p, int x, int y){
+    PackageInfo.Builder APackToPackageinfo(Package p, int x, int y) throws ClassNotFoundException, SQLException{
         PackageInfo.Builder packageinfo = PackageInfo.newBuilder();
         packageinfo.setShipid(p.getPackageId());
         packageinfo.setX(x);
         packageinfo.setY(y);
+        //add product infomation
+        long package_id = p.getPackageId();
+        for(AProduct pdt : p.getAmazonPack().getThingsList()){
+            Product.Builder product = Product.newBuilder();
+            long product_id = pdt.getId();
+            dbProcess db = new dbProcess();
+            String name = db.getProduct_name(package_id, product_id);
+            product.setName(name);
+            product.setCount(pdt.getCount());
+            product.setDescription(pdt.getDescription());
+            packageinfo.addProduct(product);
+        }
+
         if(p.getAcccount() != null){
             packageinfo.setUserName(p.getAcccount());
-        }
+        }      
         return packageinfo;
     }
 

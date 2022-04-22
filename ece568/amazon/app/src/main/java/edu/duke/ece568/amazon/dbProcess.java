@@ -113,6 +113,26 @@ public class dbProcess {
         //return apurchasemore.build();
     }
 
+    //abstract the product name from database to initialize the package info
+    public String getProduct_name(long package_id, long product_id) throws SQLException, ClassNotFoundException{
+        String product_name = "";
+        Class.forName("org.postgresql.Driver");
+        Connection db = DriverManager.getConnection(URL, USERNAME, PASSWD);
+        db.setAutoCommit(false);
+
+        Statement W = db.createStatement();
+        String sql_line = String.format("SELECT shopping_commodity.commodity_name FROM %s, %s WHERE shopping_order.commodity_id = shopping_commodity.id AND shopping_order.package_info_id = %d AND shopping_commodity.id = %d;", PRODUCT, ORDER, package_id, product_id);
+        ResultSet R = W.executeQuery(sql_line);
+
+        if(R.next()){
+            String name = R.getString("commodity_name");
+            product_name = name;   
+        }
+        W.close();
+        db.close();
+        return product_name;
+    }
+
     //helper function for setting the whnum for APurchaseMore
     public int getwhnum(long package_id) throws ClassNotFoundException, SQLException{
         //set default is -1
@@ -211,7 +231,6 @@ public class dbProcess {
         W.close();
         db.close();
         return username;
-
     }
 
     //update delivery address

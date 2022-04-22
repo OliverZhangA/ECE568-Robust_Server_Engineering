@@ -13,7 +13,9 @@
               <a class="text-muted">estimated arrtime is :{{ pack.estimate_arrtime }}</a>
               <small class="text-muted">{{ cata.status }}</small>
             </div>
-            <h2><a class="article-title" href="{% url 'orderlist' pack.id %}">{{ pack.ups_account }}</a ></h2>
+            <!-- <h2><a class="article-title" href="{% url 'orderlist' pack.id %}">{{ pack.ups_account }}</a ></h2> -->
+            <h2><a class="article-title" href="{% url 'orderlist' pack.id %}">related ups account: {{ pack.ups_account }}</a ></h2>
+            <h2><a class="article-title" href="{% url 'orderlist' pack.id %}">order-time: {{ pack.package_job_time }}</a ></h2>
           </div>
         </article>
     {% endfor %}
