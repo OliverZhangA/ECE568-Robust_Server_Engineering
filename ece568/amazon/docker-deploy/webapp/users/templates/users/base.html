@@ -36,14 +36,28 @@
             <a class="nav-item nav-link" href="{% url 'ride-home' %}">Home</a>
             <a class="nav-item nav-link" href="{% url 'ride-user' %}">Passenger Home</a>
             <a class="nav-item nav-link" href="{% url 'ride-driver' %}">Driver Home</a>
-            <a class="nav-item nav-link" href="{% url 'driverprofile' %}">Profile</a>
+            <a class="nav-item nav-link" href="{% url 'driverprofile' %}">
+              <i class='fa-solid fa-circle-user fa-2x' style='color:#f7c614'></i>
+            </a>
             <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
             <a class="nav-item nav-link" href="{% url 'packagelist' %}">
-              <i class='fa-solid fa-clipboard-list fa-2x  fa-fade' style='color:#c561cc'></i>
+              <i class='fa-solid fa-list-check fa-2x' style='color:#20c997'></i>
+              <!-- <i class='fa-regular fa-memo-circle-check fa-2x' style='color:#7eb99b'></i> -->
             </a>
             <a class="nav-item nav-link" href="{% url 'shoppingCart' %}" >
               <i class='fa-solid fa-cart-arrow-down fa-2x  fa-bounce' style='color:#029acf'></i>
             </a>
+            <form class="d-flex" method="POST" action="{% url 'toSearchResult' %}">
+              {% csrf_token %}
+            <div class="search-box">
+              <input class="search-txt" type="text" name="keyword" placeholder="Type to search">
+              <button type="submit" name="searching" class="search-btn" >&nbsp;
+                <!-- <i class='fas fa-search fa-lg  fa-spin' style='color:#6610f2'></i> -->
+                <i class='fa-solid fa-magnifying-glass fa-2x  fa-fade' style='color:#a531b4'></i>
+              </button>
+              <!-- <a class="search-btn" href="#"> -->
+            </div>
+            </form>
 
             <div>
               <head>
@@ -52,29 +66,7 @@
                 <script defer src="https://use.fontawesome.com/releases/v6.1.1/js/all.js"></script>
                 <title> Awesome Search Box</title>
               </head>
-              <form class="d-flex" method="POST" action="{% url 'toSearchResult' %}">
-                {% csrf_token %}
-              <div class="search-box">
-                <input class="search-txt" type="text" name="keyword" placeholder="Type to search">
-                <!-- <button type="submit" name="search" class="btn btn-primary mt-3">&nbsp;search</button> -->
-                <!-- <a class="search-btn" type="submit" name="search" value="text" >&nbsp;S</a> -->
-                <!-- <style>
-                  button {
-                      background-image: url(
-          'https://media.geeksforgeeks.org/wp-content/uploads/20190314004249/sample-image2.png');
-                      background-size: cover;
-                      width: 300px;
-                      height: 200px;
-                      font-size: 2rem;
-                  }
-              </style> -->
-                <button type="submit" name="searching" class="search-btn" >&nbsp;
-                  <!-- <i class='fas fa-search fa-lg  fa-spin' style='color:#6610f2'></i> -->
-                  <i class='fa-solid fa-magnifying-glass-chart fa-lg  fa-beat-fade' style='color:#d9831f'></i>
-                </button>
-                <!-- <a class="search-btn" href="#"> -->
-              </div>
-              </form>
+              
               </div>
         {% endif %}
       </div>

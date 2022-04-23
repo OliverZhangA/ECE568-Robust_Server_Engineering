@@ -3,13 +3,13 @@
     background-image: url("images/bb.gif");
 } */
 .search-box{
-    position: absolute;
+    position: relative;
     top: 50%;
     left: 70%;
     transform: translate(-50%,-50%);
     /* background: #2f3640; */
+    background: white;
     background-position: center;
-    background-image: url("images/dog.gif");
     background-size: 35%;
     height: 40px;
     border-radius: 40px;
@@ -28,23 +28,21 @@
     transition: 0.4s;
 }
 .search-box:hover > .search-txt{
-    width: 240px;
+    width: 150px;
     padding: 0 6px;
 }
 .search-box:hover > .search-btn{
-    /* background-image: url("images/dog.gif"); */
     background: linear-gradient(#ccc2a6, #eae0c2);
-    /* background: white; */
 }
 .search-txt{
     border: none;
     background: none;
     outline: none;
     float: left;
-    padding: 0;
+    padding: 20px;
     color: black;
     font-size: 16px;
-    transition: 0.4s;
+    transition: 0.8s;
     line-height: 250%;
     width: 0px;
 
