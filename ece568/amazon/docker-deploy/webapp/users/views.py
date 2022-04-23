@@ -15,7 +15,7 @@ def register(request):
         if form.is_valid():
             form.save()
             username=form.cleaned_data.get('username')
-            messages.success(request,f'Welcome {username}! Your account has been created! Congratulations to join bbRide!')
+            messages.success(request,f'Welcome {username}! Your account has been created! Congratulations to join BBshopping!')
             return redirect('login')
 
     else:
@@ -40,7 +40,7 @@ def driverform(request):
             username=request.user.username
             # username=form_user.cleaned_data.get('username')
             # userid=form_user.cleaned_data.get('userid')
-            messages.success(request,f'Driver {username}, you have already updated your driver information!')
+            messages.success(request,f'Driver {username}, you have already updated your customer information!')
             return redirect('driverprofile')
     else:
         curuser = User.objects.get(pk=request.user.id)
@@ -51,10 +51,6 @@ def driverform(request):
         'form_user': form_user,
         'form_driver': form_driver
     }
-    if request.user.driverprofile.plate_num:
-        messages.success(request,'You are already a driver, you can edit all your info right here!')
-    else:
-        messages.success(request,'You are not a driver yet, you can register as a driver here!')
     return render(request,'users/driverprofile.html',context)
 
 @login_required

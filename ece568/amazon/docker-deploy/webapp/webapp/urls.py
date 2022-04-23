@@ -23,7 +23,6 @@ from django.conf.urls.static import static
 from shopping import views as shop_views
 
 urlpatterns = [
-    path('rides/', include('rides.urls')),
     path('driverprofile/', user_views.driverform, name='driverprofile'),
     path('register/', user_views.register, name='register'),
 

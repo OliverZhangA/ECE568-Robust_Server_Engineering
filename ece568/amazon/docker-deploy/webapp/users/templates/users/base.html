@@ -33,19 +33,22 @@
               </div>
             </div>
             {% else %}
-            <a class="nav-item nav-link" href="{% url 'ride-home' %}">Home</a>
-            <a class="nav-item nav-link" href="{% url 'ride-user' %}">Passenger Home</a>
-            <a class="nav-item nav-link" href="{% url 'ride-driver' %}">Driver Home</a>
+            <a class="nav-item nav-link" href="{% url 'ride-user' %}">Catalog</a>
             <a class="nav-item nav-link" href="{% url 'driverprofile' %}">
               <i class='fa-solid fa-circle-user fa-2x' style='color:#f7c614'></i>
             </a>
-            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
             <a class="nav-item nav-link" href="{% url 'packagelist' %}">
               <i class='fa-solid fa-list-check fa-2x' style='color:#20c997'></i>
               <!-- <i class='fa-regular fa-memo-circle-check fa-2x' style='color:#7eb99b'></i> -->
             </a>
             <a class="nav-item nav-link" href="{% url 'shoppingCart' %}" >
               <i class='fa-solid fa-cart-arrow-down fa-2x  fa-bounce' style='color:#029acf'></i>
+            </a>
+            <a class="nav-item nav-link" href="{% url 'logout' %}">
+              <div style = "position:relative; ">
+                <i class="fa fa-sign-out fa-2x" style='color:#9d9797' aria-hidden="true"></i>
+             </div>
+              
             </a>
             <form class="d-flex" method="POST" action="{% url 'toSearchResult' %}">
               {% csrf_token %}
@@ -57,6 +60,7 @@
               </button>
               <!-- <a class="search-btn" href="#"> -->
             </div>
+            
             </form>
 
             <div>
