@@ -3,6 +3,8 @@ from itertools import product
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
+from users.models import DriverProfile
 from .models import catalog, commodity, order, package_info, warehouse
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -16,6 +18,7 @@ from django.contrib.staticfiles import finders
 from datetime import datetime, timedelta
 import math
 from django.db.models import Count
+from django.contrib import messages
 
 # Create your views here.
 class OrderList(ListView):
@@ -78,13 +81,57 @@ def commodityDetail(request, pk1):
         'commodity' : 'commo'
     }
     if request.method == "POST":
-        if not request.user.is_authenticated:
-            return redirect(reverse("login"))
-        amount = int(request.POST["count"])
-        if request.POST["action"] == "buy":
-            # create a new package
+        if request.POST.get("action"):
+            if not request.user.is_authenticated:
+                return redirect(reverse("login"))
+            if request.POST["action"] == "buy":
+                # create a new package
+                amount = int(request.POST["count"])
+                package = package_info()
+                package.owner = request.user
+                package.save()
+                package.order_set.create(
+                    owner=request.user,
+                    commodity = commo,
+                    commodity_amt = amount
+                )
+                # for order in package.order_set.all():
+                #     order.save()
+                print("--"+str(package.id)+"--")
+                #buyandpack(package.id)
+                #return HttpResponse("buy successful")
+                return redirect(reverse("checkoutpage", kwargs={'package_id': package.id}))
+            elif request.POST["action"] == "add":
+                amount = int(request.POST["count"])
+                try:
+                    order_in_cart = order.objects.get(owner=request.user, commodity=commo, package_info__isnull=True)
+                    order_in_cart.commodity_amt += amount
+                    order_in_cart.save()
+                except order.DoesNotExist:
+                    neworder = order(owner=request.user, commodity=commo, commodity_amt=amount)
+                    neworder.save()
+                context = {
+                    "prompt" : "Adding to cart successfully"
+                }
+                return render(request, "shopping/sucToCart.html", context)
+        elif request.POST.get("sendemail"):
+            #request.POST["sendemail"]
+            subject = "Question from user: " + request.user.username
+            message = "Product name: " + commo.commodity_name + "\nProduct recorded id: " + str(commo.id) + "\nMessage:\n------------------\n" + request.POST["content"] + "\n------------------\nand please reply to me at: \n" + request.POST["email"]
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list1 = [request.user.email]
+            send_mail(subject,message,email_from,recipient_list1)
+            messages.success(request,"Your question has been sent to the seller, please wait for responses patiently, thanks for choosing us!")
+            context['commo'] = commo
+            print("sending email to" + commo.seller_email)
+            return render(request, "shopping/commoditydetail.html", context)
+        else:
+            amount = int(request.POST["quantity"])
             package = package_info()
             package.owner = request.user
+            package.is_gift = True
+            if request.POST.get("blessing"):
+                package.blessing = request.POST["blessing"]
             package.save()
             package.order_set.create(
                 owner=request.user,
@@ -97,19 +144,8 @@ def commodityDetail(request, pk1):
             #buyandpack(package.id)
             #return HttpResponse("buy successful")
             return redirect(reverse("checkoutpage", kwargs={'package_id': package.id}))
-        else:
-            try:
-                order_in_cart = order.objects.get(owner=request.user, commodity=commo, package_info__isnull=True)
-                order_in_cart.commodity_amt += amount
-                order_in_cart.save()
-            except order.DoesNotExist:
-                neworder = order(owner=request.user, commodity=commo, commodity_amt=amount)
-                neworder.save()
-            context = {
-                "prompt" : "Adding to cart successfully"
-            }
-            return render(request, "shopping/sucToCart.html", context)
 
+            
     else:
         context['commo'] = commo
         return render(request, "shopping/commoditydetail.html", context)
@@ -146,6 +182,7 @@ def shoppingCart(request):
     return render(request, "shopping/shopping_cart.html", context)
 
 def checkoutpage(request, package_id):
+    pck = package_info.objects.get(id=package_id)
     if request.method == "POST":
         print("!!!!!!!!!!!!!!posting!!!!!!!!!!!!!!")
         #form = checkout_form(request.POST)
@@ -164,6 +201,31 @@ def checkoutpage(request, package_id):
             print("!!!!!!!!!!!!!!canceling!!!!!!!!!!!!!!")
             return redirect(reverse("shoppingCart"))
             #return HttpResponse("cancel checkout!!")
+        elif request.POST.get("qcheckout"):
+            print("!!!!!!!!!!!!!!checkingout!!!!!!!!!!!!!!")
+            pck = package_info.objects.get(id=package_id)
+            if pck.status != "":
+                return HttpResponse("this order has been created, do not repeat placing order!")
+            curuserprofile = DriverProfile.objects.get(user=request.user.id)
+            pck.dest_x = curuserprofile.dest_x
+            pck.dest_y = curuserprofile.dest_y
+            pck.ups_account = curuserprofile.UPS_account
+            pck.status = "created"
+            pck.save()
+            print("8888888888888888"+str(type(pck.dest_x)))
+            wh_id = match_warehouse(int(pck.dest_x), int(pck.dest_y))
+            pck.from_wh = warehouse.objects.get(id=wh_id)
+            #makeup offset from EST to EDT
+            offset = timedelta(hours=1)
+            pck.package_job_time = pck.package_job_time + offset
+            #update the arrival time
+            d = timedelta(hours=estimateArrtime(pck))
+            pck.estimate_arrtime = pck.estimate_arrtime + offset + d
+            pck.save()
+            buyandpack(package_id)
+            sendemail(pck)
+            #turn to the checkout successful page!
+            return HttpResponse("checkout successful!")
         elif request.POST.get("check_out"):
             print("!!!!!!!!!!!!!!checkingout!!!!!!!!!!!!!!")
             pck = package_info.objects.get(id=package_id)
@@ -185,12 +247,16 @@ def checkoutpage(request, package_id):
             pck.estimate_arrtime = pck.estimate_arrtime + offset + d
             pck.save()
             buyandpack(package_id)
-            
             sendemail(pck)
-            
             #turn to the checkout successful page!
             return HttpResponse("checkout successful!")
-    return render(request, "shopping/checkout_page.html")
+    elif pck.is_gift:
+        context = {
+            "blessing" : pck.blessing,
+        }
+        return render(request, "shopping/giftcheckout_page.html", context)
+    else:
+        return render(request, "shopping/checkout_page.html")
 
 def estimateArrtime(pck):
     wh = pck.from_wh
@@ -200,12 +266,12 @@ def estimateArrtime(pck):
     num_items=pck.order_set.count()
     print("num_items in this package is" + str(num_items))
     est_hours = dist/(700/24) + num_items * 6
-    print("est_transfer time is: " + str(est_hours))
+    print("Est_transfer time is: " + str(est_hours))
     return int(est_hours)
 
 def sendemail(pck):
     subject = 'Your order has been placed!'
-    message = pck.info() + 'estimate arriving time is: ' + str(pck.estimate_arrtime)+ '\n' + 'Thank you for choosing us!' 
+    message = pck.info() + 'Estimate arriving time is: ' + str(pck.estimate_arrtime.strftime('%Y-%m-%d %H:%M'))+ '\n' + 'Thank you for choosing us!' 
     email_from = settings.EMAIL_HOST_USER
     recipient_list1 = [pck.owner.email]
     send_mail(subject,message,email_from,recipient_list1)

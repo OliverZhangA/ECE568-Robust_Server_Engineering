@@ -5,7 +5,10 @@
 <body>
     <h1> checkout</h1>
 <div>
-
+    <i class='fa-solid fa-gift fa-2x' style='color:#fb7e7e'></i>
+    {% if blessing %}
+    <h2> {{ blessing }}</h2>
+    {% endif %}
     <form name="checkout_form" class="card p-2 ml-2 mt-3" method="POST" onsubmit>
         {% csrf_token %}
         <input type="number" name="dest_x" value min="0" max="99999" class="form-control" placeholder="x coordinate" required>

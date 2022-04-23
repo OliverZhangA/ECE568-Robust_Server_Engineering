@@ -31,5 +31,8 @@ class DriverProfile(models.Model):
     UPS_account = models.CharField(default = "", max_length=100, blank=True, null=True)
     dest_x = models.IntegerField(default=0, blank=True, null=False)
     dest_y = models.IntegerField(default=0, blank=True, null=False)
+    cardnum = models.CharField(default = "", max_length=100, blank=True, null=True)
+    seccode = models.CharField(default = "000", max_length=3, blank=True, null=True)
+    valid_date = models.CharField(default = "12/25", max_length=5, blank=True, null=True)
     def __str__(self):
         return f'{self.user.username} Profile'

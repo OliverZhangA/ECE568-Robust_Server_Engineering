@@ -21,4 +21,4 @@ class UsersForm(forms.ModelForm):
 class DriversForm(forms.ModelForm):
     class Meta:
         model = DriverProfile
-        fields = ['dest_x','dest_y','UPS_account']
+        fields = ['dest_x','dest_y','UPS_account','cardnum','seccode','valid_date']

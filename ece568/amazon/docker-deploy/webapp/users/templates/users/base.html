@@ -73,13 +73,14 @@
     </nav>
   </header>
   <div class="container">
-    {% if messages %}
-      {% for message in messages %}
-        <div class='alert alert{{ message.tags }}'>
-          {{ message }}
-        </div>
-      {% endfor %}
-    {% endif %}
+    {% include 'shopping/messages.html' %}
+    <script>
+        window.setTimeout(function() {
+            $("#msg").fadeTo(400, 0).slideUp(400, function(){
+            $(this).remove();
+        });
+        }, 3000);
+      </script>
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">

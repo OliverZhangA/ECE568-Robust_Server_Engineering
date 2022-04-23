@@ -11,8 +11,29 @@
             <span style="color: greenyellow; "> {{ commo.commodity_name}}</span>
             <span style="font-size: medium">
         </p>
+        <p class="text-md-left mt-4" style="font-size: medium">
+            Desc: <br> {{ commo.commodity_desc }}
+        </p>
+        <form name="contactseller_form" class="card p-2 ml-2 mt-3" method="POST" onsubmit>
+            {% csrf_token %}
+            {% if commo.seller %}
+            Seller : {{ commo.seller }}
+            {% endif %}
+            <input type="text" name="content" class="form-control" placeholder="Tell seller your needs" required>
+            <input type="text" name="email" class="form-control" placeholder="Your contact email" required>
+            <button type="submit" name="sendemail" value="send" class="btn btn-primary mt-3">&nbsp;confirm sending</button>
+        </form>
+        <form name="gitf_form" class="card p-2 ml-2 mt-3" method="POST" onsubmit>
+            {% csrf_token %}
+            Want to send as a gift?
+            <input type="text" name="quantity" class="form-control" placeholder="Quantity" required>
+            <input type="text" name="blessing" class="form-control" placeholder="Bless your loved ones">
+            <button type="submit" name="gift" value="gift" class="btn btn-primary mt-3">&nbsp;Send
+                <i class='fa-solid fa-gift fa-2x' style='color:#fb7e7e'></i>
+            </button>
+        </form>
         <p class="text-md-left mt-4" style="font-size: xx-large">
-            <b>BUY IT NOW!!!</b>
+            Buy for yourself
         </p>
     </div>
         <!-- <h3>Commodity name : {{commodity.commodity_name}}</h3>
@@ -29,6 +50,7 @@
         <button name="action" value="add" class="btn btn-secondary mt-3">Add to cart</button>
     </form>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </body>
 {% endblock %}
 
