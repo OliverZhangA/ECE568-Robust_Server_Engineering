@@ -343,12 +343,14 @@ public class backfuncs {
         // UPSCommands.Builder recvUps = UPSCommands.newBuilder();
         // recvMesgFrom(recvUps, toups.getInputStream());
 
-        int r = random.nextInt(3);
-        if(r!=2){
-            ackToWorld(recvWorld);
-        } else {
-            System.out.println("<<<<<<<<<<<<<<<<<< drop ack to world >>>>>>>>>>>>>>>>");
-        }
+        // int r = random.nextInt(3);
+        // if(r!=2){
+        //     ackToWorld(recvWorld);
+        // } else {
+        //     System.out.println("<<<<<<<<<<<<<<<<<< drop ack to world >>>>>>>>>>>>>>>>");
+        // }
+
+        ackToWorld(recvWorld);
         for(APurchaseMore x : recvWorld.getArrivedList()){
             //handle purchased item from world to warehouse
             System.out.println("=============receive world arrived msg===========");
