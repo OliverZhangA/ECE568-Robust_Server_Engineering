@@ -186,7 +186,7 @@ def checkoutpage(request, package_id):
             pck.save()
             buyandpack(package_id)
             
-            #sendemail(pck)
+            sendemail(pck)
             
             #turn to the checkout successful page!
             return HttpResponse("checkout successful!")
@@ -205,7 +205,7 @@ def estimateArrtime(pck):
 
 def sendemail(pck):
     subject = 'Your order has been placed!'
-    message = pck.info() + 'Thank you for choosing us!' + pck.estimate_arrtime
+    message = pck.info() + 'estimate arriving time is: ' + str(pck.estimate_arrtime)+ '\n' + 'Thank you for choosing us!' 
     email_from = settings.EMAIL_HOST_USER
     recipient_list1 = [pck.owner.email]
     send_mail(subject,message,email_from,recipient_list1)

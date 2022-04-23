@@ -31,7 +31,7 @@ class commodity(models.Model):
     commodity_catalog = models.ForeignKey(catalog, on_delete=models.SET_NULL, null=True)
     commodity_desc = models.CharField(max_length=200, blank=True, default="")
     commodity_img = models.CharField(max_length=100, default="/static/imgs/cart.jpeg")
-
+    seller_email = models.CharField(max_length=100, blank=True, default="1148201178@qq.com")
     def __str__(self):
         return str(self.commodity_name)
 

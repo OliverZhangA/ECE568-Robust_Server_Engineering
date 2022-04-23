@@ -27,24 +27,28 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.InputStreamReader;
 
+//for test
+import java.lang.Math;
+
 public class backfuncs {
     /*
     ups group 1:
+    */
     private static final String WORLD_HOST = "vcm-25610.vm.duke.edu";
     //private static final String WORLD_HOST = "vcm-24561.vm.duke.edu";
     private static final String UPS_HOST = "vcm-26136.vm.duke.edu";
     private static final int WORLD_PORT = 23456;
     private static final int UPS_PORT = 6066;
     private static final int FRONT_PORT = 7777;
-    */
+
     /*
     ups group 2:
     */
-    private static final String WORLD_HOST = "vcm-26608.vm.duke.edu";
-    private static final String UPS_HOST = "vcm-26608.vm.duke.edu";
-    private static final int WORLD_PORT = 23456;
-    private static final int UPS_PORT = 33333;
-    private static final int FRONT_PORT = 7777;
+    // private static final String WORLD_HOST = "vcm-26608.vm.duke.edu";
+    // private static final String UPS_HOST = "vcm-26608.vm.duke.edu";
+    // private static final int WORLD_PORT = 23456;
+    // private static final int UPS_PORT = 33333;
+    // private static final int FRONT_PORT = 7777;
 
     private static final int MAXTIME = 20000;
 
@@ -60,6 +64,9 @@ public class backfuncs {
     private long seqnum;
     // a data sturcture to record the time each command is sent
     private final Map<Long, Timer> rqst_list;
+
+    //for test response ack to world
+    private Random random = new Random(); 
 
     //construct function
     public backfuncs() throws IOException, ClassNotFoundException, SQLException{
@@ -335,7 +342,13 @@ public class backfuncs {
     public void handle_world(AResponses.Builder recvWorld) throws IOException, ClassNotFoundException, SQLException{
         // UPSCommands.Builder recvUps = UPSCommands.newBuilder();
         // recvMesgFrom(recvUps, toups.getInputStream());
-        ackToWorld(recvWorld);
+
+        int r = random.nextInt(3);
+        if(r!=2){
+            ackToWorld(recvWorld);
+        } else {
+            System.out.println("<<<<<<<<<<<<<<<<<< drop ack to world >>>>>>>>>>>>>>>>");
+        }
         for(APurchaseMore x : recvWorld.getArrivedList()){
             //handle purchased item from world to warehouse
             System.out.println("=============receive world arrived msg===========");

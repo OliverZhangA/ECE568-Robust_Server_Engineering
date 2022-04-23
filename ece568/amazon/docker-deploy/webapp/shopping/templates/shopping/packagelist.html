@@ -10,7 +10,12 @@
               <a class="text-muted">package id is :{{ pack.id }}</a >
               <a class="text-muted">package status is :{{ pack.status }}</a>
               <a class="text-muted">package dest is :({{ pack.dest_x }},{{ pack.dest_y }})</a>
+              {% if pack.status|stringformat:'s' != "delivered"|stringformat:'s' %}
               <a class="text-muted">estimated arrtime is :{{ pack.estimate_arrtime }}</a>
+              {% endif %}
+              {% if pack.status|stringformat:'s' == "delivered"|stringformat:'s' %}
+              <img class="rounded-circle article-img" src="/static/imgs/baby-bottles.png">
+              {% endif %}
               <small class="text-muted">{{ cata.status }}</small>
             </div>
             <!-- <h2><a class="article-title" href="{% url 'orderlist' pack.id %}">{{ pack.ups_account }}</a ></h2> -->
