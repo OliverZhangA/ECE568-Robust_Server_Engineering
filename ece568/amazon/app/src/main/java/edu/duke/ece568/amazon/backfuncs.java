@@ -257,6 +257,7 @@ public class backfuncs {
         String status = upsPkgstatus.getStatus();
         if(package_list.containsKey(id)){
             package_list.get(id).setStatus(status);
+            System.out.println("----------- package status updated by UPS: " + status + "----------");
         } else {
             //can not find the package according to id
             System.out.println("package query status from UPS does not exists!");
@@ -751,8 +752,13 @@ public class backfuncs {
             a2uloading.setWarehouse(AInintToWarehouse(warehouses.get(pkg.getWarehouseid())));
             a2uloading.setTruckid(pkg.getTruckid());
             a2uloading.addShipid(package_id);
+
             AmazonCommands.Builder amazoncommands = AmazonCommands.newBuilder();
             amazoncommands.addLoading(a2uloading);
+
+            //---------- for test ------------
+            // //send query shipstatus info
+            // queryShiptoUps(package_id);
             //send A2ULoading to ups
             sendMesgTo(amazoncommands.build(), toups.getOutputStream());
         }
@@ -777,6 +783,10 @@ public class backfuncs {
             loaded.addShipid(package_id);
             AmazonCommands.Builder amazoncommand = AmazonCommands.newBuilder();
             amazoncommand.addLoaded(loaded);
+
+            //---------------- to test ---------------
+            // //send query shipstatus info
+            // queryShiptoUps(package_id);
 
             //send AmazonCommands to ups
             sendMesgTo(amazoncommand.build(), toups.getOutputStream());

@@ -12,6 +12,13 @@
               <a class="text-muted">amount :{{ order.commodity_amt }}</a>
               <a class="text-muted">description :{{ order.commodity.commodity_desc }}</a>
               <small class="text-muted">{{ cata.status }}</small>
+              <form name="contactseller_form" class="card p-2 ml-2 mt-3" method="POST" onsubmit>
+                {% csrf_token %}
+                <input type="text" name="content" class="form-control" placeholder="your needs" required>
+                <input type="text" name="email" class="form-control" placeholder="your contact email" required>
+                <button type="submit" name="check_out" value="check_out" class="btn btn-primary mt-3">&nbsp;confirm checkout</button>
+                <button type="submit" name="cancel" value="cancel" class="btn btn-secondary mt-3" formnovalidate>&nbsp;cancel checkout</button>
+            </form>
             </div>
             <h2><a class="article-title" >{{ pack.ups_account }}</a ></h2>
           </div>
