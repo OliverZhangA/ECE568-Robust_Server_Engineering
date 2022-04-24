@@ -1,0 +1,157 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+
+.split {
+  height: 100%;
+  width: 50%;
+  position: absolute;
+}
+
+.left {
+  left: 0;
+  overflow-y: scroll;
+  /* background-color: #111; */
+}
+
+.right {
+  right: 0;
+  overflow-y: scroll;
+  /* background-color: red; */
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.centered img {
+  width: 50px;
+  border-radius: 50%;
+}
+</style>
+</head>
+{% if request.user.is_authenticated %}
+<body>
+    <div class="split left">
+      <div class="centered">
+          <h1><p style="font-family:Bradley Hand; color:red;">!! Daily Best Buy !!</p></h1>
+        {% if commodities %}
+        {% for commodity in commodities %}
+            <article class="media content-section">
+              <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
+              <!-- <img src="img_chania.jpg" alt="Flowers in Chania" width="460" height="345"> -->
+              <img src="{{ commodity.commodity_img }}" class="img-thumbnail" alt="picture of the product" width="50">
+              <a class="" href="{% url 'commoditydetail' commodity.id %}">
+                <i class='fa-regular fa-envelope fa-2x' style='color:#12d972'></i>
+                contact seller
+              </a>
+              <div class="media-body">
+                <!-- <div class="article-metadata">
+                  <a class="text-muted">{{ commodity.commodity_name }}</a >
+                    <a class="text-muted" href="{% url 'commoditydetail' commodity.id %}">{{ commodity.commodity_name }}</a >
+                </div> -->
+                <h2><a class="article-title" href="{% url 'commoditydetail' commodity.id %}">{{ commodity.commodity_name }}</a ></h2>
+              </div>
+            </article>
+        {% endfor %}
+      
+      {% else %}
+      <p> No open or confirmed orders </p>
+      {% endif%}
+      </div>
+    </div>
+    
+    <div class="split right">
+      <div class="centered">
+        <h1><p style="font-family:Bradley Hand; color:rgb(0, 0, 0);">Catalog List</p></h1>
+      {% if catas %}
+        {% for cata in catas %}
+            <article class="media content-section">
+              <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
+              <div class="media-body">
+                <div class="article-metadata">
+                  <img src="{{ cata.catalog_img }}" class="img-thumbnail" alt="picture of the product" width="10">
+                  <a class="text-muted" href="{% url 'catadetail' cata.cate_name %}">{{ cata.cate_name }}</a >
+                </div>
+                <!-- <a class="article-title" href="{% url 'catadetail' cata.cate_name %}">{{ cata.cate_name }}</a > -->
+              </div>
+            </article>
+        {% endfor %}
+      
+      {% else %}
+      <p> No catalog available right now </p>
+      {% endif%}
+      </div>
+    </div>
+         
+    </body>
+{% else %}
+<body>
+    <div class="split left">
+      <div class="centered">
+          <h1><p style="font-family:Bradley Hand; color:red;">!! Daily Best Buy !!</p></h1>
+        {% if commodities %}
+        {% for commodity in commodities %}
+            <article class="media content-section">
+              <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
+              <!-- <img src="img_chania.jpg" alt="Flowers in Chania" width="460" height="345"> -->
+              <img src="{{ commodity.commodity_img }}" class="img-thumbnail" alt="picture of the product" width="50">
+              <a class="" href="{% url 'login' %}">
+                <i class='fa-regular fa-envelope fa-2x' style='color:#12d972'></i>
+                contact seller
+              </a>
+              <div class="media-body">
+                <!-- <div class="article-metadata">
+                  <a class="text-muted">{{ commodity.commodity_name }}</a >
+                    <a class="text-muted" href="{% url 'commoditydetail' commodity.id %}">{{ commodity.commodity_name }}</a >
+                </div> -->
+                <h2><a class="article-title" href="{% url 'login' %}">{{ commodity.commodity_name }}</a ></h2>
+              </div>
+            </article>
+        {% endfor %}
+      
+      {% else %}
+      <p> No open or confirmed orders </p>
+      {% endif%}
+      </div>
+    </div>
+    
+    <div class="split right">
+      <div class="centered">
+        <h1><p style="font-family:Bradley Hand; color:rgb(0, 0, 0);">Catalog List</p></h1>
+      {% if catas %}
+        {% for cata in catas %}
+            <article class="media content-section">
+              <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
+              <div class="media-body">
+                <div class="article-metadata">
+                  <img src="{{ cata.catalog_img }}" class="img-thumbnail" alt="picture of the product" width="10">
+                  <a class="text-muted" href="{%  url 'login' %}">{{ cata.cate_name }}</a >
+                </div>
+                <!-- <a class="article-title" href="{% url 'catadetail' cata.cate_name %}">{{ cata.cate_name }}</a > -->
+              </div>
+            </article>
+        {% endfor %}
+      
+      {% else %}
+      <p> No catalog available right now </p>
+      {% endif%}
+      </div>
+    </div>
+         
+    </body>
+{% endif %}
+
+</html> 
+{% endblock %}

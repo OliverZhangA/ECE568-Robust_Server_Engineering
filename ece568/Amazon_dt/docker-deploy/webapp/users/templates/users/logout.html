@@ -1,0 +1,12 @@
+{% extends "users/base.html" %}
+{% block content %}
+    <h2></h2>
+    <p style="font-family:Bradley Hand; font-size: xx-large;">You have been logged out</p>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            <a class="ml-2" href="{% url 'login' %}">
+                <p style="font-family:Bradley Hand; font-size: x-large;">Log In Again</p>
+            </a>
+        </small>
+    </div>
+{% endblock content %}

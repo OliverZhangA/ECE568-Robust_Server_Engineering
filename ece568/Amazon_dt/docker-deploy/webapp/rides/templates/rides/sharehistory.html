@@ -1,0 +1,67 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
+
+<body>
+{% if orderinfo.status == 'open' %}
+    <h1>Rides Joining History</h1>
+        <h3>Order Details</h3>
+        <p>Order Number : {{orderinfo.pk}}</p>
+        <p>Owner : {{orderinfo.owner.username}}</p>
+        <p>Owner Number : {{orderinfo.passenger_num}}</p>
+        <p>Destination : {{orderinfo.dest_addr}}</p>
+        <p>Arrival Time : {{orderinfo.arrival_date}}</p>
+        <p>Vehicle Type: {{orderinfo.vehicle_type}}</p>
+        {% if orderinfo.is_shared %}
+        <p>Sharable? : YES</p>
+        {% else %}
+        <p>Sharable? : NO</p>
+        {% endif %}
+        {% for sharer in orderinfo.ridesharer_set.all %}
+            <li>Sharer {{forloop.counter}} : {{sharer.sharer.username}}</li>
+            <li>Sharer Number: {{sharer.passenger_num}}</li>
+        {% endfor %}
+        <p>Total Passenger Number : {{orderinfo.total_num}}</p>
+        <p>Status : {{orderinfo.status}}</p>
+        <p>Special Request:{{orderinfo.special_info}}</p>
+
+        <br/>
+
+        <button class="btn btn-outline-info" onclick="javascript:history.go(-1);" type="button">Return</button>
+        <!-- {% for sharer in orderinfo.ridesharer_set.all %}
+            {% if sharer.sharer == request.user %}
+                <a class="btn btn-outline-danger" href="{% url 'deletesharer' sharer.id %}" >Cancel</a>
+            {% endif %}
+        {% endfor %} -->
+{% else %}
+    <h1>Rides Joining History</h1>
+        <h3>Order Details</h3>
+        <p>Order Number : {{orderinfo.pk}}</p>
+        <p>Owner : {{orderinfo.owner.username}}</p>
+        <p>Owner Number : {{orderinfo.passenger_num}}</p>
+        <p>Destination : {{orderinfo.dest_addr}}</p>
+        <p>Arrival Time : {{orderinfo.arrival_date}}</p>
+        <p>Vehicle Type: {{orderinfo.vehicle_type}}</p>
+        {% if orderinfo.is_shared %}
+        <p>Sharable? : YES</p>
+        {% else %}
+        <p>Sharable? : NO</p>
+        {% endif %}
+        {% for sharer in orderinfo.ridesharer_set.all %}
+            <li>Sharer {{forloop.counter}} : {{sharer.sharer.username}}</li>
+            <li>Sharer Number: {{sharer.passenger_num}}</li>
+        {% endfor %}
+        <p>Total Passenger Number : {{orderinfo.total_num}}</p>
+        <p>Status : {{orderinfo.status}}</p>
+        <p>Special Request:{{orderinfo.special_info}}</p>
+        <p>Driver Name: {{orderinfo.driver_name}} </p>
+        <p>Plate Number: {{orderinfo.plate_num}} </p>
+
+
+        <br/>
+
+        <button class="btn btn-outline-info" onclick="javascript:history.go(-1);" type="button">Return</button>
+
+{% endif %}
+</body>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1>Welcome to BBride!</h1>
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Have a Good Day!</legend>
+                {{ form|crispy }} 
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" onclick="location.href='riderequest'" type="button">
+                    New Ride
+                </button>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-outline-info" onclick="location.href='joinride'" type="button">
+                    Join a Ride
+                </button>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-outline-info" onclick="location.href='ridehistory'" type="button">Owner History</button>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-outline-info" onclick="location.href='joinorders'" type="button">Sharer History</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
