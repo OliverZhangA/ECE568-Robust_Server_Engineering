@@ -18,42 +18,14 @@ public class dbProcess {
     private static final String PASSWD = "passw0rd";
 
     // tables
-    private static final String PRODUCT = "shopping_commodity";
-    private static final String ORDER = "shopping_order";
-    private static final String PACKAGE = "shopping_package_info";
-    private static final String WAREHOUSE = "shopping_warehouse";
+    // private static final String PRODUCT = "shopping_commodity";
+    // private static final String ORDER = "shopping_order";
+    // private static final String PACKAGE = "shopping_package_info";
+    // private static final String WAREHOUSE = "shopping_warehouse";
 
     public dbProcess(){}
 
     /*============ Query functions for backend to access DB ==============*/
-
-    // public List<AInitWarehouse> initAmazonWarehouse() throws ClassNotFoundException, SQLException{
-    //     List<AInitWarehouse> warehouses_list = new ArrayList<>();
-        
-    //     //loading the driver
-    //     Class.forName("org.postgresql.Driver");
-    //     Connection db = DriverManager.getConnection(URL, USERNAME, PASSWD);
-    //     db.setAutoCommit(false);
-
-    //     Statement W = db.createStatement();
-    //     String sql_line = String.format("SELECT * FROM %s;", WAREHOUSE);
-    //     ResultSet R = W.executeQuery(sql_line);
-
-    //     while(R.next()){
-    //         int warehouse_id = R.getInt("id");
-    //         int x = R.getInt("pos_x");
-    //         int y = R.getInt("pos_y");
-    //         AInitWarehouse.Builder ainitwarehouse = AInitWarehouse.newBuilder();
-    //         ainitwarehouse.setId(warehouse_id);
-    //         ainitwarehouse.setX(x).setY(y);
-    //         warehouses_list.add(ainitwarehouse.build());
-    //     }
-
-    //     //close sql and driver
-    //     W.close();
-    //     db.close();
-    //     return warehouses_list;
-    // }
     //access the warehouse table to get the warehouse to initialize AInitWarehouse
     public Map<Integer, AInitWarehouse> initAmazonWarehouse() throws ClassNotFoundException, SQLException{
         Map<Integer, AInitWarehouse> warehouses_list = new ConcurrentHashMap<>();
@@ -64,7 +36,8 @@ public class dbProcess {
         db.setAutoCommit(false);
 
         Statement W = db.createStatement();
-        String sql_line = String.format("SELECT * FROM %s;", WAREHOUSE);
+        //String sql_line = String.format("SELECT * FROM %s;", WAREHOUSE);
+        String sql_line = "SELECT * FROM shopping_warehouse;";
         ResultSet R = W.executeQuery(sql_line);
 
         while(R.next()){
@@ -95,7 +68,8 @@ public class dbProcess {
         db.setAutoCommit(false);
 
         Statement W = db.createStatement();
-        String sql_line = String.format("SELECT shopping_commodity.id, shopping_commodity.commodity_desc, shopping_order.commodity_amt FROM %s, %s WHERE shopping_order.commodity_id = shopping_commodity.id AND shopping_order.package_info_id = %d;", PRODUCT, ORDER, package_id);
+        //String sql_line = String.format("SELECT shopping_commodity.id, shopping_commodity.commodity_desc, shopping_order.commodity_amt FROM %s, %s WHERE shopping_order.commodity_id = shopping_commodity.id AND shopping_order.package_info_id = %d;", PRODUCT, ORDER, package_id);
+        String sql_line = "SELECT shopping_commodity.id, shopping_commodity.commodity_desc, shopping_order.commodity_amt FROM shopping_commodity, shopping_order WHERE shopping_order.commodity_id = shopping_commodity.id AND shopping_order.package_info_id = " + package_id + ";";
         ResultSet R = W.executeQuery(sql_line);
 
         while (R.next()){
@@ -121,7 +95,8 @@ public class dbProcess {
         db.setAutoCommit(false);
 
         Statement W = db.createStatement();
-        String sql_line = String.format("SELECT shopping_commodity.commodity_name FROM %s, %s WHERE shopping_order.commodity_id = shopping_commodity.id AND shopping_order.package_info_id = %d AND shopping_commodity.id = %d;", PRODUCT, ORDER, package_id, product_id);
+        //String sql_line = String.format("SELECT shopping_commodity.commodity_name FROM %s, %s WHERE shopping_order.commodity_id = shopping_commodity.id AND shopping_order.package_info_id = %d AND shopping_commodity.id = %d;", PRODUCT, ORDER, package_id, product_id);
+        String sql_line = "SELECT shopping_commodity.commodity_name FROM shopping_commodity, shopping_order WHERE shopping_order.commodity_id = shopping_commodity.id AND shopping_order.package_info_id = " + package_id + "AND shopping_commodity.id = " + package_id + ";";
         ResultSet R = W.executeQuery(sql_line);
 
         if(R.next()){
@@ -143,7 +118,8 @@ public class dbProcess {
         db.setAutoCommit(false);
 
         Statement W = db.createStatement();
-        String sql_line = String.format("SELECT shopping_package_info.from_wh_id FROM %s WHERE id = %d;", PACKAGE, package_id);
+        //String sql_line = String.format("SELECT shopping_package_info.from_wh_id FROM %s WHERE id = %d;", PACKAGE, package_id);
+        String sql_line = "SELECT shopping_package_info.from_wh_id FROM shopping_package_info WHERE id = " + package_id +";";
         ResultSet R = W.executeQuery(sql_line);
         
         //set the whnum
@@ -165,7 +141,8 @@ public class dbProcess {
 
         Statement W = db.createStatement();
         System.out.println("updating the status of package <" + package_id + "> to" + status);
-        String sql_line = String.format("UPDATE %s SET status = '%s' WHERE id = %d;", PACKAGE, status, package_id);
+        //String sql_line = String.format("UPDATE %s SET status = '%s' WHERE id = %d;", PACKAGE, status, package_id);
+        String sql_line = "UPDATE shopping_package_info SET status = " + "\'"+ status + "\'" + "WHERE id = " + package_id + ";";
         W.executeUpdate(sql_line);
         db.commit();
         //close sql and driver
@@ -182,7 +159,8 @@ public class dbProcess {
         Connection db = DriverManager.getConnection(URL, USERNAME, PASSWD);
         db.setAutoCommit(false);
         Statement W = db.createStatement();
-        String sql_line = String.format("SELECT dest_x, dest_y FROM %s WHERE id = %d;", PACKAGE, package_id);
+        //String sql_line = String.format("SELECT dest_x, dest_y FROM %s WHERE id = %d;", PACKAGE, package_id);
+        String sql_line = "SELECT dest_x, dest_y FROM shopping_package_info WHERE id = " + package_id + ";";
         ResultSet R = W.executeQuery(sql_line);
 
         if (R.next()){
@@ -221,7 +199,8 @@ public class dbProcess {
         db.setAutoCommit(false);
         Statement W = db.createStatement();
         //String sql_line = String.format("SELECT shopping_package_info.owner_username FROM %s WHERE id = %d;", PACKAGE, package_id);
-        String sql_line = String.format("SELECT ups_account FROM %s WHERE shopping_package_info.id = %d;", PACKAGE, package_id);
+        //String sql_line = String.format("SELECT ups_account FROM %s WHERE shopping_package_info.id = %d;", PACKAGE, package_id);
+        String sql_line = "SELECT ups_account FROM shopping_package_info WHERE shopping_package_info.id = " + package_id + ";";
         ResultSet R = W.executeQuery(sql_line);
 
         if (R.next()){
@@ -241,7 +220,8 @@ public class dbProcess {
 
         Statement W = db.createStatement();
         System.out.println("updating the delivery address: x is "+ x + ", y is" + y);
-        String sql_line = String.format("UPDATE %s SET dest_x = %d, dest_y = %d WHERE id = %d;", PACKAGE, x, y, package_id);
+        //String sql_line = String.format("UPDATE %s SET dest_x = %d, dest_y = %d WHERE id = %d;", PACKAGE, x, y, package_id);
+        String sql_line = "UPDATE shopping_package_info SET dest_x = " + x + ", dest_y = " + y + " WHERE id = " + package_id + ";";
         W.executeUpdate(sql_line);
         db.commit();
         //close sql and driver

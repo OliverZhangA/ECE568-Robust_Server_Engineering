@@ -32,7 +32,7 @@
     padding: 0 6px;
 }
 .search-box:hover > .search-btn{
-    background: linear-gradient(#ccc2a6, #eae0c2);
+    background: white;
 }
 .search-txt{
     border: none;

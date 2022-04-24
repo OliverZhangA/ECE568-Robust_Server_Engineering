@@ -7,13 +7,6 @@ import edu.duke.ece568.amazon.protos.WorldAmazon.APack;
 import edu.duke.ece568.amazon.destination.*;
 
 public class Package {
-    // public static String PACKING = "packing";
-    // public static String PACKED = "packed";
-    // public static String LOADING = "loading";
-    // public static String LOADED = "loaded";
-    // public static String DELIVERING = "delivering";
-    // public static String DELIVERED = "delivered";
-
     private long package_id;
     private int truck_id;
     private int warehouse_id;

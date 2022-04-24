@@ -45,10 +45,9 @@
               <i class='fa-solid fa-cart-arrow-down fa-2x  fa-bounce' style='color:#029acf'></i>
             </a>
             <a class="nav-item nav-link" href="{% url 'logout' %}">
-              <div style = "position:relative; ">
-                <i class="fa fa-sign-out fa-2x" style='color:#9d9797' aria-hidden="true"></i>
+              <div style = "position:absolute; right: 2%;">Logout
+                <i class="fa fa-sign-out fa-2x"  aria-hidden="true"></i>
              </div>
-              
             </a>
             <form class="d-flex" method="POST" action="{% url 'toSearchResult' %}">
               {% csrf_token %}
@@ -56,7 +55,7 @@
               <input class="search-txt" type="text" name="keyword" placeholder="Type to search">
               <button type="submit" name="searching" class="search-btn" >&nbsp;
                 <!-- <i class='fas fa-search fa-lg  fa-spin' style='color:#6610f2'></i> -->
-                <i class='fa-solid fa-magnifying-glass fa-2x  fa-fade' style='color:#dd9ccc'></i>
+                <i class='fa-solid fa-magnifying-glass fa-2x  fa-fade' style='color:#f93b7d'></i>
               </button>
               <!-- <a class="search-btn" href="#"> -->
             </div>

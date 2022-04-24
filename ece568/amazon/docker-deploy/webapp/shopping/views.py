@@ -307,3 +307,6 @@ def toSearchResult(request):
             return redirect(reverse("shopping-home"))
     else:
         return HttpResponse("not working")
+
+def mainpage(request):
+    return HttpResponse("blank")
