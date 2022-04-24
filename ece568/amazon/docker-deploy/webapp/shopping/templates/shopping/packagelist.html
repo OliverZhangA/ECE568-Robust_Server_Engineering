@@ -1,30 +1,51 @@
 {% extends "users/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
 <h1> Order history </h1>
+
+<!-- <a class="nav-item nav-link" href="{% url 'ride-user' %}">
+  arrived orders
+  <i class='fa-solid fa-list-check fa-2x' style='color:#60c775'></i>
+</a>
+<a class="nav-item nav-link" href="{% url 'ride-user' %}">
+
+  <i class='fa-solid fa-list-check fa-2x' style='color:#60c775'></i>
+</a> -->
   {% if packs %}
+  <div>
+
+    <form name="order-select form" class="card p-2 ml-2 mt-3" method="POST" onsubmit>
+      {% csrf_token %}
+        <button name="action" value="arrived_orders" class="btn btn-primary mt-3">selected arrived orders</button>
+        <button name="action" value="all_orders" class="btn btn-primary mt-3">show all orders</button>
+    </form>
+  </div>
     {% for pack in packs %}
         <article class="media content-section">
           <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
           <div class="media-body">
             <div class="article-metadata">
-              <a class="text-muted">package id is :{{ pack.id }}</a >
-              <a class="text-muted">package status is :{{ pack.status }}</a>
-              <a class="text-muted">package dest is :({{ pack.dest_x }},{{ pack.dest_y }})</a>
-              {% if pack.status|stringformat:'s' != "delivered"|stringformat:'s' %}
-              <a class="text-muted">estimated arrtime is :{{ pack.estimate_arrtime }}</a>
-              {% endif %}
+              <a class="text-muted" href="{% url 'orderlist' pack.id %}">package id is :{{ pack.id }}</a >
+                <br><a class="text-muted" href="{% url 'orderlist' pack.id %}">order created time: {{ pack.package_job_time }}</a>
+                <br><a class="text-muted" href="{% url 'orderlist' pack.id %}">related ups account: {{ pack.ups_account }}</a>
+                <br><a class="text-muted" href="{% url 'orderlist' pack.id %}">delivery address is :({{ pack.dest_x }},{{ pack.dest_y }})</a>
+                <br><a class="text-muted" href="{% url 'orderlist' pack.id %}">package status is :{{ pack.status }}</a>
               {% if pack.status|stringformat:'s' == "delivered"|stringformat:'s' %}
               <i class='fa-solid fa-circle-check fa-2x' style='color:#3aee5e'></i>
               {% endif %}
               {% if pack.is_gift %}
-              <i class='fa-solid fa-gift fa-2x' style='color:#fb7e7e'></i>
+              <i class='fa-solid fa-gift fa-2x' style='color:#fb7e7e'></i>]
               {% endif %}
-              <small class="text-muted">{{ cata.status }}</small>
-            </div>
+              <br><small class="text-muted" href="{% url 'orderlist' pack.id %}">{{ cata.status }}</small>
+              
+            
             <!-- <h2><a class="article-title" href="{% url 'orderlist' pack.id %}">{{ pack.ups_account }}</a ></h2> -->
-            <h2><a class="article-title" href="{% url 'orderlist' pack.id %}">related ups account: {{ pack.ups_account }}</a ></h2>
-            <h2><a class="article-title" href="{% url 'orderlist' pack.id %}">order-time: {{ pack.package_job_time }}</a ></h2>
-          </div>
+            <!-- <h2><a class="article-title" href="{% url 'orderlist' pack.id %}">related ups account: {{ pack.ups_account }}</a ></h2><br> -->
+              {% if pack.status|stringformat:'s' != "delivered"|stringformat:'s' %}
+            </div>
+              <br><h3><a class="text" href="{% url 'orderlist' pack.id %}">estimated arriving time is :{{ pack.estimate_arrtime }}</a></h3>
+            </div>
+              {% endif %}
         </article>
     {% endfor %}
   

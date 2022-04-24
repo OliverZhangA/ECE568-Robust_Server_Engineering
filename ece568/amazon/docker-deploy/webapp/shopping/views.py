@@ -1,5 +1,6 @@
 from functools import lru_cache
 from itertools import product
+import re
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -35,6 +36,16 @@ class PackageList(ListView):
     template_name = 'shopping/packagelist.html'
     context_object_name = 'packs'
     ordering = ['package_job_time']
+    def post(self, request):
+        context = {
+            "packs": package_info.objects.filter(owner=self.request.user).order_by('-package_job_time')
+        }
+        if self.request.POST.get("action"):
+            if self.request.POST["action"] == "arrived_orders":
+                context["packs"]= package_info.objects.filter(owner=self.request.user).filter(status="delivered").order_by('-package_job_time')
+            elif self.request.POST["action"] == "all_orders":
+                context["packs"]= package_info.objects.filter(owner=self.request.user).order_by('-package_job_time')
+        return render(request, 'shopping/packagelist.html', context)
     def get_queryset(self):
         return package_info.objects.filter(owner=self.request.user).order_by('-package_job_time')
 

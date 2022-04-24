@@ -13,20 +13,14 @@ import oracle.ucp.util.Pair;
 
 
 public class dbProcess {
-    //private static final String URL = "jdbc:postgresql:postgres";
     private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
     private static final String USERNAME = "postgres";
     private static final String PASSWD = "passw0rd";
 
-    // tables
-    // private static final String PRODUCT = "shopping_commodity";
-    // private static final String ORDER = "shopping_order";
-    // private static final String PACKAGE = "shopping_package_info";
-    // private static final String WAREHOUSE = "shopping_warehouse";
-
     public dbProcess(){}
 
-    /*============ Query functions for backend to access DB ==============*/
+    /*============ Query functions for backend to access DB ==============
+    */
     //access the warehouse table to get the warehouse to initialize AInitWarehouse
     public Map<Integer, AInitWarehouse> initAmazonWarehouse() throws ClassNotFoundException, SQLException{
         Map<Integer, AInitWarehouse> warehouses_list = new ConcurrentHashMap<>();
@@ -37,7 +31,6 @@ public class dbProcess {
         db.setAutoCommit(false);
 
         Statement W = db.createStatement();
-        //String sql_line = String.format("SELECT * FROM %s;", WAREHOUSE);
         String sql_line = "SELECT * FROM shopping_warehouse;";
         ResultSet R = W.executeQuery(sql_line);
 
@@ -58,8 +51,8 @@ public class dbProcess {
     }
 
     //access the packageinfo table to construct the APurchaseMore
+    //pass the address of the APurchaseMore.Builder and construct it in this func
     public void construcBuyrqst(long package_id, APurchaseMore.Builder apurchasemore) throws ClassNotFoundException, SQLException{
-        // APurchaseMore.Builder apurchasemore = APurchaseMore.newBuilder();
         int whnum = getwhnum(package_id);
         apurchasemore.setWhnum(whnum);
         
@@ -69,7 +62,6 @@ public class dbProcess {
         db.setAutoCommit(false);
 
         Statement W = db.createStatement();
-        //String sql_line = String.format("SELECT shopping_commodity.id, shopping_commodity.commodity_desc, shopping_order.commodity_amt FROM %s, %s WHERE shopping_order.commodity_id = shopping_commodity.id AND shopping_order.package_info_id = %d;", PRODUCT, ORDER, package_id);
         String sql_line = "SELECT shopping_commodity.id, shopping_commodity.commodity_desc, shopping_order.commodity_amt FROM shopping_commodity, shopping_order WHERE shopping_order.commodity_id = shopping_commodity.id AND shopping_order.package_info_id = " + package_id + ";";
         ResultSet R = W.executeQuery(sql_line);
 
@@ -85,7 +77,6 @@ public class dbProcess {
         //close sql and driver
         W.close();
         db.close();
-        //return apurchasemore.build();
     }
 
     //abstract the product name from database to initialize the package info
@@ -119,7 +110,6 @@ public class dbProcess {
         db.setAutoCommit(false);
 
         Statement W = db.createStatement();
-        //String sql_line = String.format("SELECT shopping_package_info.from_wh_id FROM %s WHERE id = %d;", PACKAGE, package_id);
         String sql_line = "SELECT shopping_package_info.from_wh_id FROM shopping_package_info WHERE id = " + package_id +";";
         ResultSet R = W.executeQuery(sql_line);
         

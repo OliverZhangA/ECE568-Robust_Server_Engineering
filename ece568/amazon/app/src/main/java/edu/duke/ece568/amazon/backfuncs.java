@@ -61,23 +61,33 @@ public class backfuncs {
 
     private static final int MAXTIME = 20000;
 
-    //private List<AInitWarehouse> warehouses = new ArrayList<>();
+    //This is a map to store our warehouses, it will be initialized by our database
     private Map<Integer, AInitWarehouse> warehouses;
+    //a client socket connecting to UPS
     Socket toups;
+    //a client socket connecting to world
     Socket toWorld;
     //a data structure to store the identifiers in the response to figure out what rqst a msg is in response to
-    //处理drop ack的情况，收到处理过的response不是什么都不做，而是要回复ack
+    //to store the handled sequence number received from the world, if we receive a response, we will firstly check 
+    //if it is in this set, if so, do not handle it again, if not, handle it and add it to this set
     private HashSet<Long> seqnumFromworld_list;
-    
+    //a data structure to store the packages which are not finished delivery, since we will process many buying request
+    //from front-end at one time, so we need to store the information of each package in process to easily handle each status
+    //of this package
     private final Map<Long, Package> package_list;
+    //sequence number we generate to send to world and UPS
     private long seqnum;
-    // a data sturcture to record the time each command is sent
+    //a data sturcture to record the time each command is sent, this is to handle the situation when the world do not receive our
+    //commands, I mean, we do not receive the ack from world, if so, we need to resend this command
+    //so we use a map to record each sequence number we sent to world and its time, and we se the maximum time, I mean
+    //timeout, and if we do not receive this ack within this time, we need to resend, when we receive this ack, we need to remove 
+    //the sequence number from the map and cancel its time
     private final Map<Long, Timer> rqst_list;
 
-    //for test response ack to world
+    //for testing response ack to world
     private Random random = new Random(); 
 
-    //construct function
+    //constructor
     public backfuncs() throws IOException, ClassNotFoundException, SQLException{
         // AInitWarehouse.Builder newWH = AInitWarehouse.newBuilder().setId(1).setX(5).setY(5);
         // warehouses.add(newWH.build());
@@ -94,9 +104,8 @@ public class backfuncs {
         rqst_list = new ConcurrentHashMap<>();
     }
 
-    //DEALING WITH UPS responses!!
-
-
+    /*+++++++++++++++++++DEALING WITH UPS responses!!+++++++++++++
+    */
     //amazon connect to ups
     public void connect_ups() throws IOException{
         System.out.println("connecting to ups server");
@@ -107,10 +116,10 @@ public class backfuncs {
                 recvMesgFrom(connect, toups.getInputStream());
                 if(connect.hasWorldid()){
                     //connect to world
-                    //if connect successfully
                     long world_id = connect.getWorldid();
                     System.out.println("worldid is: " + world_id);
                     A2UConnected.Builder connected = A2UConnected.newBuilder();
+                    //if connect successfully
                     if(connect_world(world_id)){
                         System.out.println("connected to world yeah");
                         connected.setWorldid(world_id).setResult("connected!");
@@ -126,7 +135,7 @@ public class backfuncs {
         }
     }
 
-    //amazon connect to world
+    //amazon connect to world after we received the worldid from UPS
     public boolean connect_world(long id) throws IOException{
         System.out.println("connecting to World simulator");
         toWorld = new Socket(WORLD_HOST, WORLD_PORT);
@@ -347,12 +356,11 @@ public class backfuncs {
     }
 
 
-    //DEALING WITH WORLD responses!!
-    //to do:start handle_world
+    /*====================== DEALING WITH WORLD responses!! =========================
+    */
+    //handle AResponse from the world
     public void handle_world(AResponses.Builder recvWorld) throws IOException, ClassNotFoundException, SQLException{
-        // UPSCommands.Builder recvUps = UPSCommands.newBuilder();
-        // recvMesgFrom(recvUps, toups.getInputStream());
-
+        // for testing
         // int r = random.nextInt(3);
         // if(r!=2){
         //     ackToWorld(recvWorld);
@@ -477,7 +485,8 @@ public class backfuncs {
 
     /*=======the world purchase products for warehouse====== */
     void worldPurchased(APurchaseMore x) throws IOException, ClassNotFoundException, SQLException{
-        //需要synchronized吗？？？？？
+        //add synchronized, since at this func we needs to handle with world and meanwhile with ups
+        
         //find the package
         for(Package pkg : package_list.values()){
             System.out.println("=================world purchased processing for each package======");
@@ -826,7 +835,8 @@ public class backfuncs {
         sendACommand(acommand.build(), 0);
     }
 
-    /*=========== interact with front-end ==============*/
+    /*=========== interact with front-end ==============
+    */
     //thread for comm with front-end
     public void init_frontEndthread() throws IOException, ClassNotFoundException{
         while(!Thread.currentThread().isInterrupted()) {
@@ -847,15 +857,12 @@ public class backfuncs {
     void handle_frontend(Socket frontend_socket) throws IOException, ClassNotFoundException{
         InputStreamReader input_reader = new InputStreamReader(frontend_socket.getInputStream());
         BufferedReader reader = new BufferedReader(input_reader);
-        //PrintWriter writer = new PrintWriter(frontend_socket.getOutputStream());
         String front_rqst = reader.readLine();
         System.out.println("the received front-end request is: " + front_rqst);
         //parse the package id
         long package_id = Long.parseLong(front_rqst);
-        //writer.write(String.format("received the package id: %d", package_id));
-        //writer.flush();
         frontend_socket.close();
-        //handle the buy request, request the world to buy something for specific warehouse 没写完 
+        //handle the buy request, request the world to buy something for specific warehouse 
         try {
             worldBuy(package_id);
         } catch (SQLException e) {
@@ -864,9 +871,8 @@ public class backfuncs {
         }
     }
 
-    //world buy for warehouse，构造Apurchasemore
+    //world buy for warehouse，construct Apurchasemore
     void worldBuy(long id) throws SQLException, ClassNotFoundException{
-        //没有用线程池处理 没写完
         dbProcess DB = new dbProcess();
         APurchaseMore.Builder apurchasemore = APurchaseMore.newBuilder();
 
@@ -878,35 +884,30 @@ public class backfuncs {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        // long seq_number = getSeqNum();
-        // apurchasemore.setSeqnum(seq_number);
 
         ACommands.Builder acommands = ACommands.newBuilder();
         acommands.addBuy(apurchasemore);
         //send the ACommand to world
-        //用来测试小函数的时候把它注释掉了
         sendACommand(acommands.build(), seq_number);
 
-        //update some info of the package
+        //update some info of the package, initialize the package, since each package starts its
+        //life when we buy it successfully
         APack.Builder apack = APack.newBuilder();
         int whnum = apurchasemore.getWhnum();
         apack.setWhnum(whnum);
         apack.addAllThings(apurchasemore.getThingsList());
         apack.setShipid(id);
         apack.setSeqnum(-1);
-
         //initialize the package list, since when backend receives the front-end's buy rqst
         //we rqst to world to buy for us, meanwhile we create a package
         Package pkg = new Package(whnum, id, apack.build());
-        
         package_list.put(id, pkg);
-
     }
     
 
-
     /*=========== start all threads ===========*/
     void startAllthreads() throws IOException, ClassNotFoundException{
+        //ups thread
         Thread upsthread = new Thread(() -> {
             
             try {
@@ -917,6 +918,7 @@ public class backfuncs {
             }
         });
         upsthread.start();
+        //world thread
         Thread worldthread = new Thread(() -> {
             try {
                 init_worldthread();
@@ -926,12 +928,7 @@ public class backfuncs {
             }
         });
         worldthread.start();
-        // Thread worldthread = new Thread(() -> {
-        //start the thread for comm with ups
-        //init_upsthread();
-
-        //start a thread for comm with world
-        //init_worldthread();
+        //front-end thread
         init_frontEndthread();
     }
 
@@ -962,8 +959,6 @@ public class backfuncs {
         //run all threads
         backend.startAllthreads();
         //backend.init_frontEndthread();
-
-
     }
 }
 
