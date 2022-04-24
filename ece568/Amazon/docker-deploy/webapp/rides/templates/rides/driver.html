@@ -1,0 +1,17 @@
+{% extends "users/base.html" %}
+{% block content %}
+<h1> Driver Pick Up Searching Results </h1>
+  {% for order in orders %}
+      <article class="media content-section">
+        <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
+        <div class="media-body">
+          <div class="article-metadata">
+            <a class="mr-2" href=" ">{{ order.dest_addr }}</a >
+            <a class="text-muted">{{ order.arrival_date|date:"F d, Y" }}</a>
+            <a class="text-muted">Expected Passenger Number: {{ order.passenger_num }}</a>
+          </div>
+          <h2><a class="article-title" href="{% url 'driverdetail' order.id %}">{{ order.dest_addr }}</a ></h2>
+        </div>
+      </article>
+  {% endfor %}
+{% endblock content %}

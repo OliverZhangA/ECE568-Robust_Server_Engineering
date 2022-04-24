@@ -1,0 +1,17 @@
+{% extends "users/base.html" %}
+{% block content %}
+<h1> Driver Confirmed History </h1>
+  {% for order in orders %}
+      <article class="media content-section">
+        <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
+        <div class="media-body">
+          <div class="article-metadata">
+            <a class="text-muted" >{{ order.dest_addr }}</a >
+            <a class="text-muted">{{ order.arrival_date|date:"F d, Y" }}</a>
+            <small class="text-muted">{{ order.status }}</small>
+          </div>
+          <h2><a class="article-title" href="{% url 'driverorderdetail' order.id %}">{{ order.dest_addr }}</a ></h2>
+        </div>
+      </article>
+  {% endfor %}
+{% endblock content %}
