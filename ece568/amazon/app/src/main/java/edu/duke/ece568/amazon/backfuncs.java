@@ -27,7 +27,7 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.InputStreamReader;
 
-//for test
+//for testing
 import java.lang.Math;
 
 public class backfuncs {

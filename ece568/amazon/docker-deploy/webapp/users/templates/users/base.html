@@ -18,7 +18,7 @@
   <header class="site-header">
     <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
       <div class="container">
-        <a class="navbar-brand mr-4" href="{% url 'login' %}"><h2><p style="font-family:Bradley Hand; color: white;">BBBuy</p></h2></a>
+        <a class="navbar-brand mr-4" href="{% url 'mainpage' %}"><h2><p style="font-family:Bradley Hand; color: white;">BBBuy</p></h2></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
@@ -33,12 +33,15 @@
               </div>
             </div>
             {% else %}
-            <a class="nav-item nav-link" href="{% url 'ride-user' %}">Catalog</a>
+            <a class="nav-item nav-link" href="{% url 'ride-user' %}">
+              <i class='fa-solid fa-list-check fa-2x' style='color:#60c775'></i>
+            </a>
             <a class="nav-item nav-link" href="{% url 'driverprofile' %}">
               <i class='fa-solid fa-circle-user fa-2x' style='color:#f7c614'></i>
             </a>
             <a class="nav-item nav-link" href="{% url 'packagelist' %}">
-              <i class='fa-solid fa-list-check fa-2x' style='color:#20c997'></i>
+              <!-- <i class='fa-solid fa-list-check fa-2x' style='color:#20c997'></i> -->
+              <i class='fa-solid fa-file-lines fa-2x' style='color:#c6bfbf'></i>
               <!-- <i class='fa-regular fa-memo-circle-check fa-2x' style='color:#7eb99b'></i> -->
             </a>
             <a class="nav-item nav-link" href="{% url 'shoppingCart' %}" >

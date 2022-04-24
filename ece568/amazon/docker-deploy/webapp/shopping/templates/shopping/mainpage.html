@@ -57,10 +57,10 @@
                 -----contact seller
               </a>
               <div class="media-body">
-                <div class="article-metadata">
+                <!-- <div class="article-metadata">
                   <a class="text-muted">{{ commodity.commodity_name }}</a >
-                    <!-- <a class="text-muted" href="{% url 'commoditydetail' commodity.id %}">{{ commodity.commodity_name }}</a > -->
-                </div>
+                    <a class="text-muted" href="{% url 'commoditydetail' commodity.id %}">{{ commodity.commodity_name }}</a >
+                </div> -->
                 <h2><a class="article-title" href="{% url 'commoditydetail' commodity.id %}">{{ commodity.commodity_name }}</a ></h2>
               </div>
             </article>
@@ -107,16 +107,16 @@
               <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
               <!-- <img src="img_chania.jpg" alt="Flowers in Chania" width="460" height="345"> -->
               <img src="{{ commodity.commodity_img }}" class="img-thumbnail" alt="picture of the product" width="50">
-              <a class="" href="{% url 'commoditydetail' commodity.id %}">
+              <a class="" href="{% url 'login' %}">
                 <i class='fa-regular fa-envelope fa-2x' style='color:#12d972'></i>
                 -----contact seller
               </a>
               <div class="media-body">
-                <div class="article-metadata">
+                <!-- <div class="article-metadata">
                   <a class="text-muted">{{ commodity.commodity_name }}</a >
-                    <!-- <a class="text-muted" href="{% url 'commoditydetail' commodity.id %}">{{ commodity.commodity_name }}</a > -->
-                </div>
-                <h2><a class="article-title" href="{% url 'commoditydetail' commodity.id %}">{{ commodity.commodity_name }}</a ></h2>
+                    <a class="text-muted" href="{% url 'commoditydetail' commodity.id %}">{{ commodity.commodity_name }}</a >
+                </div> -->
+                <h2><a class="article-title" href="{% url 'login' %}">{{ commodity.commodity_name }}</a ></h2>
               </div>
             </article>
         {% endfor %}
@@ -137,7 +137,7 @@
               <div class="media-body">
                 <div class="article-metadata">
                   <img src="{{ cata.catalog_img }}" class="img-thumbnail" alt="picture of the product" width="10">
-                  <a class="text-muted" href="{% url 'catadetail' cata.cate_name %}">{{ cata.cate_name }}</a >
+                  <a class="text-muted" href="{%  url 'login' %}">{{ cata.cate_name }}</a >
                 </div>
                 <!-- <a class="article-title" href="{% url 'catadetail' cata.cate_name %}">{{ cata.cate_name }}</a > -->
               </div>
