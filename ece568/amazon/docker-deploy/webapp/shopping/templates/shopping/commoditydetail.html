@@ -3,16 +3,13 @@
 {% block content%}
 
 <body>
-    <h1> Commodity detail</h1>
+    <h1> <p style="font-family:Bradley Hand;">Commodity Detail</p></h1>
     <div class="col-md-4 order-md-2">
         <img src="{{ commo.commodity_img }}" class="img-thumbnail" alt="picture of the product" width="200">
         <p class="text-md-left mt-4" style="font-size: x-large">
-            Commodity name:
-            <span style="color: greenyellow; "> {{ commo.commodity_name}}</span>
-            <span style="font-size: medium">
-        </p>
-        <p class="text-md-left mt-4" style="font-size: medium">
-            Desc: <br> {{ commo.commodity_desc }}
+            <span style="color: rgb(229, 28, 68); "> {{ commo.commodity_name}}</span>
+            <!-- <span style="font-size: medium"> -->
+                <br> {{ commo.commodity_desc }}
         </p>
         <form name="contactseller_form" class="card p-2 ml-2 mt-3" method="POST" onsubmit>
             {% csrf_token %}

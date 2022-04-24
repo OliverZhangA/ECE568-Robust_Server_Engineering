@@ -122,10 +122,12 @@ def commodityDetail(request, pk1):
                 except order.DoesNotExist:
                     neworder = order(owner=request.user, commodity=commo, commodity_amt=amount)
                     neworder.save()
-                context = {
-                    "prompt" : "Adding to cart successfully"
-                }
-                return render(request, "shopping/sucToCart.html", context)
+                messages.success(request, "Adding to cart successfully!")
+                # context = {
+                #     "prompt" : "Adding to cart successfully"
+                # }
+                context['commo'] = commo
+                return render(request, "shopping/commoditydetail.html", context)
         elif request.POST.get("sendemail"):
             #request.POST["sendemail"]
             subject = "Question from user: " + request.user.username
@@ -217,7 +219,7 @@ def checkoutpage(request, package_id):
             print("!!!!!!!!!!!!!!checkingout!!!!!!!!!!!!!!")
             pck = package_info.objects.get(id=package_id)
             if pck.status != "":
-                messages.error(request, "You have already placed this order, do not repeat placing it!")
+                messages.warning(request, "You have already placed this order, do not repeat placing it!")
                 return redirect(reverse("shopping-home"))
             curuserprofile = DriverProfile.objects.get(user=request.user.id)
             pck.dest_x = curuserprofile.dest_x
@@ -246,7 +248,7 @@ def checkoutpage(request, package_id):
             print("!!!!!!!!!!!!!!checkingout!!!!!!!!!!!!!!")
             pck = package_info.objects.get(id=package_id)
             if pck.status != "":
-                messages.error(request, "You have already placed this order, do not repeat placing it!")
+                messages.warning(request, "You have already placed this order, do not repeat placing it!")
                 return redirect(reverse("shopping-home"))
             pck.dest_x = request.POST.get("dest_x")
             pck.dest_y = request.POST.get("dest_y")
@@ -329,7 +331,8 @@ def toSearchResult(request):
 
 def mainpage(request):
     catas = catalog.objects.all
-    commodities = commodity.objects.filter(commodity_name__icontains='ip')
+    # commodities = commodity.objects.filter(commodity_name__icontains='ip')
+    commodities = commodity.objects.order_by('?').filter()[:3]
     context = {
         'catas' : catas,
         'commodities' : commodities,

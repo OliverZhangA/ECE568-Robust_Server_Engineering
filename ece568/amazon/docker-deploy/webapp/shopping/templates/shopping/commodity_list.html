@@ -1,6 +1,6 @@
 {% extends "users/base.html" %}
 {% block content %}
-<h1> Catalog detail </h1>
+<h1><p style="font-family:Bradley Hand;">Catalog Detail</p> </h1>
   {% if commodities %}
     {% for commodity in commodities %}
         <article class="media content-section">
@@ -9,15 +9,13 @@
           <img src="{{ commodity.commodity_img }}" class="img-thumbnail" alt="picture of the product" width="50">
           <a class="" href="{% url 'commoditydetail' commodity.id %}">
             <i class='fa-regular fa-envelope fa-2x' style='color:#12d972'></i>
-            -----contact seller
+            contact seller
           </a>
           <div class="media-body">
             <div class="article-metadata">
-              <a class="text-muted">{{ commodity.commodity_name }}</a >
-              <a class="text-muted">{{ cata.arrival_date|date:"F d, Y" }}</a>
-              <small class="text-muted">{{ cata.status }}</small>
+              <a class="article-title" href="{% url 'commoditydetail' commodity.id %}">{{ commodity.commodity_name }}</a >
             </div>
-            <h2><a class="article-title" href="{% url 'commoditydetail' commodity.id %}">{{ commodity.commodity_name }}</a ></h2>
+            <!-- <h2><a class="article-title" href="{% url 'commoditydetail' commodity.id %}">{{ commodity.commodity_name }}</a ></h2> -->
           </div>
         </article>
     {% endfor %}
