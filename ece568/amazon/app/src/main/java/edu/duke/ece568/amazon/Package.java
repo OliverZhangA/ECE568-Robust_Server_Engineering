@@ -12,16 +12,17 @@ public class Package {
     private int truck_id;
     private int warehouse_id;
     private String status;
+    // UPS username to associate UPS and Amazon
     private String username;
     private APack amazon_pack;
     
     //destination
     private destination dest;
 
+    //======= constructor =========
     public Package(){
         truck_id = -1;
     }
-
     //for initialize package
     public Package(int wh_id, long id, APack pack) throws ClassNotFoundException, SQLException{
         warehouse_id = wh_id;
@@ -30,7 +31,6 @@ public class Package {
         truck_id = -1;
         //initialize the destination
         dbProcess db = new dbProcess();
-        //改这里
         //username = db.InitAmazonAccount(package_id);
         username = db.InitUPSAccount(package_id);
         dest = db.setDest(package_id);

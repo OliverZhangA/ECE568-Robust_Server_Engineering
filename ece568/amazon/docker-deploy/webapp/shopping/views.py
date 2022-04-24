@@ -20,6 +20,7 @@ from datetime import datetime, timedelta
 import math
 from django.db.models import Count
 from django.contrib import messages
+import time
 
 # Create your views here.
 class OrderList(ListView):
@@ -216,7 +217,8 @@ def checkoutpage(request, package_id):
             print("!!!!!!!!!!!!!!checkingout!!!!!!!!!!!!!!")
             pck = package_info.objects.get(id=package_id)
             if pck.status != "":
-                return HttpResponse("this order has been created, do not repeat placing order!")
+                messages.error(request, "You have already placed this order, do not repeat placing it!")
+                return redirect(reverse("shopping-home"))
             curuserprofile = DriverProfile.objects.get(user=request.user.id)
             pck.dest_x = curuserprofile.dest_x
             pck.dest_y = curuserprofile.dest_y
@@ -233,15 +235,19 @@ def checkoutpage(request, package_id):
             d = timedelta(hours=estimateArrtime(pck))
             pck.estimate_arrtime = pck.estimate_arrtime + offset + d
             pck.save()
-            buyandpack(package_id)
-            sendemail(pck)
+            # buyandpack(package_id)
+            # sendemail(pck)
             #turn to the checkout successful page!
-            return HttpResponse("checkout successful!")
+            estarrtime = str(pck.estimate_arrtime)
+            messages.success(request, f"Your order has been placed, estimate arrivetime is {estarrtime}!")
+            # return HttpResponse("checkout successful!")
+            return redirect(reverse("shopping-home"))
         elif request.POST.get("check_out"):
             print("!!!!!!!!!!!!!!checkingout!!!!!!!!!!!!!!")
             pck = package_info.objects.get(id=package_id)
             if pck.status != "":
-                return HttpResponse("this order has been created, do not repeat placing order!")
+                messages.error(request, "You have already placed this order, do not repeat placing it!")
+                return redirect(reverse("shopping-home"))
             pck.dest_x = request.POST.get("dest_x")
             pck.dest_y = request.POST.get("dest_y")
             pck.ups_account = request.POST.get("ups_account")
@@ -259,8 +265,10 @@ def checkoutpage(request, package_id):
             pck.save()
             buyandpack(package_id)
             sendemail(pck)
+            estarrtime = str(pck.estimate_arrtime)
+            messages.success(request, f"Your order has been placed, estimate arrivetime is {estarrtime}!")
             #turn to the checkout successful page!
-            return HttpResponse("checkout successful!")
+            return redirect(reverse("shopping-home"))
     elif pck.is_gift:
         context = {
             "blessing" : pck.blessing,

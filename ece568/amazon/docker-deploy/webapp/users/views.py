@@ -41,7 +41,7 @@ def driverform(request):
             username=request.user.username
             # username=form_user.cleaned_data.get('username')
             # userid=form_user.cleaned_data.get('userid')
-            messages.success(request,f'Driver {username}, you have already updated your customer information!')
+            messages.success(request,f' {username}, you have already updated your customer information!')
             return redirect('driverprofile')
     else:
         curuser = User.objects.get(pk=request.user.id)

@@ -1,6 +1,6 @@
 {% extends "users/base.html" %}
 {% block content %}
-    <h1>Shopping Cart</h1>
+    <h1><p style="font-family:Bradley Hand; font-size: larger;">Shopping Cart</p></h1>
     <!-- order list -->
     {% if orders %}
         <!-- NOTE: nested form is not allowed!!! -->
@@ -66,8 +66,11 @@
             </div>
         </form>
     {% else %}
-        <h4 class="m-4">Nothing in your shopping cart,
-            <a href="{% url 'shopping-home' %}">buy something TODAY!</a>
+        <h4 class="m-4">
+            <p style="font-family:Bradley Hand; font-size: larger;">
+                Your shopping cart is empty,
+                <a href="{% url 'shopping-home' %}">Go Shopping Right Now!</a>
+            </p>
         </h4>
     {% endif %}
 {% endblock content %}
