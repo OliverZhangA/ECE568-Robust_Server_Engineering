@@ -33,13 +33,13 @@ import java.lang.Math;
 public class backfuncs {
     /*
     ups group 1:
-    */
     private static final String WORLD_HOST = "vcm-25610.vm.duke.edu";
     //private static final String WORLD_HOST = "vcm-24561.vm.duke.edu";
     private static final String UPS_HOST = "vcm-26136.vm.duke.edu";
     private static final int WORLD_PORT = 23456;
     private static final int UPS_PORT = 6066;
     private static final int FRONT_PORT = 7777;
+    */
 
     /*
     ups group 2:
@@ -49,6 +49,15 @@ public class backfuncs {
     // private static final int WORLD_PORT = 23456;
     // private static final int UPS_PORT = 33333;
     // private static final int FRONT_PORT = 7777;
+
+    /*
+    ups group 3:
+    */
+    private static final String WORLD_HOST = "vcm-25919.vm.duke.edu";
+    private static final String UPS_HOST = "vcm-25699.vm.duke.edu";
+    private static final int WORLD_PORT = 23456;
+    private static final int UPS_PORT = 56789;
+    private static final int FRONT_PORT = 7777;
 
     private static final int MAXTIME = 20000;
 
@@ -792,7 +801,7 @@ public class backfuncs {
             sendMesgTo(amazoncommand.build(), toups.getOutputStream());
 
             //set the status to "delivering"
-            pkg.setStatus("delivering");
+            // pkg.setStatus("delivering");
         }
         else{
             //can not find the package according to id
@@ -838,14 +847,13 @@ public class backfuncs {
     void handle_frontend(Socket frontend_socket) throws IOException, ClassNotFoundException{
         InputStreamReader input_reader = new InputStreamReader(frontend_socket.getInputStream());
         BufferedReader reader = new BufferedReader(input_reader);
-        PrintWriter writer = new PrintWriter(frontend_socket.getOutputStream());
+        //PrintWriter writer = new PrintWriter(frontend_socket.getOutputStream());
         String front_rqst = reader.readLine();
         System.out.println("the received front-end request is: " + front_rqst);
         //parse the package id
         long package_id = Long.parseLong(front_rqst);
-        writer.write(String.format("received the package id: %d", package_id));
-        writer.flush();
-
+        //writer.write(String.format("received the package id: %d", package_id));
+        //writer.flush();
         frontend_socket.close();
         //handle the buy request, request the world to buy something for specific warehouse 没写完 
         try {

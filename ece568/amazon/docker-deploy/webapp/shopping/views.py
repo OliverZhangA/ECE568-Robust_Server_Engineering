@@ -309,4 +309,10 @@ def toSearchResult(request):
         return HttpResponse("not working")
 
 def mainpage(request):
-    return HttpResponse("blank")
+    catas = catalog.objects.all
+    commodities = commodity.objects.filter(commodity_name__icontains='ip')
+    context = {
+        'catas' : catas,
+        'commodities' : commodities,
+    }
+    return render(request, "shopping/mainpage.html", context)

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import oracle.ucp.util.Pair;
 
 
 public class dbProcess {
@@ -171,6 +172,30 @@ public class dbProcess {
         db.close();
         return dest;
     }
+
+    // public Pair<Integer, Integer> setDest(long package_id) throws ClassNotFoundException, SQLException{
+    //     //Pair<Integer, Integer> dest;
+    //     int x = -1;
+    //     int y = -1;
+        
+    //     Class.forName("org.postgresql.Driver");
+    //     Connection db = DriverManager.getConnection(URL, USERNAME, PASSWD);
+    //     db.setAutoCommit(false);
+    //     Statement W = db.createStatement();
+    //     //String sql_line = String.format("SELECT dest_x, dest_y FROM %s WHERE id = %d;", PACKAGE, package_id);
+    //     String sql_line = "SELECT dest_x, dest_y FROM shopping_package_info WHERE id = " + package_id + ";";
+    //     ResultSet R = W.executeQuery(sql_line);
+
+    //     if (R.next()){
+    //         x = R.getInt("dest_x");
+    //         y = R.getInt("dest_y");
+    //     }
+
+    //     W.close();
+    //     db.close();
+    //     Pair<Integer, Integer> dest = new Pair<Integer,Integer>(x, y);
+    //     return dest;
+    // }
 
     //access the package_info to set the username
     // public String InitAmazonAccount(long package_id) throws ClassNotFoundException, SQLException{

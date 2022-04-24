@@ -4,7 +4,8 @@ import java.sql.SQLException;
 
 import edu.duke.ece568.amazon.protos.AmazonUps.Warehouse;
 import edu.duke.ece568.amazon.protos.WorldAmazon.APack;
-import edu.duke.ece568.amazon.destination.*;
+//import oracle.ucp.util.Pair;
+import java.util.*;
 
 public class Package {
     private long package_id;
@@ -32,7 +33,7 @@ public class Package {
         //改这里
         //username = db.InitAmazonAccount(package_id);
         username = db.InitUPSAccount(package_id);
-        dest = db.setDest(package_id);  
+        dest = db.setDest(package_id);
     }
 
     //getter

@@ -3,7 +3,7 @@ body {
     background-image: url('images/backg.png');
     background-size: 120%;
     background-repeat: no-repeat;
-    opacity: 0.95;
+    /* opacity: 0.95; */
     color: #333333;
     margin-top: 5rem;
   }
@@ -33,9 +33,9 @@ body {
   }
   
   .content-section {
-    background: #ffffff;
+    background: #f8f3f3;
     padding: 10px 20px;
-    border: 1px solid #dddddd;
+    border: 5px solid #000000;
     border-radius: 3px;
     margin-bottom: 20px;
   }
