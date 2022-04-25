@@ -1,6 +1,6 @@
 from functools import lru_cache
 from itertools import product
-import re
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -46,6 +46,8 @@ class PackageList(ListView):
                 context["packs"]= package_info.objects.filter(owner=self.request.user).filter(status="delivered").order_by('-package_job_time')
             elif self.request.POST["action"] == "all_orders":
                 context["packs"]= package_info.objects.filter(owner=self.request.user).order_by('-package_job_time')
+            elif self.request.POST["action"] == "ongoing_orders":
+                context["packs"]= package_info.objects.filter(owner=self.request.user).exclude(status="delivered").order_by('-package_job_time')
         return render(request, 'shopping/packagelist.html', context)
     def get_queryset(self):
         return package_info.objects.filter(owner=self.request.user).order_by('-package_job_time')
@@ -332,7 +334,8 @@ def toSearchResult(request):
 def mainpage(request):
     catas = catalog.objects.all
     # commodities = commodity.objects.filter(commodity_name__icontains='ip')
-    commodities = commodity.objects.order_by('?').filter()[:3]
+    #commodities = commodity.objects.order_by('?')[:3]
+    commodities = commodity.objects.annotate(num_orders=Count('order')).order_by('-num_orders')[:3]
     context = {
         'catas' : catas,
         'commodities' : commodities,

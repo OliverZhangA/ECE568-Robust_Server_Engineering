@@ -16,8 +16,9 @@
 
     <form name="order-select form" class="card p-2 ml-2 mt-3" method="POST" onsubmit>
       {% csrf_token %}
-        <button name="action" value="arrived_orders" class="btn btn-primary mt-3">selected arrived orders</button>
-        <button name="action" value="all_orders" class="btn btn-primary mt-3">show all orders</button>
+        <button name="action" value="ongoing_orders" class="btn btn-primary mt-3">Show all unfinished orders</button>
+        <button name="action" value="arrived_orders" class="btn btn-primary mt-3">Show all arrived orders</button>
+        <button name="action" value="all_orders" class="btn btn-primary mt-3">Show all orders</button>
     </form>
   </div>
     {% for pack in packs %}

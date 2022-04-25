@@ -31,24 +31,23 @@ import java.io.InputStreamReader;
 import java.lang.Math;
 
 public class backfuncs {
-    /*
+
     // ups group 1:
     private static final String WORLD_HOST = "vcm-25610.vm.duke.edu";
     //private static final String WORLD_HOST = "vcm-24561.vm.duke.edu";
-    private static final String UPS_HOST = "vcm-26136.vm.duke.edu";
+    private static final String UPS_HOST = "vcm-25610.vm.duke.edu";
     private static final int WORLD_PORT = 23456;
-    private static final int UPS_PORT = 6066;
+    private static final int UPS_PORT = 7523;
     private static final int FRONT_PORT = 7777;
-    */
 
     /*
     ups group 2:
     */
-    private static final String WORLD_HOST = "vcm-26608.vm.duke.edu";
-    private static final String UPS_HOST = "vcm-26608.vm.duke.edu";
-    private static final int WORLD_PORT = 23456;
-    private static final int UPS_PORT = 33333;
-    private static final int FRONT_PORT = 7777;
+    // private static final String WORLD_HOST = "vcm-26608.vm.duke.edu";
+    // private static final String UPS_HOST = "vcm-26608.vm.duke.edu";
+    // private static final int WORLD_PORT = 23456;
+    // private static final int UPS_PORT = 33333;
+    // private static final int FRONT_PORT = 7777;
 
     /*
     ups group 3:
@@ -837,10 +836,10 @@ public class backfuncs {
         //checkProductList(List<AProduct> a, List<AProduct> b)
         backfuncs backend = new backfuncs();
         //connect with ups
-        //backend.connect_ups();
+        backend.connect_ups();
         //run all threads
-        ///backend.startAllthreads();
-        backend.init_frontEndthread();
+        backend.startAllthreads();
+        //backend.init_frontEndthread();
     }
 }
 

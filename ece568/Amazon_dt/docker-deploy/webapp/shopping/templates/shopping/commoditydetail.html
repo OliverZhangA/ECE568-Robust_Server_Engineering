@@ -9,7 +9,8 @@
         <p class="text-md-left mt-4" style="font-size: x-large">
             <span style="color: rgb(229, 28, 68); "> {{ commo.commodity_name}}</span>
             <!-- <span style="font-size: medium"> -->
-                <br> {{ commo.commodity_desc }}
+                <p style="font-style: italic; font-size: large">{{ commo.commodity_desc }}</p>
+                <!-- <br> {{ commo.commodity_desc }} -->
         </p>
         <form name="contactseller_form" class="card p-2 ml-2 mt-3" method="POST" onsubmit>
             {% csrf_token %}
