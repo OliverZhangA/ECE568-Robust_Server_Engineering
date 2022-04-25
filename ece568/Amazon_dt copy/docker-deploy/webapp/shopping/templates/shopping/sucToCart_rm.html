@@ -1,0 +1,36 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
+
+<h1>{{ info }}</h1>
+<h2 class="mt-4"><a href="{% url  'shoppingCart' %}">shopping cart</a></h2>
+<body>
+    
+    <h1> Commodity detail</h1>
+    <div class="col-md-4 order-md-2">
+        <p class="text-md-left mt-4" style="font-size: x-large">
+            result:
+            <span style="color: greenyellow; "> {{prompt}}</span>
+            <span style="font-size: medium">
+        </p>
+        <p class="text-md-left mt-4" style="font-size: xx-large">
+            <b>Thanks for buying it!</b>
+        </p>
+    </div>
+        <!-- <h3>Commodity name : {{commodity.commodity_name}}</h3>
+        <p>Commodity under catalog : {{commodity.commodity_catalog.cate_name}}</p>
+        <p>Commodity remaining amount : {{commodity.commodity_amt}}</p>
+        <p>Commodity price : {{commodity.commodity_price}}</p>
+        <p>Commodity remaining amount : {{commodity.commodity_amt}}</p> -->
+<!-- <div>
+
+    <form name="commodity_form" class="card p-2 ml-2 mt-3" method="POST" onsubmit>
+        {% csrf_token %}
+        <input type="number" name="count" min="1" max="99999" class="form-control" placeholder="Qty" required>
+        <button name="action" value="buy" class="btn btn-primary mt-3">Buy Now</button>
+        <button name="action" value="add" class="btn btn-secondary mt-3">Add to cart</button>
+    </form>
+</div> -->
+</body>
+{% endblock %}
+

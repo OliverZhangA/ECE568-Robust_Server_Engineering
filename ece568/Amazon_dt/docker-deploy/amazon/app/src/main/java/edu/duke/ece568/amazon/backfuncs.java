@@ -33,12 +33,12 @@ import java.lang.Math;
 public class backfuncs {
 
     // ups group 1:
-    private static final String WORLD_HOST = "vcm-25610.vm.duke.edu";
-    //private static final String WORLD_HOST = "vcm-24561.vm.duke.edu";
-    private static final String UPS_HOST = "vcm-25610.vm.duke.edu";
-    private static final int WORLD_PORT = 23456;
-    private static final int UPS_PORT = 7523;
-    private static final int FRONT_PORT = 7777;
+    // private static final String WORLD_HOST = "vcm-25610.vm.duke.edu";
+    // //private static final String WORLD_HOST = "vcm-24561.vm.duke.edu";
+    // private static final String UPS_HOST = "vcm-25610.vm.duke.edu";
+    // private static final int WORLD_PORT = 23456;
+    // private static final int UPS_PORT = 7523;
+    // private static final int FRONT_PORT = 7777;
 
     /*
     ups group 2:
@@ -52,11 +52,11 @@ public class backfuncs {
     /*
     ups group 3:
     */
-    // private static final String WORLD_HOST = "vcm-25919.vm.duke.edu";
-    // private static final String UPS_HOST = "vcm-25699.vm.duke.edu";
-    // private static final int WORLD_PORT = 23456;
-    // private static final int UPS_PORT = 56789;
-    // private static final int FRONT_PORT = 7777;
+    private static final String WORLD_HOST = "vcm-25919.vm.duke.edu";
+    private static final String UPS_HOST = "vcm-25699.vm.duke.edu";
+    private static final int WORLD_PORT = 23456;
+    private static final int UPS_PORT = 56789;
+    private static final int FRONT_PORT = 7777;
 
     private static final int MAXTIME = 20000;
 

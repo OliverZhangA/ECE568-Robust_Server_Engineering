@@ -1,0 +1,54 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
+
+<body>
+    <h1> <p style="font-family:Bradley Hand;">Commodity Detail</p></h1>
+    <div class="col-md-4 order-md-2">
+        <img src="{{ commo.commodity_img }}" class="img-thumbnail" alt="picture of the product" width="200">
+        <p class="text-md-left mt-4" style="font-size: x-large">
+            <span style="color: rgb(229, 28, 68); "> {{ commo.commodity_name}}</span>
+            <!-- <span style="font-size: medium"> -->
+                <p style="font-style: italic; font-size: large">{{ commo.commodity_desc }}</p>
+                <!-- <br> {{ commo.commodity_desc }} -->
+        </p>
+        <form name="contactseller_form" class="card p-2 ml-2 mt-3" method="POST" onsubmit>
+            {% csrf_token %}
+            {% if commo.seller %}
+            Seller : {{ commo.seller }}
+            {% endif %}
+            <input type="text" name="content" class="form-control" placeholder="Tell seller your needs" required>
+            <input type="text" name="email" class="form-control" placeholder="Your contact email" required>
+            <button type="submit" name="sendemail" value="send" class="btn btn-primary mt-3">&nbsp;confirm sending</button>
+        </form>
+        <form name="gitf_form" class="card p-2 ml-2 mt-3" method="POST" onsubmit>
+            {% csrf_token %}
+            Want to send as a gift?
+            <input type="text" name="quantity" class="form-control" placeholder="Quantity" required>
+            <input type="text" name="blessing" class="form-control" placeholder="Bless your loved ones">
+            <button type="submit" name="gift" value="gift" class="btn btn-primary mt-3">&nbsp;Send
+                <i class='fa-solid fa-gift fa-2x' style='color:#fb7e7e'></i>
+            </button>
+        </form>
+        <p class="text-md-left mt-4" style="font-size: xx-large">
+            Buy for yourself
+        </p>
+    </div>
+        <!-- <h3>Commodity name : {{commodity.commodity_name}}</h3>
+        <p>Commodity under catalog : {{commodity.commodity_catalog.cate_name}}</p>
+        <p>Commodity remaining amount : {{commodity.commodity_amt}}</p>
+        <p>Commodity price : {{commodity.commodity_price}}</p>
+        <p>Commodity remaining amount : {{commodity.commodity_amt}}</p> -->
+<div>
+
+    <form name="commodity_form" class="card p-2 ml-2 mt-3" method="POST" onsubmit>
+        {% csrf_token %}
+        <input type="number" name="count" min="1" max="99999" class="form-control" placeholder="Qty" required>
+        <button name="action" value="buy" class="btn btn-primary mt-3">Buy Now</button>
+        <button name="action" value="add" class="btn btn-secondary mt-3">Add to cart</button>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</body>
+{% endblock %}
+

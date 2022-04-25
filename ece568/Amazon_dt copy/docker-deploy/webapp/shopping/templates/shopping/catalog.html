@@ -1,0 +1,21 @@
+{% extends "users/base.html" %}
+{% block content %}
+<h1><p style="font-family:Bradley Hand;"> Shopping Catalog List </p></h1>
+  {% if catas %}
+    {% for cata in catas %}
+        <article class="media content-section">
+          <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
+          <div class="media-body">
+            <div class="article-metadata">
+              <img src="{{ cata.catalog_img }}" class="img-thumbnail" alt="picture of the product" width="50">
+              <!-- <a class="text-muted">{{ cata.cate_name }}</a > -->
+            </div>
+            <h2><p style="font-family:Bradley Hand;"><a class="article-title" href="{% url 'catadetail' cata.cate_name %}">{{ cata.cate_name }}</p></a ></h2>
+          </div>
+        </article>
+    {% endfor %}
+  
+  {% else %}
+  <p> No catalog available right now </p>
+  {% endif%}
+{% endblock content %}

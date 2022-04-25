@@ -1,0 +1,118 @@
+/* body{
+    padding: 0;
+    background-image: url("images/bb.gif");
+} */
+.search-box{
+    position: relative;
+    top: 50%;
+    left: 70%;
+    transform: translate(-50%,-50%);
+    /* background: #2f3640; */
+    background: white;
+    background-position: center;
+    background-size: 35%;
+    height: 40px;
+    border-radius: 40px;
+}
+.search-btn{
+    /* background-image: url("images/dog.gif"); */
+    color: #e84118;
+    float: right;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    /* background: #2f3640; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+}
+.search-box:hover > .search-txt{
+    width: 150px;
+    padding: 0 6px;
+}
+.search-box:hover > .search-btn{
+    background: white;
+}
+.search-txt{
+    border: none;
+    background: none;
+    outline: none;
+    float: left;
+    padding: 20px;
+    color: black;
+    font-size: 16px;
+    transition: 0.8s;
+    line-height: 250%;
+    width: 0px;
+
+}
+/* .cart-btn{
+    color: #e84118;
+    float: right;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+} */
+
+.order-btn {
+    /* position: absolute;
+    top: 15%;
+    left: 80%;
+    font-size:15px;
+    font-family:Arial;
+    width:40px;
+    height:40px;
+    border-width:2px;
+    color:#505739;
+    border-color:#333029;
+    font-weight:bold;
+    border-top-left-radius:5px;
+    border-top-right-radius:15px;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:15px;
+    box-shadow: 0px 1px 0px 0px #1c1b18;
+    text-shadow: 0px 1px 0px #ffffff; */
+    /* background:linear-gradient(#eae0c2, #ccc2a6); */
+    /* background-image: url("images/order_icon.jpeg");
+    background-size: contain;
+    background-repeat: no-repeat; */
+    /* background-size: contain; */
+    color: #e84118;
+    float: right;
+    width: 40px;
+    height: 40px;
+    border-radius: 30%;
+    /* background: #2f3640; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+  }
+  
+  .order-btn:hover {
+    background: linear-gradient(#ccc2a6, #eae0c2);
+  }
+
+  .cart-btn {
+    color: #e84118;
+    float: right;
+    width: 40px;
+    height: 40px;
+    border-radius: 30%;
+    /* background: #2f3640; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+  }
+  
+  .cart-btn:hover {
+    background: linear-gradient(#ccc2a6, #eae0c2);
+  }
+                
