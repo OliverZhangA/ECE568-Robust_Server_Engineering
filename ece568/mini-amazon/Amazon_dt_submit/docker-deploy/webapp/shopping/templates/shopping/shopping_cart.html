@@ -1,0 +1,76 @@
+{% extends "users/base.html" %}
+{% block content %}
+    <h1><p style="font-family:Bradley Hand; font-size: larger;">Shopping Cart</p></h1>
+    <!-- order list -->
+    {% if orders %}
+        <!-- NOTE: nested form is not allowed!!! -->
+        <form id="form_orders" name="form_orders" action="{% url 'shoppingCart' %}" method="post">
+            {% csrf_token %}
+            <div class="table-responsive mt-4 table-hover">
+                <table id="order_table" class="table">
+                    <thead>
+                    <tr class="row text-center">
+                        <!-- thumbnail + description -->
+                        <th class="col-3 text-left">
+                            <a href="#" style="color: #080000;">Commodity
+                                <i class="fa fa-sort"></i>
+                            </a>
+                        </th>
+                        <th class="col-3">
+                            <a href="#" style="color: #080000;">Name
+                                <i class="fa fa-sort"></i>
+                            </a>
+                        </th>
+                        <!-- <th class="col-2">
+                            <a href="#" style="color: #080000;">Qty
+                                <i class="fa fa-sort"></i>
+                            </a>
+                        </th> -->
+                        <th class="col-3">
+                            <a href="#" style="color: #080000;">Qty
+                                <i class="fa fa-sort"></i>
+                            </a>
+                        </th>
+                        <!-- delete button -->
+                        <th class="col-2"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                            <td class="col-3 text-left border-top-0">
+                        <tr class="row text-center border-bottom">
+                            <td class="col-3 text-left border-top-0">
+                                <!-- <img class="img-thumbnail" style="width: 50px; height: 50px" src="{{ order.item.img }}"> -->
+                                <img src="{{ order.commodity.commodity_img }}" class="img-thumbnail" alt="picture of the product" width="50">
+                                {{ order.item.description }}
+                            </td>
+                            <td class="col-3 text-left border-top-0">
+                                {{ order.commodity.commodity_name }}
+                            </td>
+                            <td class="col-3 text-left border-top-0">
+                                {{ order.commodity_amt }}
+                            </td>
+                            <td class="col-2 align-self-center border-top-0">
+                                <button type="submit" name="delete" value="{{order.id}}" class="btn btn-primary mt-3">&nbsp;delete</button>
+                                <!-- <button onclick="delete_order('{{ order.id }}')" class="btn btn-outline-secondary">
+                                    Delete
+                                </button> -->
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-right">
+                <button type="submit" name="checkout" value="checkout" class="btn btn-primary mt-3">&nbsp;checkout</button>
+            </div>
+        </form>
+    {% else %}
+        <h4 class="m-4">
+            <p style="font-family:Bradley Hand; font-size: larger;">
+                Your shopping cart is empty,
+                <a href="{% url 'shopping-home' %}">Go Shopping Right Now!</a>
+            </p>
+        </h4>
+    {% endif %}
+{% endblock content %}

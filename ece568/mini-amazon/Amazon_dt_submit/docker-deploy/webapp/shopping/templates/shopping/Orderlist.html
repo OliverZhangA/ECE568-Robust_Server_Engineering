@@ -1,0 +1,20 @@
+{% extends "users/base.html" %}
+{% block content %}
+<h1> <p style="font-family:Bradley Hand; font-size: larger;">Package Details</p> </h1>
+  {% if orders %}
+    {% for order in orders %}
+        <article class="media content-section">
+          <!-- <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"> -->
+          <div class="media-body">
+            <div class="article-metadata">
+                <img src="{{ order.commodity.commodity_img }}" class="img-thumbnail" alt="picture of the product" width="50">
+                <br><a class="text-muted">Item :{{ order.commodity.commodity_name }}</a >
+                  <br><a class="text-muted">Amount :{{ order.commodity_amt }}</a>
+                  <br><a class="text-muted">Description :{{ order.commodity.commodity_desc }}</a>
+        </article>
+    {% endfor %}
+  
+  {% else %}
+  <p> No placed orders </p>
+  {% endif%}
+{% endblock content %}

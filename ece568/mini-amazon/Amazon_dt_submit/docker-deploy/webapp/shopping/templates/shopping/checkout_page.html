@@ -1,0 +1,24 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content%}
+
+<body>
+    <h1><p style="font-family:Bradley Hand;">Checkout</p></h1>
+<div>
+
+    <form name="checkout_form" class="card p-2 ml-2 mt-3" method="POST" onsubmit>
+        {% csrf_token %}
+        <input type="number" name="dest_x" value min="0" max="99999" class="form-control" placeholder="x coordinate" required>
+        <input type="number" name="dest_y" min="0" max="99999" class="form-control" placeholder="y coordinate" required>
+        <input type="text" name="ups_account" class="form-control" placeholder="your ups account name">
+        <input type="text" name="card_num" class="form-control" placeholder="your card number" required>
+        <input type="text" name="card_num" class="form-control" placeholder="sec code" required>
+        <input type="text" name="card_num" class="form-control" placeholder="Valid Thru : mm/yy" required>
+        <input type="text" name="card_num" class="form-control" placeholder="your Name here" required>
+        <button type="submit" name="qcheckout" value="qcheckout" class="btn btn-primary mt-3" formnovalidate>&nbsp;quick checkout</button>
+        <button type="submit" name="check_out" value="check_out" class="btn btn-primary mt-3">&nbsp;confirm checkout</button>
+        <button type="submit" name="cancel" value="cancel" class="btn btn-secondary mt-3" formnovalidate>&nbsp;cancel checkout</button>
+    </form>
+</div>
+</body>
+{% endblock %}
