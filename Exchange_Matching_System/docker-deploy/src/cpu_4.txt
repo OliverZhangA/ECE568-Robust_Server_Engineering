@@ -1,0 +1,649 @@
+//4 new
+az147@vcm-24034:~/erss-hwk4-az147-jz367$ Total time used: 39s
+Start time: 1648850267
+End time: 1648850306
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 40s
+Start time: 1648850267
+End time: 1648850307
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 41s
+Start time: 1648850267
+End time: 1648850308
+before return
+Total time used: 43s
+Start time: 1648850267
+End time: 1648850310
+before return
+Total time used: 43s
+Start time: 1648850267
+End time: 1648850310
+before return
+Total time used: 43s
+Start time: 1648850267
+End time: 1648850310
+before return
+Total time used: 43s
+Start time: 1648850267
+End time: 1648850310
+before return
+Total time used: 43s
+Start time: 1648850267
+End time: 1648850310
+before return
+Total time used: 43s
+Start time: 1648850267
+End time: 1648850310
+before return
+Total time used: 43s
+Start time: 1648850267
+End time: 1648850310
+before return
+Total time used: 43s
+Start time: 1648850267
+End time: 1648850310
+before return
+Total time used: 43s
+Start time: 1648850267
+End time: 1648850310
+before return
+Total time used: 44s
+Start time: 1648850267
+End time: 1648850311
+before return
+Total time used: 44s
+Start time: 1648850267
+End time: 1648850311
+before return
+Total time used: 44s
+Start time: 1648850267
+End time: 1648850311
+before return
+Total time used: 44s
+Start time: 1648850267
+End time: 1648850311
+before return
+Total time used: 44s
+Start time: 1648850267
+End time: 1648850311
+before return
+Total time used: 44s
+Start time: 1648850267
+End time: 1648850311
+before return
+Total time used: 44s
+Start time: 1648850267
+End time: 1648850311
+before return
+Total time used: 44s
+Start time: 1648850267
+End time: 1648850311
+before return
+Total time used: 44s
+Start time: 1648850267
+End time: 1648850311
+before return
+Total time used: 44s
+Start time: 1648850267
+End time: 1648850311
+before return
+Total time used: 44s
+Start time: 1648850267
+End time: 1648850311
+before return
+
+
+
+
+
+
+
+//4 old
+used: 43s
+Start time: 1648825322
+End time: 1648825365
+before return
+Total time used: 48s
+Start time: 1648825322
+End time: 1648825370
+before return
+Total time used: 51s
+Start time: 1648825322
+End time: 1648825373
+before return
+Total time used: 52s
+Start time: 1648825322
+End time: 1648825374
+before return
+Total time used: 53s
+Start time: 1648825322
+End time: 1648825375
+before return
+Total time used: 53s
+Start time: 1648825322
+End time: 1648825375
+before return
+Total time used: 53s
+Start time: 1648825322
+End time: 1648825375
+before return
+Total time used: 55s
+Start time: 1648825322
+End time: 1648825377
+before return
+Total time used: 55s
+Start time: 1648825322
+End time: 1648825377
+before return
+Total time used: 55s
+Start time: 1648825322
+End time: 1648825377
+before return
+Total time used: 55s
+Start time: 1648825322
+End time: 1648825377
+before return
+Total time used: 55s
+Start time: 1648825322
+End time: 1648825377
+before return
+Total time used: 55s
+Start time: 1648825322
+End time: 1648825377
+before return
+Total time used: 55s
+Start time: 1648825322
+End time: 1648825377
+before return
+Total time used: 55s
+Start time: 1648825322
+End time: 1648825377
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+Total time used: 56s
+Total time used: 56s
+Start time: 1648825322
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+End time: 1648825378
+before return
+before return
+Start time: 1648825322
+End time: 1648825378
+before return
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 56s
+Start time: 1648825322
+End time: 1648825378
+before return
+Total time used: 60s
+Start time: 1648825322
+End time: 1648825382
+before return
+Total time used: 60s
+Start time: 1648825322
+End time: 1648825382
+before return
+Total time used: 60s
+Start time: 1648825322
+End time: 1648825382
+before return
+Total time used: 60s
+Start time: 1648825322
+End time: 1648825382
+before return
+Total time used: 60s
+Start time: 1648825322
+End time: 1648825382
+before return
+Total time used: 60s
+Start time: 1648825322
+End time: 1648825382
+before return
+Total time used: 60s
+Start time: 1648825322
+End time: 1648825382
+before return
+Total time used: 61s
+Start time: 1648825322
+End time: 1648825383
+before return
+Total time used: 61s
+Start time: 1648825322
+End time: 1648825383
+before return
+Total time used: 61s
+Start time: 1648825322
+End time: 1648825383
+before return
+Total time used: 61s
+Start time: 1648825322
+End time: 1648825383
+before return
+Total time used: 61s
+Start time: 1648825322
+End time: 1648825383
+before return
+Total time used: 61s
+Start time: 1648825322
+End time: 1648825383
+before return
+Total time used: 61s
+Start time: 1648825322
+End time: 1648825383
+before return
+Total time used: 61s
+Start time: 1648825322
+End time: 1648825383
+before return
+Total time used: 61s
+Start time: 1648825322
+End time: 1648825383
+before return
+Total time used: 61s
+Start time: 1648825322
+End time: 1648825383
+before return
+Total time used: 61s
+Start time: 1648825322
+End time: 1648825383
+before return
+Total time used: 61s
+Start time: 1648825322
+End time: 1648825383
+before return

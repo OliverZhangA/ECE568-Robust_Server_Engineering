@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<create><account id="111111" balance="0"/>
+<symbol sym="BITCOIN0">
+<account id="111111">5000</account>
+</symbol> 
+</create>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<create><account id="555555" balance="10000"/>
+</create>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions id="111111">
+    <order sym="BITCOIN0" amount="-10" limit="990"/>
+</transactions>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions id="555555">
+    <order sym="BITCOIN0" amount="49" limit="1000"/>
+</transactions>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions id="111111">
+    <order sym="SPY2" amount="10" limit="15"/>
+</transactions>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<create>
+    <account id="99999" balance="10000"/>
+</create>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions id="99999">
+    <order sym="SPY" amount="20" limit="15"/>
+</transactions>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions id="45678">
+    <cancel id="2"/>
+</transactions>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions id="45678">
+    <query id="5"/>
+</transactions>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<create><account id="12345" balance="10000"/>
+<symbol sym="SPY">
+<account id="12345">100000</account>
+</symbol> 
+</create>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<create><account id="45678" balance="10000"/>
+<symbol sym="SPY">
+<account id="45678">100000</account>
+</symbol> 
+</create>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions id="12345">
+    <order sym="SPY" amount="50" limit="10"/>
+</transactions>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions id="45678">
+    <order sym="SPY" amount="-49" limit="11"/>
+</transactions>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions id="12345">
+    <order sym="SPY" amount="10" limit="15"/>
+</transactions>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<create>
+    <account id="99999" balance="10000"/>
+</create>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions id="99999">
+    <order sym="SPY" amount="20" limit="15"/>
+</transactions>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions id="45678">
+    <cancel id="2"/>
+</transactions>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<transactions id="45678">
+    <query id="2"/>
+</transactions>
