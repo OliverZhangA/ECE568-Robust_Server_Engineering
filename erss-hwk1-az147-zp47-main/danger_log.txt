@@ -1,0 +1,26 @@
+### Danger Log
+
+
+
+1. When an owner update an open order from sharable to non-sharable and this order already has sharers, it may affect sharer, since we cannot kick out already joined sharers.
+
+​Solved: If this order already has sharers, and the owner update the sharable status from sharable to non-sharable, it will redirect to a page tell him we are not allowed to do this modification, and this update will fail.
+
+2. When an open order can be shared, and many sharers matched this ride can join this order, it will cause this order's passenger number become too big, thus there is never a driver can confirm this order.
+
+​Solved: We give a constraint of the maximum vehicle capacity in our web-riding platform (maximum vehicle capacity = 6), so owner cannot request an order exceed this capacity; and if a sharer join one open order, the total passenger number exceed 	this maximum capacity after the sharer join, we constrained that the sharer can never see this order in the joining searching results lists.
+
+3. Owner should not request a ride that is in the past. 
+
+​Solved: Set the minimum arrival date be now, so owner cannot set it to be the time in the past.
+
+4. A driver cannot confirmed an order whose owner is himself or sharer is himself; a sharer cannot join an order whose owner is herself or sharer is herself.
+
+​Solved: We add these constraints when show the searching results for sharers and drivers.		
+
+5. Sharer should have the right to cancel the ride they joined before this order is confirmed.
+
+​Unsolved: Our web-app only support owner to cancel the order, but sharer cannot.
+
+6. When owner cancel an order which already has sharers, the sharers order will be cancelled automatically, but we do not notice the sharer.
+
